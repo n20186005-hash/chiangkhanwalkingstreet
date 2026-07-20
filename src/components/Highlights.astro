@@ -1,0 +1,21 @@
+---
+import { getI18n } from '../i18n/ui';
+const { messages } = getI18n(Astro.url);
+const hl = messages.highlights;
+---
+
+<section id="highlights" class="section-padding" style="background: var(--bg-tertiary);">
+  <div class="container-wide">
+    <h2 class="section-title">{hl.title}</h2>
+    <p class="section-subtitle">{hl.subtitle}</p>
+    <div class="feature-grid">
+      {hl.items.map((item: any) => (
+        <div class="feature-card">
+          <div class="feature-icon">{item.icon}</div>
+          <h3 class="feature-title">{item.title}</h3>
+          <p class="feature-text">{item.text}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

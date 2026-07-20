@@ -1,0 +1,36 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="faq" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.faq}</h2>
+    <div id="faq-root">
+      {poi.faq.map((f) => (
+        <div class="faq-item">
+          <button class="faq-q" type="button">
+            <span>{pick(f.q, lang)}</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-a">
+            <div class="faq-a-inner">{pick(f.a, lang)}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('#faq-root .faq-q').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const ans = item.querySelector('.faq-a');
+      const open = item.classList.toggle('is-open');
+      ans.style.maxHeight = open ? ans.scrollHeight + 'px' : '0';
+    });
+  });
+</script>

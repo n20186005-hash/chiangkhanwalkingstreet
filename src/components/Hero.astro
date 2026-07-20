@@ -1,0 +1,42 @@
+---
+import { getI18n } from '../i18n/ui';
+import { SITE_SLUG } from '../config';
+
+const { messages } = getI18n(Astro.url);
+const hero = messages.hero;
+const HERO_BG = `/gallery/${SITE_SLUG}-1.jpg`;
+---
+
+<section id="hero" class="hero" style={`background-image: linear-gradient(var(--hero-overlay), var(--hero-overlay)), url('${HERO_BG}');`}>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      {hero.title}
+      <span class="th">{hero.thaiName}</span>
+    </h1>
+    <p class="hero-subtitle">{hero.subtitle}</p>
+
+    <div class="hero-meta">
+      <span class="hero-chip">⭐ {hero.rating}</span>
+      <span class="hero-chip">🕔 {hero.hours}</span>
+      <span class="hero-chip">📍 {hero.location.value}</span>
+    </div>
+
+    <div class="hero-tags">
+      {hero.tags.map((tag: string) => <span>{tag}</span>)}
+    </div>
+
+    <blockquote class="hero-legend">
+      <p class="hero-legend-text">{hero.legend.quote}</p>
+      <cite class="hero-legend-cite">{hero.legend.attribution}</cite>
+    </blockquote>
+
+    <div class="hero-cta">
+      <a href={hero.routeCta.href} class="btn-cta btn-cta-primary">{hero.routeCta.label}</a>
+      <a href={hero.factsSource.url} target="_blank" rel="noopener noreferrer" class="btn-cta btn-cta-secondary">{hero.factsSource.label}</a>
+    </div>
+
+    <a href={hero.mapsUrl} target="_blank" rel="noopener noreferrer" class="hero-maps-link">
+      📍 {hero.openMaps}
+    </a>
+  </div>
+</section>

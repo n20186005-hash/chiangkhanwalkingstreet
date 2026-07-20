@@ -1,0 +1,45 @@
+---
+import { getI18n } from '../i18n/ui';
+const { messages } = getI18n(Astro.url);
+const v = messages.visit;
+---
+
+<section id="visit" class="section-padding">
+  <div class="container-wide">
+    <h2 class="section-title">{v.title}</h2>
+    <p class="section-subtitle">{v.subtitle}</p>
+
+    <div class="feature-grid" style="align-items:start;">
+      <div class="card">
+        <div class="info-row">
+          <div class="info-label">{v.hoursLabel}</div>
+          <div class="info-value">{v.hours}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">{v.addressLabel}</div>
+          <div class="info-value">{v.address}</div>
+        </div>
+        <div class="info-row">
+          <div class="info-label">Plus Code</div>
+          <div class="info-value">{v.plusCode}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="feature-title" style="margin-top:0;">{v.transportTitle}</h3>
+        <p class="feature-text" style="margin-bottom:1.25rem;">{v.transportText}</p>
+        <div class="feature-grid">
+          {v.transportModes.map((mode: any) => (
+            <div style="display:flex; gap:0.75rem;">
+              <div class="feature-icon" style="margin-bottom:0;">{mode.icon}</div>
+              <div>
+                <div style="font-weight:600; color:var(--text-primary); font-size:0.95rem;">{mode.title}</div>
+                <div class="feature-text" style="font-size:0.9rem;">{mode.text}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

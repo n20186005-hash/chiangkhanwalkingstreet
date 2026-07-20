@@ -1,0 +1,30 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="visitor" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.visitorSummary}</h2>
+    <p class="section-sub">AI-summarized from public ratings &amp; visitor submissions.</p>
+    <div class="vs-grid">
+      <div class="vs-col pros">
+        <h4>{m.visitor.pros}</h4>
+        <ul class="vs-list">
+          {poi.visitorSummary.positives.map((p) => <li>{pick(p, lang)}</li>)}
+        </ul>
+      </div>
+      <div class="vs-col cons">
+        <h4>{m.visitor.cons}</h4>
+        <ul class="vs-list">
+          {poi.visitorSummary.negatives.map((n) => <li>{pick(n, lang)}</li>)}
+        </ul>
+      </div>
+    </div>
+    <div class="map-links" style="margin-top:1.5rem;">
+      <a class="map-link" href={poi.mapsUrl} target="_blank" rel="noopener">{m.common.viewOnMap} ↗</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,24 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="overview" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.overview}</h2>
+    <div class="prose">
+      <p>{pick(poi.intro, lang)}</p>
+    </div>
+  </div>
+</section>
+
+<section id="history" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.history}</h2>
+    <div class="prose">
+      <p>{pick(poi.history, lang)}</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const heroImg = `/gallery/${poi.slug}-1.jpg`;
+---
+<section class="hero" style={`background-image: linear-gradient(var(--hero-overlay), var(--hero-overlay)), url(${heroImg})`}>
+  <div class="hero-content">
+    <p class="hero-eyebrow">{m.hero.guideYear}</p>
+    <h1 class="hero-title">{pick(poi.name, lang)}<span class="th">{poi.nameLocal}</span></h1>
+    <div class="hero-meta">
+      <span class="hero-chip">★ {poi.rating} <span class="muted">({poi.reviewCount.toLocaleString()})</span></span>
+      <span class="hero-chip">{m.hero.openLabel}: {poi.hours.open}–{poi.hours.close}</span>
+      <span class="hero-chip">{m.hero.locatedLabel}: {poi.province}, {poi.country}</span>
+    </div>
+    <div class="hero-tags">
+      {poi.category.map((c) => <span>{c}</span>)}
+    </div>
+    <blockquote class="hero-legend">
+      <p class="hero-legend-label">{m.hero.legendLabel}</p>
+      <p class="hero-legend-text">“{pick(poi.tagline, lang)}”</p>
+    </blockquote>
+    <div class="hero-cta">
+      <a class="btn-cta btn-cta-primary" href="#overview">{m.nav.guide}</a>
+      <a class="btn-cta btn-cta-secondary" href="#map">{m.nav.map}</a>
+    </div>
+    <a class="hero-maps-link" href={poi.mapsUrl} target="_blank" rel="noopener">{m.common.viewOnMap} ↗</a>
+  </div>
+</section>

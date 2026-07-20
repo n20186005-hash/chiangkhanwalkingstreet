@@ -1,0 +1,27 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi, fromFilter } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const items = fromFilter
+  ? poi.transport.filter((t) => pick(t.from, 'en') === fromFilter)
+  : poi.transport;
+---
+<section id="get-there" class="section">
+  <div class="container">
+    {!fromFilter && <h2 class="section-title">{m.headings.howToGetThere}</h2>}
+    {items.map((t) => (
+      <div class="transport-card">
+        <h3 class="route-heading" style="margin-bottom:0;">{pick(t.from, lang)}</h3>
+        <div class="transport-meta">
+          <span><b>{m.transport.mode}:</b> {pick(t.mode, lang)}</span>
+          <span><b>{m.transport.duration}:</b> {pick(t.duration, lang)}</span>
+        </div>
+        <ul class="timeline">
+          {t.steps.map((s) => <li>{pick(s, lang)}</li>)}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

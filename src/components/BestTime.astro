@@ -1,0 +1,24 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="best-time" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.bestTime}</h2>
+    <div class="besttime-table">
+      {poi.bestTime.rows.map((r) => (
+        <div class="besttime-row">
+          <span class="besttime-range">{r.range}</span>
+          <span class="bars">
+            {[1,2,3,4,5].map((i) => <span class={`bar ${i <= r.score ? 'on' : ''}`}></span>)}
+          </span>
+          <span class="besttime-note">{pick(r.note, lang)}</span>
+        </div>
+      ))}
+    </div>
+    <div class="prose" style="margin-top:1.5rem;"><p>{pick(poi.bestTime.reasons, lang)}</p></div>
+  </div>
+</section>

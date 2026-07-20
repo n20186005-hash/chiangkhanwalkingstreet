@@ -1,0 +1,58 @@
+---
+import { getLangFromUrl, getI18n, languagesList } from '../../i18n/ui';
+import { attractions, pick } from '../../data/attractions';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+export function getStaticPaths() {
+  return languagesList.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+
+// group attractions by country for the knowledge-graph home
+const byCountry = new Map<string, typeof attractions>();
+for (const a of attractions) {
+  const arr = byCountry.get(a.country) ?? [];
+  arr.push(a);
+  byCountry.set(a.country, arr);
+}
+---
+<BaseLayout title={m.brand.name} description={m.home.subtitle} path="" >
+  <Header lang={lang} nav={[]} />
+  <main>
+    <section class="explore-hero">
+      <h1 class="explore-title">{m.home.title}</h1>
+      <p class="explore-sub">{m.home.subtitle}</p>
+      <div class="explore-search">
+        <input type="search" placeholder={m.common.searchPlaceholder} aria-label={m.common.search} />
+        <button class="btn-line" type="button">{m.common.search}</button>
+      </div>
+    </section>
+
+    <div class="container" style="padding: 3rem 1rem;">
+      {[...byCountry.entries()].map(([country, list]) => (
+        <div class="country-group">
+          <h3>{country}</h3>
+          <div class="card-grid">
+            {list.map((a) => (
+              <a class="poi-card" href={`/${lang}/attraction/${a.slug}`}>
+                <img class="poi-card-img" src={`/gallery/${a.slug}-1.jpg`} alt={pick(a.name, lang)} loading="lazy" />
+                <div class="poi-card-body">
+                  <p class="poi-card-name">{pick(a.name, lang)}</p>
+                  <p class="poi-card-loc">{a.city}, {a.province}</p>
+                  <div class="poi-card-tags">
+                    {a.category.slice(0, 3).map((c) => <span>{c}</span>)}
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </main>
+  <Footer poi={attractions[0]} lang={lang} />
+</BaseLayout>

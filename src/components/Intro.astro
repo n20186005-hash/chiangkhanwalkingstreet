@@ -1,0 +1,29 @@
+---
+import { getI18n } from '../i18n/ui';
+const { messages } = getI18n(Astro.url);
+const intro = messages.intro;
+---
+
+<section id="intro" class="section-padding">
+  <div class="container-narrow">
+    <h2 class="section-title">{intro.title}</h2>
+    <p class="section-subtitle" style="text-align:left; margin:0 auto 2.5rem;">{intro.description}</p>
+
+    <div class="feature-grid" style="margin-bottom:2.5rem;">
+      <div class="card">
+        <h3 class="feature-title" style="margin-top:0;">{intro.alsoKnownAs.title}</h3>
+        <ul class="check-list">
+          {intro.alsoKnownAs.items.map((item: string) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div class="card">
+        <p class="feature-title" style="font-size:0.8rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-top:0;">{intro.visitGuide.eyebrow}</p>
+        <h3 class="feature-title">{intro.visitGuide.title}</h3>
+        <p class="feature-text" style="margin-bottom:1rem;">{intro.visitGuide.description}</p>
+        <ul class="check-list">
+          {intro.visitGuide.items.map((item: string) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,23 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const { lat, lng } = poi.location;
+const d = 0.012;
+const bbox = `${lng - d},${lat - d},${lng + d},${lat + d}`;
+const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
+---
+<section id="map" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.map}</h2>
+    <p class="section-sub">{m.map.openStreet}</p>
+    <div class="map-embed">
+      <iframe src={osm} loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="OpenStreetMap"></iframe>
+    </div>
+    <div class="map-links">
+      <a class="map-link" href={poi.mapsUrl} target="_blank" rel="noopener">{m.map.googleMaps} ↗</a>
+      <span class="muted" style="font-size:0.85rem;">{poi.location.plusCode} · {poi.location.address}</span>
+    </div>
+  </div>
+</section>

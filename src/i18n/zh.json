@@ -1,0 +1,43 @@
+{
+  "common": {
+    "changeLanguage": "切换语言",
+    "toggleTheme": "切换主题",
+    "viewOnMap": "在 Google 地图上查看位置",
+    "readMore": "了解更多",
+    "backToGuide": "返回完整指南",
+    "explore": "探索景点",
+    "search": "搜索",
+    "searchPlaceholder": "搜索国家、城市或景点…"
+  },
+  "brand": { "name": "全球景点知识图谱", "tagline": "POI 数据中心 · 多语言旅行信息系统" },
+  "nav": { "home": "首页", "guide": "指南", "map": "地图" },
+  "headings": {
+    "overview": "景点简介",
+    "quickFacts": "快速资料",
+    "history": "历史沿革",
+    "whyVisit": "为什么值得去",
+    "thingsToDo": "游玩方式",
+    "walkingRoutes": "推荐路线",
+    "bestTime": "最佳时间",
+    "howToGetThere": "如何到达",
+    "nearbyAreas": "周边探索",
+    "localFood": "当地美食",
+    "culture": "文化",
+    "photography": "摄影",
+    "accessibility": "无障碍",
+    "faq": "常见问题",
+    "map": "地图",
+    "sources": "资料来源",
+    "visitorSummary": "访客体验总结"
+  },
+  "facts": {
+    "rating": "评分", "reviews": "评价数", "hours": "开放时间", "address": "地址",
+    "category": "类型", "province": "地区", "plusCode": "位置代码", "country": "国家", "city": "城市"
+  },
+  "hero": { "openLabel": "开放时间", "locatedLabel": "位置", "legendLabel": "一句话", "guideYear": "2026 游览指南" },
+  "home": { "title": "探索全球景点", "subtitle": "标准化 POI 数据 · 多语言 · 自动生成指南", "byCountry": "按国家浏览", "popular": "热门 POI" },
+  "sections": { "transport": "交通", "bestTime": "最佳时间", "food": "美食", "routes": "路线", "nearby": "周边", "hours": "开放时间", "photography": "摄影" },
+  "map": { "openStreet": "OpenStreetMap 预览", "googleMaps": "Google Maps" },
+  "visitor": { "pros": "游客常赞", "cons": "常见不足" },
+  "transport": { "from": "出发地", "mode": "方式", "duration": "耗时" }
+}

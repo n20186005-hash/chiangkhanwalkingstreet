@@ -1,0 +1,34 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const { thirty, twoHour, halfDay } = poi.routes;
+---
+<section id="walking-routes" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.walkingRoutes}</h2>
+
+    <div class="route-block">
+      <h3 class="route-heading">{pick(thirty.title, lang)}</h3>
+      <ul class="timeline">
+        {thirty.steps.map((s) => <li>{pick(s, lang)}</li>)}
+      </ul>
+    </div>
+
+    <div class="route-block">
+      <h3 class="route-heading">{pick(twoHour.title, lang)}</h3>
+      <ul class="timeline">
+        {twoHour.steps.map((s) => (
+          <li><span class="step-time">{s.time}</span>{pick(s.text, lang)}</li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="route-block">
+      <h3 class="route-heading">{pick(halfDay.title, lang)}</h3>
+      <div class="prose"><p>{pick(halfDay.text, lang)}</p></div>
+    </div>
+  </div>
+</section>

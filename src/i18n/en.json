@@ -1,0 +1,43 @@
+{
+  "common": {
+    "changeLanguage": "Change language",
+    "toggleTheme": "Toggle theme",
+    "viewOnMap": "View on Google Maps",
+    "readMore": "Read more",
+    "backToGuide": "Back to full guide",
+    "explore": "Explore places",
+    "search": "Search",
+    "searchPlaceholder": "Search country, city or attraction…"
+  },
+  "brand": { "name": "Global Attraction Knowledge Graph", "tagline": "POI data hub · Multilingual travel info system" },
+  "nav": { "home": "Home", "guide": "Guide", "map": "Map" },
+  "headings": {
+    "overview": "Overview",
+    "quickFacts": "Quick Facts",
+    "history": "History",
+    "whyVisit": "Why Visit",
+    "thingsToDo": "Things To Do",
+    "walkingRoutes": "Walking Routes",
+    "bestTime": "Best Time",
+    "howToGetThere": "How To Get There",
+    "nearbyAreas": "Nearby Areas",
+    "localFood": "Local Food",
+    "culture": "Culture",
+    "photography": "Photography",
+    "accessibility": "Accessibility",
+    "faq": "FAQ",
+    "map": "Map",
+    "sources": "Sources",
+    "visitorSummary": "Visitor Experience Summary"
+  },
+  "facts": {
+    "rating": "Rating", "reviews": "Reviews", "hours": "Hours", "address": "Address",
+    "category": "Type", "province": "Region", "plusCode": "Plus Code", "country": "Country", "city": "City"
+  },
+  "hero": { "openLabel": "Opening hours", "locatedLabel": "Located", "legendLabel": "In a word", "guideYear": "2026 Visitor Guide" },
+  "home": { "title": "Explore Attractions Worldwide", "subtitle": "Standardized POI data · Multilingual · Auto-generated guides", "byCountry": "Browse by country", "popular": "Popular POI" },
+  "sections": { "transport": "Transport", "bestTime": "Best time", "food": "Food", "routes": "Routes", "nearby": "Nearby", "hours": "Hours", "photography": "Photography" },
+  "map": { "openStreet": "OpenStreetMap preview", "googleMaps": "Google Maps" },
+  "visitor": { "pros": "Visitors love", "cons": "Common downsides" },
+  "transport": { "from": "From", "mode": "Mode", "duration": "Duration" }
+}

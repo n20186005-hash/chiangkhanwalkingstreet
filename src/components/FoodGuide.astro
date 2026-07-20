@@ -1,0 +1,22 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="food" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.localFood}</h2>
+    <p class="section-sub">{m.headings.localFood}</p>
+    <div class="food-grid">
+      {poi.food.map((f) => (
+        <div class="food-card">
+          <p class="food-name">{f.name}</p>
+          <p class="food-type">{pick(f.type, lang)} · {f.origin}</p>
+          <p class="food-desc">{pick(f.desc, lang)}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

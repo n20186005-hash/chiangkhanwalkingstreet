@@ -1,0 +1,19 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="why-visit" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.whyVisit}</h2>
+    <div class="card-grid">
+      {poi.whyVisit.map((item) => (
+        <div class="feature-card">
+          <p style="margin:0; line-height:1.6; color:var(--text-secondary);">{pick(item, lang)}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

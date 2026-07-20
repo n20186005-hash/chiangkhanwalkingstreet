@@ -1,0 +1,16 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="sources" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.sources}</h2>
+    <ul class="sources-list">
+      {poi.sources.map((s) => (
+        <li><a href={s.url} target="_blank" rel="noopener">{s.name} ↗</a></li>
+      ))}
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,49 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const homeHref = `/${lang}`;
+---
+<footer class="site-footer" id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col footer-brand">
+        <span class="brand-name">{m.brand.name}</span>
+        <p>{m.brand.tagline}</p>
+        <p class="footer-mission">
+          {pick(poi.name, lang)} · {m.hero.locatedLabel}: {poi.province}, {poi.country}
+        </p>
+        <a class="footer-map-link" href={poi.mapsUrl} target="_blank" rel="noopener">{m.map.googleMaps} →</a>
+      </div>
+
+      <div class="footer-col">
+        <h4>{m.headings.sources}</h4>
+        <ul class="footer-links">
+          {poi.sources.map((s) => (
+            <li><a href={s.url} target="_blank" rel="noopener">{s.name}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>POI</h4>
+        <ul class="footer-links">
+          <li><a href={`/${lang}/attraction/${poi.slug}`}>{m.nav.guide}</a></li>
+          <li><a href={`/${lang}/attraction/${poi.slug}#map`}>{m.nav.map}</a></li>
+          <li><a href={`/${lang}/attraction/${poi.slug}#get-there`}>{m.headings.howToGetThere}</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {new Date().getFullYear()} {m.brand.name}. {m.brand.tagline}.</p>
+      <p class="footer-disclaimer">
+        This is a non-profit knowledge page. Content is compiled from public data
+        (TAT, OpenStreetMap, Wikidata, Google) and AI summarization — not official tourism advice.
+        Verify details before travel.
+      </p>
+    </div>
+  </div>
+</footer>

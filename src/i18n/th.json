@@ -1,0 +1,43 @@
+{
+  "common": {
+    "changeLanguage": "เปลี่ยนภาษา",
+    "toggleTheme": "สลับธีม",
+    "viewOnMap": "ดูใน Google Maps",
+    "readMore": "อ่านเพิ่มเติม",
+    "backToGuide": "กลับไปที่คู่มือฉบับเต็ม",
+    "explore": "สำรวจสถานที่",
+    "search": "ค้นหา",
+    "searchPlaceholder": "ค้นหาประเทศ เมืองหรือสถานที่…"
+  },
+  "brand": { "name": "แผนที่ความรู้สถานที่ท่องเที่ยวโลก", "tagline": "ศูนย์ข้อมูล POI · ระบบข้อมูลการท่องเที่ยวหลายภาษา" },
+  "nav": { "home": "หน้าแรก", "guide": "คู่มือ", "map": "แผนที่" },
+  "headings": {
+    "overview": "ภาพรวม",
+    "quickFacts": "ข้อมูลเบื้องต้น",
+    "history": "ประวัติศาสตร์",
+    "whyVisit": "ทำไมถึงควรไป",
+    "thingsToDo": "กิจกรรม",
+    "walkingRoutes": "เส้นทางเดิน",
+    "bestTime": "เวลาที่ดีที่สุด",
+    "howToGetThere": "การเดินทาง",
+    "nearbyAreas": "พื้นที่ใกล้เคียง",
+    "localFood": "อาหารท้องถิ่น",
+    "culture": "วัฒนธรรม",
+    "photography": "การถ่ายภาพ",
+    "accessibility": "การเข้าถึง",
+    "faq": "คำถามที่พบบ่อย",
+    "map": "แผนที่",
+    "sources": "แหล่งที่มา",
+    "visitorSummary": "สรุปประสบการณ์ผู้เยี่ยมชม"
+  },
+  "facts": {
+    "rating": "เรตติ้ง", "reviews": "รีวิว", "hours": "เวลาเปิด", "address": "ที่อยู่",
+    "category": "ประเภท", "province": "ภูมิภาค", "plusCode": "รหัสพลัส", "country": "ประเทศ", "city": "เมือง"
+  },
+  "hero": { "openLabel": "เวลาเปิด", "locatedLabel": "ตั้งอยู่", "legendLabel": "สรุปสั้นๆ", "guideYear": "คู่มือผู้เยี่ยมชม 2026" },
+  "home": { "title": "สำรวจสถานที่ท่องเที่ยวทั่วโลก", "subtitle": "ข้อมูล POI มาตรฐาน · หลายภาษา · สร้างคู่มืออัตโนมัติ", "byCountry": "เรียกดูตามประเทศ", "popular": "POI ยอดนิยม" },
+  "sections": { "transport": "การเดินทาง", "bestTime": "เวลาที่ดีที่สุด", "food": "อาหาร", "routes": "เส้นทาง", "nearby": "ใกล้เคียง", "hours": "เวลาเปิด", "photography": "การถ่ายภาพ" },
+  "map": { "openStreet": "ตัวอย่าง OpenStreetMap", "googleMaps": "Google Maps" },
+  "visitor": { "pros": "นักท่องเที่ยวชอบ", "cons": "ข้อเสียที่พบ" },
+  "transport": { "from": "จาก", "mode": "วิธี", "duration": "ระยะเวลา" }
+}

@@ -1,0 +1,76 @@
+---
+import { getLangFromUrl, getI18n, languages, languagesList, htmlLangAttr } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { title, description, path = '', poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const SITE = 'https://chiang-khan-walking-street.com';
+const canonical = `${SITE}/${lang}${path ? '/' + path : ''}`;
+const langs = languagesList.map((l) => ({ lang: l, label: languages[l] }));
+
+const jsonLd = poi
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'TouristAttraction',
+      name: pick(poi.name, lang),
+      alternateName: poi.nameLocal,
+      description,
+      url: canonical,
+      image: `/gallery/${poi.slug}-1.jpg`,
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: poi.rating,
+        reviewCount: poi.reviewCount,
+      },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: poi.city,
+        addressRegion: poi.province,
+        addressCountry: poi.country,
+        streetAddress: poi.location.address,
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: poi.location.lat,
+        longitude: poi.location.lng,
+      },
+      openingHoursSpecification: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: 'https://schema.org/Everyday',
+        opens: poi.hours.open,
+        closes: poi.hours.close,
+      },
+      sameAs: poi.sources.map((s) => s.url),
+    }
+  : null;
+---
+<!doctype html>
+<html lang={htmlLangAttr(lang)}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {langs.map((l) => (
+      <link rel="alternate" hreflang={l.lang === 'zh' ? 'zh-CN' : l.lang} href={`${SITE}/${l.lang}${path ? '/' + path : ''}`} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={`${SITE}/en${path ? '/' + path : ''}`} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script is:inline>
+      (function () {
+        try {
+          const t = localStorage.getItem('theme');
+          if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,21 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="nearby" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.nearbyAreas}</h2>
+    <div class="card-grid">
+      {poi.nearby.map((n) => (
+        <div class="nearby-card">
+          <h4>{pick(n.name, lang)}</h4>
+          <p class="nearby-type">{pick(n.type, lang)}</p>
+          <p>{pick(n.desc, lang)}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

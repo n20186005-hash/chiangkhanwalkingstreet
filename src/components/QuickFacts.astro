@@ -1,0 +1,30 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const facts = [
+  { label: m.facts.rating, value: `★ ${poi.rating} (${poi.reviewCount.toLocaleString()})` },
+  { label: m.facts.hours, value: `${poi.hours.open}–${poi.hours.close}` },
+  { label: m.facts.country, value: poi.country },
+  { label: m.facts.province, value: poi.province },
+  { label: m.facts.city, value: poi.city },
+  { label: m.facts.plusCode, value: poi.location.plusCode },
+  { label: m.facts.category, value: poi.category.join(' · ') },
+  { label: m.facts.address, value: poi.location.address },
+];
+---
+<section id="quick-facts" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.quickFacts}</h2>
+    <div class="facts-grid">
+      {facts.map((f) => (
+        <div class="fact-item">
+          <p class="fact-label">{f.label}</p>
+          <p class="fact-value">{f.value}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

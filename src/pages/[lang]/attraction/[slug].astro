@@ -1,0 +1,71 @@
+---
+import { getLangFromUrl, getI18n, languagesList } from '../../../i18n/ui';
+import { attractions, getAttraction, pick } from '../../../data/attractions';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import AttractionHero from '../../../components/AttractionHero.astro';
+import Overview from '../../../components/Overview.astro';
+import QuickFacts from '../../../components/QuickFacts.astro';
+import WhyVisit from '../../../components/WhyVisit.astro';
+import ThingsToDo from '../../../components/ThingsToDo.astro';
+import WalkingRoutes from '../../../components/WalkingRoutes.astro';
+import BestTime from '../../../components/BestTime.astro';
+import RoutePlanner from '../../../components/RoutePlanner.astro';
+import FoodGuide from '../../../components/FoodGuide.astro';
+import NearbyPlaces from '../../../components/NearbyPlaces.astro';
+import Culture from '../../../components/Culture.astro';
+import Photography from '../../../components/Photography.astro';
+import Accessibility from '../../../components/Accessibility.astro';
+import FAQ from '../../../components/FAQ.astro';
+import Map from '../../../components/Map.astro';
+import Gallery from '../../../components/Gallery.astro';
+import VisitorSummary from '../../../components/VisitorSummary.astro';
+import Sources from '../../../components/Sources.astro';
+
+export function getStaticPaths() {
+  return languagesList.flatMap((lang) =>
+    attractions.map((poi) => ({ params: { lang, slug: poi.slug }, props: { lang, poi } }))
+  );
+}
+
+const { lang, poi } = Astro.props;
+const m = getI18n(Astro.url).messages;
+if (!poi) return Astro.redirect('/');
+
+const title = `${pick(poi.name, lang)} · ${m.hero.guideYear}`;
+const description = pick(poi.intro, lang);
+const path = `attraction/${poi.slug}`;
+
+const nav = [
+  { href: '#overview', label: m.nav.guide },
+  { href: '#why-visit', label: m.headings.whyVisit },
+  { href: '#get-there', label: m.headings.howToGetThere },
+  { href: '#food', label: m.headings.localFood },
+  { href: '#map', label: m.nav.map },
+];
+---
+<BaseLayout title={title} description={description} path={path} poi={poi}>
+  <Header lang={lang} nav={nav} />
+  <main>
+    <AttractionHero poi={poi} />
+    <Overview poi={poi} />
+    <QuickFacts poi={poi} />
+    <WhyVisit poi={poi} />
+    <ThingsToDo poi={poi} />
+    <WalkingRoutes poi={poi} />
+    <BestTime poi={poi} />
+    <RoutePlanner poi={poi} />
+    <NearbyPlaces poi={poi} />
+    <FoodGuide poi={poi} />
+    <Culture poi={poi} />
+    <Photography poi={poi} />
+    <Accessibility poi={poi} />
+    <FAQ poi={poi} />
+    <Map poi={poi} />
+    <Gallery poi={poi} />
+    <VisitorSummary poi={poi} />
+    <Sources poi={poi} />
+  </main>
+  <Footer poi={poi} lang={lang} />
+</BaseLayout>

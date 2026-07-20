@@ -1,0 +1,73 @@
+---
+import { getLangFromUrl, getI18n, languagesList } from '../../../../i18n/ui';
+import { attractions, sectionDefs, getSection, pick } from '../../../../data/attractions';
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import Header from '../../../../components/Header.astro';
+import Footer from '../../../../components/Footer.astro';
+import RoutePlanner from '../../../../components/RoutePlanner.astro';
+import BestTime from '../../../../components/BestTime.astro';
+import FoodGuide from '../../../../components/FoodGuide.astro';
+import WalkingRoutes from '../../../../components/WalkingRoutes.astro';
+import NearbyPlaces from '../../../../components/NearbyPlaces.astro';
+import Photography from '../../../../components/Photography.astro';
+import Map from '../../../../components/Map.astro';
+
+export function getStaticPaths() {
+  return languagesList.flatMap((lang) =>
+    attractions.flatMap((poi) =>
+      sectionDefs.map((sec) => ({
+        params: { lang, slug: poi.slug, section: sec.slug },
+        props: { lang, poi, sec },
+      }))
+    )
+  );
+}
+
+const { lang, poi, sec } = Astro.props;
+const m = getI18n(Astro.url).messages;
+const title = `${pick(sec.title, lang)}`;
+const description = `${pick(sec.title, lang)} — ${pick(poi.name, lang)}`;
+const path = `attraction/${poi.slug}/${sec.slug}`;
+const guideHref = `/${lang}/attraction/${poi.slug}`;
+---
+<BaseLayout title={title} description={description} path={path} poi={poi}>
+  <Header lang={lang} nav={[{ href: guideHref, label: m.nav.guide }]} />
+  <main>
+    <section class="section">
+      <div class="container">
+        <p class="breadcrumb">
+          <a href={`/${lang}`}>{m.nav.home}</a> ›
+          <a href={guideHref}>{pick(poi.name, lang)}</a> ›
+          <span>{pick(sec.title, lang)}</span>
+        </p>
+        <h1 class="section-title" style="font-size:2rem;">{pick(sec.title, lang)}</h1>
+
+        {sec.focus === 'transport' && <RoutePlanner poi={poi} fromFilter={sec.transportFrom} />}
+        {sec.focus === 'bestTime' && <BestTime poi={poi} />}
+        {sec.focus === 'food' && <FoodGuide poi={poi} />}
+        {sec.focus === 'routes' && <WalkingRoutes poi={poi} />}
+        {sec.focus === 'nearby' && <NearbyPlaces poi={poi} />}
+        {sec.focus === 'photography' && <Photography poi={poi} />}
+        {sec.focus === 'hours' && (
+          <div class="transport-card">
+            <h3 class="route-heading">{m.headings.quickFacts}</h3>
+            <div class="transport-meta">
+              <span><b>{m.facts.hours}:</b> {poi.hours.open}–{poi.hours.close}</span>
+              <span><b>{m.facts.plusCode}:</b> {poi.location.plusCode}</span>
+            </div>
+            <div class="prose"><p>{pick(poi.hours.note, lang)}</p></div>
+          </div>
+        )}
+      </div>
+    </section>
+
+    <Map poi={poi} />
+
+    <section class="section section-alt">
+      <div class="container">
+        <a class="btn-line" href={guideHref}>← {m.common.backToGuide}</a>
+      </div>
+    </section>
+  </main>
+  <Footer poi={poi} lang={lang} />
+</BaseLayout>
