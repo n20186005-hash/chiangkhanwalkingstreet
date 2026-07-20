@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getLangFromUrl, getI18n, languagesList } from '../../i18n/ui';
+import { attractions } from '../../data/attractions';
+
+export function getStaticPaths() {
+  return languagesList.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const poi = attractions[0];
+
+const content = {
+  zh: {
+    title: "服务条款",
+    lastUpdated: "最后更新时间：2026年7月",
+    intro: "访问和使用本网站，即表示您同意受这些服务条款的约束。",
+    sections: [
+      {
+        h: "内容使用",
+        p: "本网站所有内容仅供参考。我们是一家独立的第三方旅游信息网站，与任何旅游景点、政府机构或商业运营商均无关联。"
+      },
+      {
+        h: "信息的准确性",
+        p: "我们力求提供准确及时的信息，但无法保证信息的完整性或准确性。行程安排、条件和服务如有变更，恕不另行通知。请务必在出行前通过官方渠道核实重要信息。"
+      },
+      {
+        h: "知识产权",
+        p: "本网站设计和原创内容受版权保护。图片来自 Unsplash，并已获得其许可。Google 地图数据的使用符合 Google 的服务条款。"
+      },
+      {
+        h: "责任限制",
+        p: "本网站按“现状”提供，不作任何担保。对于因使用本网站信息而造成的任何损失，包括但不限于基于本网站内容做出的旅行决定，我们概不负责。"
+      }
+    ]
+  },
+  en: {
+    title: "Terms of Service",
+    lastUpdated: "Last Updated: July 2026",
+    intro: "By accessing and using this website, you agree to be bound by these Terms of Service.",
+    sections: [
+      {
+        h: "Use of Content",
+        p: "All content on this website is for informational purposes only. We are an independent third-party travel information website and are not affiliated with any tourist attractions, government agencies, or commercial operators."
+      },
+      {
+        h: "Accuracy of Information",
+        p: "We strive to provide accurate and timely information, but we cannot guarantee its completeness or accuracy. Schedules, conditions, and services are subject to change without notice. Always verify important information through official channels before traveling."
+      },
+      {
+        h: "Intellectual Property",
+        p: "The design and original content of this website are protected by copyright. Images are sourced from Unsplash and used under their license. The use of Google Maps data complies with Google's Terms of Service."
+      },
+      {
+        h: "Limitation of Liability",
+        p: "This website is provided on an 'as is' basis without any warranties. We are not responsible for any loss or damage resulting from the use of information on this website, including but not limited to travel decisions made based on its content."
+      }
+    ]
+  },
+  th: {
+    title: "ข้อกำหนดการให้บริการ",
+    lastUpdated: "อัปเดตล่าสุด: กรกฎาคม 2026",
+    intro: "การเข้าถึงและใช้งานเว็บไซต์นี้แสดงว่าคุณตกลงที่จะผูกพันตามข้อกำหนดการให้บริการเหล่านี้",
+    sections: [
+      {
+        h: "การใช้เนื้อหา",
+        p: "เนื้อหาทั้งหมดในเว็บไซต์นี้มีไว้เพื่อเป็นข้อมูลเท่านั้น เราเป็นเว็บไซต์ข้อมูลการเดินทางของบุคคลที่สามที่เป็นอิสระ และไม่มีส่วนเกี่ยวข้องกับสถานที่ท่องเที่ยว หน่วยงานของรัฐ หรือผู้ให้บริการเชิงพาณิชย์ใดๆ"
+      },
+      {
+        h: "ความถูกต้องของข้อมูล",
+        p: "เรามุ่งมั่นที่จะให้ข้อมูลที่ถูกต้องและทันท่วงที แต่เราไม่สามารถรับประกันความสมบูรณ์หรือความถูกต้องได้ กำหนดการ เงื่อนไข และบริการอาจเปลี่ยนแปลงได้โดยไม่ต้องแจ้งให้ทราบล่วงหน้า โปรดตรวจสอบข้อมูลสำคัญผ่านช่องทางอย่างเป็นทางการก่อนเดินทางเสมอ"
+      },
+      {
+        h: "ทรัพย์สินทางปัญญา",
+        p: "การออกแบบและเนื้อหาต้นฉบับของเว็บไซต์นี้ได้รับการคุ้มครองตามกฎหมายลิขสิทธิ์ รูปภาพนำมาจาก Unsplash และใช้งานภายใต้ใบอนุญาต การใช้ข้อมูล Google Maps เป็นไปตามข้อกำหนดการให้บริการของ Google"
+      },
+      {
+        h: "ข้อจำกัดความรับผิด",
+        p: "เว็บไซต์นี้จัดทำขึ้นตาม 'สภาพที่เป็นอยู่' โดยไม่มีการรับประกันใดๆ เราไม่รับผิดชอบต่อความสูญเสียหรือความเสียหายใดๆ ที่เกิดจากการใช้ข้อมูลบนเว็บไซต์นี้ รวมถึงแต่ไม่จำกัดเพียงการตัดสินใจเดินทางตามเนื้อหาในเว็บไซต์"
+      }
+    ]
+  }
+};
+
+const c = content[lang as keyof typeof content];
+---
+<BaseLayout title={`${c.title} - ${m.brand.name}`} description={c.title} path="terms">
+  <Header lang={lang} nav={[]} />
+  <main class="container" style="max-width: 800px; padding-top: 4rem; padding-bottom: 6rem; min-height: 70vh;">
+    <h1 class="section-title" style="text-align: left; margin-bottom: 0.5rem;">{c.title}</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">{c.lastUpdated}</p>
+    <p style="font-size: 1.05rem; margin-bottom: 3rem; color: var(--text-primary);">{c.intro}</p>
+
+    <div class="prose" style="color: var(--text-primary);">
+      {c.sections.map(sec => (
+        <div style="margin-bottom: 2.5rem;">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; color: var(--accent);">{sec.h}</h2>
+          <p style="line-height: 1.8; margin-bottom: 1rem;">{sec.p}</p>
+        </div>
+      ))}
+    </div>
+  </main>
+  <Footer poi={poi} />
+</BaseLayout>

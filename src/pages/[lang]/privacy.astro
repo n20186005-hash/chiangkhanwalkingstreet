@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getLangFromUrl, getI18n, languagesList } from '../../i18n/ui';
+import { attractions } from '../../data/attractions';
+
+export function getStaticPaths() {
+  return languagesList.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const poi = attractions[0];
+
+const content = {
+  zh: {
+    title: "隐私政策",
+    lastUpdated: "最后更新时间：2026年7月",
+    sections: [
+      {
+        h: "我们收集的信息",
+        p: "我们仅收集提供服务所必需的最低限度数据。这些数据可能包括：",
+        ul: ["浏览数据（IP 地址、浏览器类型、访问页面）", "Cookie 和类似技术", "您通过联系表格或电子邮件自愿提供的任何信息"]
+      },
+      {
+        h: "我们如何使用您的信息",
+        p: "我们使用收集到的信息用于：",
+        ul: ["改善网站内容和用户体验", "分析流量和使用模式", "回应请求", "遵守我们的法律义务"]
+      },
+      {
+        h: "第三方服务",
+        p: "我们的网站可能会使用第三方服务，例如谷歌地图（用于嵌入式地图和位置数据）、谷歌分析（用于流量分析）和 Unsplash（用于图片）。这些服务均有各自的隐私政策。"
+      },
+      {
+        h: "您的权利",
+        p: "根据《通用数据保护条例》(GDPR)及相关法规，您享有以下权利：",
+        ul: ["访问您的个人数据", "要求更正或删除", "反对处理", "向监管机构提出投诉"]
+      }
+    ]
+  },
+  en: {
+    title: "Privacy Policy",
+    lastUpdated: "Last Updated: July 2026",
+    sections: [
+      {
+        h: "Information We Collect",
+        p: "We only collect the minimum amount of data necessary to provide our services. This data may include:",
+        ul: ["Browsing data (IP address, browser type, visited pages)", "Cookies and similar technologies", "Any information you voluntarily provide via contact forms or email"]
+      },
+      {
+        h: "How We Use Your Information",
+        p: "We use the collected information to:",
+        ul: ["Improve website content and user experience", "Analyze traffic and usage patterns", "Respond to requests", "Comply with our legal obligations"]
+      },
+      {
+        h: "Third-Party Services",
+        p: "Our website may use third-party services, such as Google Maps (for embedded maps and location data), Google Analytics (for traffic analysis), and Unsplash (for images). These services have their own privacy policies."
+      },
+      {
+        h: "Your Rights",
+        p: "Under the General Data Protection Regulation (GDPR) and relevant laws, you have the following rights:",
+        ul: ["Access your personal data", "Request correction or deletion", "Object to processing", "Lodge a complaint with a supervisory authority"]
+      }
+    ]
+  },
+  th: {
+    title: "นโยบายความเป็นส่วนตัว",
+    lastUpdated: "อัปเดตล่าสุด: กรกฎาคม 2026",
+    sections: [
+      {
+        h: "ข้อมูลที่เรารวบรวม",
+        p: "เรารวบรวมเฉพาะข้อมูลขั้นต่ำที่จำเป็นเพื่อให้บริการของเรา ข้อมูลนี้อาจรวมถึง:",
+        ul: ["ข้อมูลการท่องเว็บ (ที่อยู่ IP, ประเภทเบราว์เซอร์, หน้าที่เข้าชม)", "คุกกี้และเทคโนโลยีที่คล้ายกัน", "ข้อมูลใดๆ ที่คุณให้โดยสมัครใจผ่านแบบฟอร์มการติดต่อหรืออีเมล"]
+      },
+      {
+        h: "วิธีที่เราใช้ข้อมูลของคุณ",
+        p: "เราใช้ข้อมูลที่รวบรวมเพื่อ:",
+        ul: ["ปรับปรุงเนื้อหาเว็บไซต์และประสบการณ์ผู้ใช้", "วิเคราะห์การเข้าชมและรูปแบบการใช้งาน", "ตอบสนองต่อคำขอ", "ปฏิบัติตามภาระผูกพันทางกฎหมายของเรา"]
+      },
+      {
+        h: "บริการของบุคคลที่สาม",
+        p: "เว็บไซต์ของเราอาจใช้บริการของบุคคลที่สาม เช่น Google Maps (สำหรับแผนที่แบบฝังและข้อมูลตำแหน่ง), Google Analytics (สำหรับการวิเคราะห์การเข้าชม) และ Unsplash (สำหรับรูปภาพ) บริการเหล่านี้มีนโยบายความเป็นส่วนตัวของตนเอง"
+      },
+      {
+        h: "สิทธิ์ของคุณ",
+        p: "ภายใต้กฎระเบียบการคุ้มครองข้อมูลทั่วไป (GDPR) และกฎหมายที่เกี่ยวข้อง คุณมีสิทธิ์ดังต่อไปนี้:",
+        ul: ["เข้าถึงข้อมูลส่วนบุคคลของคุณ", "ขอให้แก้ไขหรือลบ", "คัดค้านการประมวลผล", "ยื่นเรื่องร้องเรียนต่อหน่วยงานกำกับดูแล"]
+      }
+    ]
+  }
+};
+
+const c = content[lang as keyof typeof content];
+---
+<BaseLayout title={`${c.title} - ${m.brand.name}`} description={c.title} path="privacy">
+  <Header lang={lang} nav={[]} />
+  <main class="container" style="max-width: 800px; padding-top: 4rem; padding-bottom: 6rem; min-height: 70vh;">
+    <h1 class="section-title" style="text-align: left; margin-bottom: 0.5rem;">{c.title}</h1>
+    <p style="color: var(--text-muted); margin-bottom: 3rem;">{c.lastUpdated}</p>
+
+    <div class="prose" style="color: var(--text-primary);">
+      {c.sections.map(sec => (
+        <div style="margin-bottom: 2.5rem;">
+          <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1rem; color: var(--accent);">{sec.h}</h2>
+          <p style="line-height: 1.8; margin-bottom: 1rem;">{sec.p}</p>
+          {sec.ul && (
+            <ul class="check-list">
+              {sec.ul.map(li => <li style="color: var(--text-primary);">{li}</li>)}
+            </ul>
+          )}
+        </div>
+      ))}
+    </div>
+  </main>
+  <Footer poi={poi} />
+</BaseLayout>

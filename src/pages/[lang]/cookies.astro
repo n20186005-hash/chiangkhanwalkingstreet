@@ -1,0 +1,336 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getLangFromUrl, getI18n, languagesList } from '../../i18n/ui';
+import { attractions } from '../../data/attractions';
+
+export function getStaticPaths() {
+  return languagesList.map((lang) => ({ params: { lang } }));
+}
+
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const poi = attractions[0];
+
+const content = {
+  zh: {
+    title: "Cookie 设置",
+    lastUpdated: "最后更新时间：2026年7月",
+    intro: "我们使用 Cookie 来改善您的浏览体验。您可以在下方管理您的偏好设置。",
+    necessary: {
+      title: "必要 Cookie",
+      desc: "这些 Cookie 对于网站正常运行至关重要，无法禁用。",
+      item: "必要 Cookie",
+      status: "始终保持活跃"
+    },
+    analytics: {
+      title: "分析型 Cookie",
+      desc: "它们通过收集匿名使用数据，帮助我们了解访客如何与我们的网站互动。",
+      item: "Google Analytics",
+      itemDesc: "它会收集访客如何使用我们网站的匿名信息。",
+      active: "激活"
+    },
+    preferences: {
+      title: "偏好 Cookie",
+      desc: "它们会记住您的设置，例如语言和主题偏好。",
+      item: "用户偏好",
+      itemDesc: "保存您的语言偏好和网站设置。",
+      active: "激活"
+    },
+    marketing: {
+      title: "营销 Cookie",
+      desc: "它们用于展示相关广告并衡量广告活动的有效性。",
+      item: "个性化广告",
+      itemDesc: "它可以根据你的兴趣为你展示相关的广告。",
+      inactive: "停用"
+    },
+    management: {
+      title: "同意管理",
+      desc: "您可以随时更改您的 Cookie 设置。请注意，禁用某些 Cookie 可能会影响网站的功能。",
+      save: "保存偏好设置",
+      reject: "拒绝一切"
+    }
+  },
+  en: {
+    title: "Cookie Settings",
+    lastUpdated: "Last Updated: July 2026",
+    intro: "We use cookies to improve your browsing experience. You can manage your preferences below.",
+    necessary: {
+      title: "Strictly Necessary Cookies",
+      desc: "These cookies are essential for the website to function properly and cannot be disabled.",
+      item: "Necessary Cookies",
+      status: "Always Active"
+    },
+    analytics: {
+      title: "Analytics Cookies",
+      desc: "They help us understand how visitors interact with our website by collecting anonymous usage data.",
+      item: "Google Analytics",
+      itemDesc: "Collects anonymous information on how visitors use our site.",
+      active: "Active"
+    },
+    preferences: {
+      title: "Preference Cookies",
+      desc: "They remember your settings, such as language and theme preferences.",
+      item: "User Preferences",
+      itemDesc: "Saves your language preference and site settings.",
+      active: "Active"
+    },
+    marketing: {
+      title: "Marketing Cookies",
+      desc: "Used to deliver relevant advertisements and measure the effectiveness of ad campaigns.",
+      item: "Personalized Ads",
+      itemDesc: "Displays relevant ads based on your interests.",
+      inactive: "Inactive"
+    },
+    management: {
+      title: "Consent Management",
+      desc: "You can change your cookie settings at any time. Please note that disabling some cookies may affect site functionality.",
+      save: "Save Preferences",
+      reject: "Reject All"
+    }
+  },
+  th: {
+    title: "การตั้งค่าคุกกี้",
+    lastUpdated: "อัปเดตล่าสุด: กรกฎาคม 2026",
+    intro: "เราใช้คุกกี้เพื่อปรับปรุงประสบการณ์การท่องเว็บของคุณ คุณสามารถจัดการการตั้งค่าของคุณได้ด้านล่าง",
+    necessary: {
+      title: "คุกกี้ที่จำเป็นอย่างยิ่ง",
+      desc: "คุกกี้เหล่านี้มีความจำเป็นต่อการทำงานของเว็บไซต์และไม่สามารถปิดการใช้งานได้",
+      item: "คุกกี้ที่จำเป็น",
+      status: "เปิดใช้งานเสมอ"
+    },
+    analytics: {
+      title: "คุกกี้เพื่อการวิเคราะห์",
+      desc: "ช่วยให้เราเข้าใจว่าผู้เยี่ยมชมโต้ตอบกับเว็บไซต์ของเราอย่างไรโดยรวบรวมข้อมูลการใช้งานที่ไม่ระบุตัวตน",
+      item: "Google Analytics",
+      itemDesc: "รวบรวมข้อมูลที่ไม่ระบุตัวตนเกี่ยวกับวิธีที่ผู้เยี่ยมชมใช้งานเว็บไซต์ของเรา",
+      active: "เปิดใช้งาน"
+    },
+    preferences: {
+      title: "คุกกี้การตั้งค่า",
+      desc: "จดจำการตั้งค่าของคุณ เช่น ภาษาและธีมที่ต้องการ",
+      item: "การตั้งค่าผู้ใช้",
+      itemDesc: "บันทึกการตั้งค่าภาษาและการตั้งค่าเว็บไซต์ของคุณ",
+      active: "เปิดใช้งาน"
+    },
+    marketing: {
+      title: "คุกกี้การตลาด",
+      desc: "ใช้เพื่อแสดงโฆษณาที่เกี่ยวข้องและวัดประสิทธิภาพของแคมเปญโฆษณา",
+      item: "โฆษณาส่วนบุคคล",
+      itemDesc: "แสดงโฆษณาที่เกี่ยวข้องตามความสนใจของคุณ",
+      inactive: "ปิดใช้งาน"
+    },
+    management: {
+      title: "การจัดการความยินยอม",
+      desc: "คุณสามารถเปลี่ยนการตั้งค่าคุกกี้ของคุณได้ตลอดเวลา โปรดทราบว่าการปิดใช้งานคุกกี้บางตัวอาจส่งผลต่อการทำงานของเว็บไซต์",
+      save: "บันทึกการตั้งค่า",
+      reject: "ปฏิเสธทั้งหมด"
+    }
+  }
+};
+
+const c = content[lang as keyof typeof content];
+---
+<BaseLayout title={`${c.title} - ${m.brand.name}`} description={c.title} path="cookies">
+  <Header lang={lang} nav={[]} />
+  <main class="container" style="max-width: 800px; padding-top: 4rem; padding-bottom: 6rem; min-height: 70vh;">
+    <h1 class="section-title" style="text-align: left; margin-bottom: 0.5rem;">{c.title}</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">{c.lastUpdated}</p>
+    <p style="font-size: 1.05rem; margin-bottom: 3rem; color: var(--text-primary);">{c.intro}</p>
+
+    <div class="cookie-section">
+      <h2 class="cookie-title">{c.necessary.title}</h2>
+      <p class="cookie-desc">{c.necessary.desc}</p>
+      <div class="cookie-card">
+        <div class="cookie-card-header">
+          <span class="cookie-item-name">{c.necessary.item}</span>
+          <span class="cookie-status always-active">{c.necessary.status}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cookie-section">
+      <h2 class="cookie-title">{c.analytics.title}</h2>
+      <p class="cookie-desc">{c.analytics.desc}</p>
+      <div class="cookie-card">
+        <div class="cookie-card-header">
+          <div>
+            <span class="cookie-item-name block">{c.analytics.item}</span>
+            <span class="cookie-item-desc">{c.analytics.itemDesc}</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="cb-analytics" checked>
+            <span class="slider"></span>
+            <span class="sr-only">{c.analytics.active}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="cookie-section">
+      <h2 class="cookie-title">{c.preferences.title}</h2>
+      <p class="cookie-desc">{c.preferences.desc}</p>
+      <div class="cookie-card">
+        <div class="cookie-card-header">
+          <div>
+            <span class="cookie-item-name block">{c.preferences.item}</span>
+            <span class="cookie-item-desc">{c.preferences.itemDesc}</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="cb-prefs" checked>
+            <span class="slider"></span>
+            <span class="sr-only">{c.preferences.active}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="cookie-section">
+      <h2 class="cookie-title">{c.marketing.title}</h2>
+      <p class="cookie-desc">{c.marketing.desc}</p>
+      <div class="cookie-card">
+        <div class="cookie-card-header">
+          <div>
+            <span class="cookie-item-name block">{c.marketing.item}</span>
+            <span class="cookie-item-desc">{c.marketing.itemDesc}</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="cb-marketing">
+            <span class="slider"></span>
+            <span class="sr-only">{c.marketing.inactive}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="cookie-section" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+      <h2 class="cookie-title">{c.management.title}</h2>
+      <p class="cookie-desc">{c.management.desc}</p>
+      <div style="display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;">
+        <button id="btn-save" class="btn-cta btn-cta-primary" style="cursor: pointer; border: none; font-family: inherit;">{c.management.save}</button>
+        <button id="btn-reject" class="btn-cta btn-cta-secondary" style="cursor: pointer; border: 1px solid var(--border-color); font-family: inherit;">{c.management.reject}</button>
+      </div>
+    </div>
+  </main>
+  <Footer poi={poi} />
+</BaseLayout>
+
+<script>
+  // Simple interaction script
+  document.getElementById('btn-save')?.addEventListener('click', () => {
+    alert('Preferences saved successfully.');
+  });
+  document.getElementById('btn-reject')?.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('.toggle-switch input[type="checkbox"]') as NodeListOf<HTMLInputElement>;
+    checkboxes.forEach(cb => cb.checked = false);
+    alert('All non-essential cookies rejected.');
+  });
+</script>
+
+<style>
+  .cookie-section {
+    margin-bottom: 2.5rem;
+  }
+  .cookie-title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+  .cookie-desc {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  .cookie-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  .cookie-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .cookie-item-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.05rem;
+  }
+  .cookie-item-name.block {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+  .cookie-item-desc {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  .cookie-status.always-active {
+    font-size: 0.85rem;
+    color: var(--color-nature-600);
+    background: color-mix(in srgb, var(--color-nature-600) 15%, transparent);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .dark .cookie-status.always-active {
+    color: #a0c4a8;
+    background: rgba(160, 196, 168, 0.15);
+  }
+  
+  /* Toggle Switch */
+  .toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-color);
+    transition: .3s;
+    border-radius: 34px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+  input:checked + .slider {
+    background-color: var(--accent);
+  }
+  input:checked + .slider:before {
+    transform: translateX(22px);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+</style>
