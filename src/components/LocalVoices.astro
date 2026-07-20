@@ -16,24 +16,24 @@ if (!poi.localVoices || poi.localVoices.length === 0) {
 }
 ---
 
-<section id="local-voices" class="container section-padding">
-  <div class="section-header">
+<section id="local-voices" class="section section-padding">
+  <div class="container mx-auto">
     <h2 class="section-title">{m.headings.localVoices}</h2>
-  </div>
 
-  <div class="voices-grid">
-    {poi.localVoices.map((voice) => (
-      <blockquote class="voice-card">
-        <svg class="quote-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path>
-          <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path>
-        </svg>
-        <p class="quote-text">{pick(voice.quote, lang)}</p>
-        <footer class="quote-author">
-          — {pick(voice.author, lang)}
-        </footer>
-      </blockquote>
-    ))}
+    <div class="voices-grid" style="margin-top: 2rem;">
+      {poi.localVoices.map((voice) => (
+        <blockquote class="voice-card">
+          <svg class="quote-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path>
+            <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path>
+          </svg>
+          <p class="quote-text">{pick(voice.quote, lang)}</p>
+          <footer class="quote-author">
+            — {pick(voice.author, lang)}
+          </footer>
+        </blockquote>
+      ))}
+    </div>
   </div>
 </section>
 
@@ -50,30 +50,31 @@ if (!poi.localVoices || poi.localVoices.length === 0) {
   }
   .voice-card {
     position: relative;
-    background: var(--surface-color);
+    background: var(--card-bg);
     padding: 2.5rem 2rem 2rem;
-    border-radius: 0.5rem;
+    border-radius: 16px;
     border: 1px solid var(--border-color);
     margin: 0;
+    box-shadow: var(--card-shadow);
   }
   .quote-icon {
     position: absolute;
     top: -16px;
     left: 24px;
-    background: var(--bg-color);
-    color: var(--primary);
+    background: var(--bg-primary);
+    color: var(--accent);
     padding: 4px;
   }
   .quote-text {
-    font-size: 1.125rem;
+    font-size: 1.05rem;
     line-height: 1.8;
-    color: var(--text-color);
+    color: var(--text-secondary);
     font-style: italic;
     margin-bottom: 1.5rem;
   }
   .quote-author {
     font-weight: 600;
-    color: var(--text-light);
+    color: var(--text-primary);
     font-size: 0.95rem;
   }
 </style>
