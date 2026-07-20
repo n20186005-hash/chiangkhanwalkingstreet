@@ -4,20 +4,62 @@ const { poi } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
 const { lat, lng } = poi.location;
-const d = 0.012;
-const bbox = `${lng - d},${lat - d},${lng + d},${lat + d}`;
-const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
 ---
 <section id="map" class="section section-alt">
   <div class="container">
     <h2 class="section-title">{m.headings.map}</h2>
     <p class="section-sub">{m.map.openStreet}</p>
-    <div class="map-embed">
-      <iframe src={osm} loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="OpenStreetMap"></iframe>
-    </div>
+    <a class="map-embed map-preview" href={poi.mapsUrl} target="_blank" rel="noopener" title={m.map.googleMaps}>
+      <span class="map-pin">{poi.name}</span>
+      <span class="map-cta">{m.map.googleMaps} ↗</span>
+      <span class="muted map-addr">{poi.location.plusCode} · {poi.location.address}</span>
+    </a>
     <div class="map-links">
       <a class="map-link" href={poi.mapsUrl} target="_blank" rel="noopener">{m.map.googleMaps} ↗</a>
       <span class="muted" style="font-size:0.85rem;">{poi.location.plusCode} · {poi.location.address}</span>
     </div>
   </div>
 </section>
+
+<style>
+  .map-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 220px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    background:
+      radial-gradient(circle at 1px 1px, var(--border-color) 1px, transparent 0) 0 0 / 22px 22px,
+      linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .map-preview:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .map-pin {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+  }
+  .map-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.45rem 0.9rem;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .map-addr {
+    font-size: 0.85rem;
+  }
+</style>
