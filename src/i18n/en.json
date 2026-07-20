@@ -45,7 +45,10 @@
   "map": { "openStreet": "OpenStreetMap preview", "googleMaps": "Google Maps" },
   "footer": {
     "nonprofit": "This website is an independent, non-profit visitor information project. We are not affiliated with any government agency or official organization.",
-    "dataSource": "Data Source: The attraction information cited on this site is verified against public data from the Tourism Authority of Thailand (TAT), Loei Province, and Chiang Khan District, and does not contain any commercial recommendations."
+    "dataSource": "Data Source: The attraction information cited on this site is verified against public data from the Tourism Authority of Thailand (TAT), Loei Province, and Chiang Khan District, and does not contain any commercial recommendations.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Settings"
   },
   "visitor": { "pros": "Visitors love", "cons": "Common downsides" },
   "transport": { "from": "From", "mode": "Mode", "duration": "Duration" }
