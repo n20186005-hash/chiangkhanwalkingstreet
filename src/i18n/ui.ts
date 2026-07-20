@@ -32,9 +32,8 @@ export function getI18n(url: URL) {
 }
 
 export function buildAlternates(path = ''): Record<string, string> {
-  const base = 'https://chiang-khan-walking-street.com';
   const clean = path.replace(/^\/+/, '').replace(/\/+$/, '');
-  const mk = (l: string) => `${base}/${l}${clean ? '/' + clean : ''}`;
+  const mk = (l: string) => `/${l}${clean ? '/' + clean : ''}`;
   return {
     zh: mk('zh'),
     en: mk('en'),
