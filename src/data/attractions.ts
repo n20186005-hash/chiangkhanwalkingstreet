@@ -51,6 +51,10 @@ export interface Attraction {
   // --- content modules (localized) ---
   intro: Tr;
   history: Tr;
+  timeline?: { year: string; event: Tr }[];
+  folklore?: Tr;
+  preservation?: Tr;
+  localVoices?: { quote: Tr; author: Tr }[];
   whyVisit: Tr[];
   thingsToDo: { title: Tr; desc: Tr }[];
   routes: {
@@ -116,10 +120,40 @@ export const attractions: Attraction[] = [
     })),
 
     history: {
-      zh: '清刊自湄公河航运时代便是老挝边境的河港小镇。20 世纪初的木构店屋沿主街而建，随航运衰落一度沉寂；近年以"慢城"理念修复老街、限制车辆，复兴为步行文化与夜市街区。',
-      en: 'Chiang Khan grew as a Mekong river-port on the Lao border. Timber shophouses rose along the main lane in the early 1900s, then faded with river trade. Recently the town revived the street as a car-free "slow town" of culture and night market.',
-      th: 'เชียงคานเติบโตเป็นท่าจอดเรือริมโขงชายแดนลาว บ้านไม้เกิดขึ้นตลอดซอยหลักต้นศตวรรษที่ 20 แล้วซบเซาลงกับการค้าแม่น้ำ ล่าสุดเมืองฟื้นฟูถนนเป็นเมืองช้าไร้รถของวัฒนธรรมและตลาดนัด',
+      zh: '清刊自湄公河航运时代便是老挝边境的河港小镇。20 世纪初，这里是湄公河航运黄金时代的繁荣边境商埠。当时的富商与工匠沿主街建造了融合老挝传统与法国殖民地风格的木构店屋。随着公路的兴起，水路贸易衰退，小镇一度沉寂，却也因此将这些珍贵的木建筑完整保留至今。',
+      en: 'Chiang Khan grew as a Mekong river-port on the Lao border. In the early 20th century, it was a prosperous border port during the golden age of Mekong River trade. Wealthy merchants and artisans built wooden shophouses along the main street, blending traditional Lao and French colonial styles. As road transport rose, river trade declined, leaving the town quiet but perfectly preserving these wooden structures.',
+      th: 'เชียงคานเติบโตเป็นท่าจอดเรือริมโขงชายแดนลาว ในช่วงต้นศตวรรษที่ 20 ที่นี่เป็นเมืองท่าชายแดนที่เจริญรุ่งเรืองในยุคทองของการค้าแม่น้ำโขง พ่อค้าและช่างฝีมือได้สร้างบ้านไม้แถวตามถนนสายหลัก ซึ่งผสมผสานสถาปัตยกรรมลาวดั้งเดิมและอาณานิคมฝรั่งเศส เมื่อการขนส่งทางถนนเพิ่มขึ้น การค้าทางน้ำจึงลดลง ทำให้เมืองเงียบสงบ แต่ก็ช่วยอนุรักษ์อาคารไม้เหล่านี้ไว้อย่างสมบูรณ์',
     },
+
+    timeline: [
+      { year: '1890s', event: { zh: '老挝与法国商人沿河建立贸易据点', en: 'Lao and French merchants establish river trade posts', th: 'พ่อค้าลาวและฝรั่งเศสตั้งจุดการค้าริมแม่น้ำ' } },
+      { year: '1919', event: { zh: '清刊现存最古老的柚木店屋（现为老屋客栈）落成', en: 'The oldest surviving teak shophouse in Chiang Khan is built', th: 'บ้านไม้สักที่เก่าแก่ที่สุดในเชียงคานสร้างเสร็จ' } },
+      { year: '1970s', event: { zh: '公路运输兴起，湄公河水路贸易逐渐衰退，旧放映厅等公共空间停业', en: 'Road transport rises, Mekong river trade declines, old cinemas close', th: 'การขนส่งทางถนนเพิ่มขึ้น การค้าทางแม่น้ำโขงลดลง โรงภาพยนตร์เก่าปิดตัว' } },
+      { year: '2009', event: { zh: '社区发起老街保护运动，限制车辆并转型为文化步行街', en: 'Community launches old street preservation movement, transforming into a cultural walking street', th: 'ชุมชนริเริ่มการอนุรักษ์ถนนเก่า เปลี่ยนเป็นถนนคนเดินเชิงวัฒนธรรม' } },
+    ],
+
+    folklore: {
+      zh: '湄公河沿岸居民世代信仰水神“那伽”（Naga）。作为一种半神半蛇的超自然存在，那伽被认为是河流的守护者，掌管降雨与丰收。在清刊的建筑细节与传统节日（如解夏节的火船游行）中，都能寻见那伽图腾的印记，这反映了依善地区与自然共生的深层水系人类学特征。',
+      en: 'Residents along the Mekong River have worshipped the water deity "Naga" for generations. A supernatural serpentine being, the Naga is considered the guardian of the river, controlling rain and harvest. Naga motifs can be seen in Chiang Khan\'s architectural details and traditional festivals (like the Illuminated Boat Procession), reflecting the deep hydrological anthropology of the Isan region living in harmony with nature.',
+      th: 'ชาวบ้านริมฝั่งแม่น้ำโขงมีความเชื่อในเทพแห่งน้ำ "พญานาค" มาหลายชั่วอายุคน ในฐานะสิ่งมีชีวิตเหนือธรรมชาติกึ่งเทพกึ่งงู พญานาคถือเป็นผู้พิทักษ์แม่น้ำ ผู้ควบคุมฝนและการเก็บเกี่ยว ลวดลายพญานาคสามารถพบเห็นได้ในรายละเอียดสถาปัตยกรรมของเชียงคานและเทศกาลดั้งเดิม ซึ่งสะท้อนถึงมานุษยวิทยาทางน้ำที่ลึกซึ้งของภูมิภาคอีสานที่อยู่ร่วมกับธรรมชาติ',
+    },
+
+    preservation: {
+      zh: '面对旅游业的冲击，清刊原住民主动发起了“慢城”保护运动。社区制定了严格的木屋修缮规范，禁止破坏原有立面；同时实施主街车辆限行，以保护脆弱的百年木结构。作为非盈利机构，我们呼吁访客尊重当地的生活节奏，支持在地小微商户，共同践行可持续旅游（Sustainable Tourism）的理念。',
+      en: 'Facing the impact of tourism, indigenous Chiang Khan residents initiated a "Slow Town" preservation movement. The community established strict guidelines for wooden house repairs, prohibiting alterations to original facades, and implemented vehicle restrictions on the main street to protect the fragile century-old structures. We urge visitors to respect the local pace of life, support local micro-businesses, and practice sustainable tourism.',
+      th: 'เมื่อเผชิญกับผลกระทบจากการท่องเที่ยว ชาวเชียงคานพื้นเมืองได้ริเริ่มการเคลื่อนไหวเพื่อการอนุรักษ์ "เมืองช้า" ชุมชนได้กำหนดแนวทางที่เข้มงวดในการซ่อมแซมบ้านไม้ ห้ามดัดแปลงส่วนหน้าอาคารเดิม และจำกัดยานพาหนะบนถนนสายหลักเพื่อปกป้องโครงสร้างไม้อายุร้อยปีที่เปราะบาง เราขอเรียกร้องให้ผู้มาเยือนเคารพจังหวะชีวิตในท้องถิ่น สนับสนุนธุรกิจรายย่อย และร่วมกันปฏิบัติตามแนวทางการท่องเที่ยวอย่างยั่งยืน',
+    },
+
+    localVoices: [
+      {
+        quote: { zh: '“我们的房子建于 1919 年，用的全是柚木。它不仅仅是商店，更是我们家族四代人的记忆。保留它，就是保留清刊的根。”', en: '"Our house was built in 1919, entirely of teak. It is not just a shop, but the memory of four generations of our family. Preserving it means preserving the roots of Chiang Khan."', th: '"บ้านของเราสร้างขึ้นในปี 1919 ด้วยไม้สักทั้งหมด มันไม่ใช่แค่ร้านค้า แต่เป็นความทรงจำของครอบครัวเราถึงสี่ชั่วอายุคน การรักษามันไว้คือการรักษารากเหง้าของเชียงคาน"' },
+        author: { zh: 'Somchai (百年木屋屋主)', en: 'Somchai (Heritage Wooden House Owner)', th: 'สมชาย (เจ้าของบ้านไม้เก่าแก่)' }
+      },
+      {
+        quote: { zh: '“传统的棉织工艺正在流失，但我依然坚持用木织机。这里的每一条纹理，都记录着湄公河的水波。”', en: '"Traditional cotton weaving is fading, but I still insist on using a wooden loom. Every pattern here records the ripples of the Mekong River."', th: '"การทอผ้าฝ้ายแบบดั้งเดิมกำลังเลือนหายไป แต่ฉันยังคงยืนหยัดใช้กี่ทอผ้าไม้ ทุกรอยถักทอที่นี่บันทึกคลื่นน้ำของแม่น้ำโขง"' },
+        author: { zh: 'Nid (传统手工织娘)', en: 'Nid (Traditional Weaver)', th: 'นิด (ช่างทอผ้าแบบดั้งเดิม)' }
+      }
+    ],
 
     intro: {
       zh: '清刊步行街是位于泰国黎府清刊县、紧邻湄公河的一条百年文化老街。傍晚时分，木构老屋亮起暖灯，沿街摆满地道小吃、手作商品与河畔夜市氛围，是体验依善—老挝边境慢生活的最佳去处。',

@@ -1,0 +1,71 @@
+---
+import type { Attraction } from '../data/attractions';
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+interface Props {
+  poi: Attraction;
+}
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+
+const hasFolklore = !!poi.folklore;
+const hasPreservation = !!poi.preservation;
+
+if (!hasFolklore && !hasPreservation) {
+  return null;
+}
+---
+
+<section id="preservation" class="container section-padding">
+  <div class="split-layout">
+    {hasFolklore && (
+      <div class="content-block">
+        <div class="section-header">
+          <h2 class="section-title">{m.headings.folklore}</h2>
+        </div>
+        <div class="prose">
+          <p>{pick(poi.folklore, lang)}</p>
+        </div>
+      </div>
+    )}
+
+    {hasPreservation && (
+      <div class="content-block">
+        <div class="section-header">
+          <h2 class="section-title">{m.headings.preservation}</h2>
+        </div>
+        <div class="prose preservation-box">
+          <p>{pick(poi.preservation, lang)}</p>
+        </div>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .split-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  @media (min-width: 768px) {
+    .split-layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+    }
+  }
+  .prose {
+    line-height: 1.8;
+    color: var(--text-color);
+  }
+  .preservation-box {
+    background: var(--surface-color);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    border-left: 4px solid var(--primary);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+</style>

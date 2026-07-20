@@ -15,6 +15,9 @@ import RoutePlanner from '../../../components/RoutePlanner.astro';
 import FoodGuide from '../../../components/FoodGuide.astro';
 import NearbyPlaces from '../../../components/NearbyPlaces.astro';
 import Culture from '../../../components/Culture.astro';
+import HistoryTimeline from '../../../components/HistoryTimeline.astro';
+import CommunityPreservation from '../../../components/CommunityPreservation.astro';
+import LocalVoices from '../../../components/LocalVoices.astro';
 import Photography from '../../../components/Photography.astro';
 import Accessibility from '../../../components/Accessibility.astro';
 import FAQ from '../../../components/FAQ.astro';
@@ -50,6 +53,9 @@ const nav = [
   <main>
     <AttractionHero poi={poi} />
     <Overview poi={poi} />
+    <HistoryTimeline poi={poi} />
+    <CommunityPreservation poi={poi} />
+    <LocalVoices poi={poi} />
     <QuickFacts poi={poi} />
     <WhyVisit poi={poi} />
     <ThingsToDo poi={poi} />
