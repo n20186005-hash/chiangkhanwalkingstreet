@@ -32,6 +32,7 @@
     "faq": "常见问题",
     "map": "地图",
     "sources": "资料来源",
+    "officialLinks": "官方友情链接",
     "visitorSummary": "访客体验总结"
   },
   "facts": {
@@ -42,6 +43,13 @@
   "home": { "title": "探索清刊百年木街", "subtitle": "非盈利科普网站 · 呈现真实的历史与文化", "byCountry": "景点浏览", "popular": "热门内容" },
   "sections": { "transport": "交通", "bestTime": "最佳时间", "food": "美食", "routes": "路线", "nearby": "周边", "hours": "开放时间", "photography": "摄影" },
   "map": { "openStreet": "OpenStreetMap 预览", "googleMaps": "Google Maps" },
+  "footer": {
+    "nonprofit": "本网站是一个独立的非营利游客信息项目。我们与任何政府机构或官方组织均无隶属关系。",
+    "dataSource": "数据源 · Data Source：本站引用的景点信息，均对照考证自泰国国家旅游局（TAT）、黎府与清刊县公开资料，不含任何商业性推荐。",
+    "privacy": "隐私政策",
+    "terms": "服务条款",
+    "cookies": "Cookie 设置"
+  },
   "visitor": { "pros": "游客常赞", "cons": "常见不足" },
   "transport": { "from": "出发地", "mode": "方式", "duration": "耗时" }
 }

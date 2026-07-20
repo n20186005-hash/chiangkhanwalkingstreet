@@ -28,6 +28,17 @@ const homeHref = `/${lang}`;
       </div>
 
       <div class="footer-col">
+        <h4>{m.headings.officialLinks}</h4>
+        <ul class="footer-links">
+          <li><a href="https://www.tourismthailand.org/" target="_blank" rel="noopener">Tourism Authority of Thailand</a></li>
+          <li><a href="https://www.mots.go.th/" target="_blank" rel="noopener">Ministry of Tourism and Sports</a></li>
+          <li><a href="https://www.thaigov.go.th/" target="_blank" rel="noopener">Royal Thai Government</a></li>
+          <li><a href="https://www.finearts.go.th/" target="_blank" rel="noopener">Fine Arts Department</a></li>
+          <li><a href="https://www.tmd.go.th/en" target="_blank" rel="noopener">Thai Meteorological Dept.</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
         <h4>POI</h4>
         <ul class="footer-links">
           <li><a href={`/${lang}/attraction/${poi.slug}`}>{m.nav.guide}</a></li>
@@ -39,11 +50,10 @@ const homeHref = `/${lang}`;
 
     <div class="footer-bottom">
       <p>© {new Date().getFullYear()} {m.brand.name}. {m.brand.tagline}.</p>
-      <p class="footer-disclaimer">
-        This is a non-profit knowledge page. Content is compiled from public data
-        (TAT, OpenStreetMap, Wikidata, Google) and AI summarization — not official tourism advice.
-        Verify details before travel.
-      </p>
+      <div class="footer-disclaimer">
+        <p style="margin-bottom: 0.5rem; font-weight: 600;">{m.footer.nonprofit}</p>
+        <p style="margin-bottom: 0;">{m.footer.dataSource}</p>
+      </div>
     </div>
   </div>
 </footer>

@@ -32,6 +32,7 @@
     "faq": "FAQ",
     "map": "Map",
     "sources": "Sources",
+    "officialLinks": "Official Links",
     "visitorSummary": "Visitor Experience Summary"
   },
   "facts": {
@@ -42,6 +43,10 @@
   "home": { "title": "Explore Chiang Khan Walking Street", "subtitle": "Non-profit Educational Platform · Authentic History and Culture", "byCountry": "Browse", "popular": "Popular Content" },
   "sections": { "transport": "Transport", "bestTime": "Best time", "food": "Food", "routes": "Routes", "nearby": "Nearby", "hours": "Hours", "photography": "Photography" },
   "map": { "openStreet": "OpenStreetMap preview", "googleMaps": "Google Maps" },
+  "footer": {
+    "nonprofit": "This website is an independent, non-profit visitor information project. We are not affiliated with any government agency or official organization.",
+    "dataSource": "Data Source: The attraction information cited on this site is verified against public data from the Tourism Authority of Thailand (TAT), Loei Province, and Chiang Khan District, and does not contain any commercial recommendations."
+  },
   "visitor": { "pros": "Visitors love", "cons": "Common downsides" },
   "transport": { "from": "From", "mode": "Mode", "duration": "Duration" }
 }

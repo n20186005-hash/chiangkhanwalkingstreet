@@ -6,3 +6,9 @@ dist/
 .env
 .env.*
 !.env.example
+.vscode/
+.idea/
+coverage/
+build/
+.next/
+.nuxt/
