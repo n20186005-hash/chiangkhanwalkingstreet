@@ -37,46 +37,29 @@ if (!poi.timeline || poi.timeline.length === 0) {
 <style>
   .timeline-container {
     position: relative;
-    max-width: 800px;
+    max-width: 760px;
     margin: 0 auto;
-    padding: 2rem 0;
+    padding: 0.5rem 0;
   }
   .timeline-container::before {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 16px;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    left: 7px;
     width: 2px;
     background: var(--border-color);
   }
-  @media (min-width: 768px) {
-    .timeline-container::before {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
   .timeline-item {
     position: relative;
-    margin-bottom: 2rem;
-    padding-left: 48px;
+    margin-bottom: 1.75rem;
+    padding-left: 38px;
   }
-  @media (min-width: 768px) {
-    .timeline-item {
-      width: 50%;
-      padding-left: 0;
-      padding-right: 40px;
-    }
-    .timeline-item:nth-child(even) {
-      margin-left: 50%;
-      padding-left: 40px;
-      padding-right: 0;
-    }
-  }
+  .timeline-item:last-child { margin-bottom: 0; }
   .timeline-marker {
     position: absolute;
-    top: 0;
-    left: 11px;
+    top: 6px;
+    left: 2px;
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -85,32 +68,17 @@ if (!poi.timeline || poi.timeline.length === 0) {
     box-shadow: 0 0 0 4px var(--border-color);
     z-index: 1;
   }
-  @media (min-width: 768px) {
-    .timeline-marker {
-      left: auto;
-      right: -6px;
-    }
-    .timeline-item:nth-child(even) .timeline-marker {
-      left: -6px;
-      right: auto;
-    }
-  }
-  .timeline-content {
-    background: var(--card-bg);
-    padding: 1.5rem;
-    border-radius: 16px;
-    border: 1px solid var(--border-color);
-    box-shadow: var(--card-shadow);
-  }
   .timeline-year {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--accent);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
+    text-align: left;
   }
   .timeline-text {
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.65;
     margin: 0;
+    text-align: left;
   }
 </style>
