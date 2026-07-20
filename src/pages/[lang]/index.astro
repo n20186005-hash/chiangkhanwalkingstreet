@@ -12,47 +12,35 @@ export function getStaticPaths() {
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
 
-// group attractions by country for the knowledge-graph home
-const byCountry = new Map<string, typeof attractions>();
-for (const a of attractions) {
-  const arr = byCountry.get(a.country) ?? [];
-  arr.push(a);
-  byCountry.set(a.country, arr);
-}
+const a = attractions[0];
 ---
 <BaseLayout title={m.brand.name} description={m.home.subtitle} path="" >
   <Header lang={lang} nav={[]} />
   <main>
-    <section class="explore-hero">
-      <h1 class="explore-title">{m.home.title}</h1>
-      <p class="explore-sub">{m.home.subtitle}</p>
-      <div class="explore-search">
-        <input type="search" placeholder={m.common.searchPlaceholder} aria-label={m.common.search} />
-        <button class="btn-line" type="button">{m.common.search}</button>
+    <section class="explore-hero" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(/gallery/${a.slug}-1.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center', color: 'white', padding: '6rem 1rem', textAlign: 'center' }}>
+      <h1 class="explore-title" style="color: white;">{pick(a.name, lang)}</h1>
+      <p class="explore-sub" style="color: rgba(255,255,255,0.9);">{pick(a.tagline, lang)}</p>
+      <div style="margin-top: 2rem;">
+        <a href={`/${lang}/attraction/${a.slug}`} class="btn-line" style="color: white; border-color: white; text-decoration: none; padding: 0.75rem 1.5rem; display: inline-block;">{m.common.explore}</a>
       </div>
     </section>
 
-    <div class="container" style="padding: 3rem 1rem;">
-      {[...byCountry.entries()].map(([country, list]) => (
-        <div class="country-group">
-          <h3>{country}</h3>
-          <div class="card-grid">
-            {list.map((a) => (
-              <a class="poi-card" href={`/${lang}/attraction/${a.slug}`}>
-                <img class="poi-card-img" src={`/gallery/${a.slug}-1.jpg`} alt={pick(a.name, lang)} loading="lazy" />
-                <div class="poi-card-body">
-                  <p class="poi-card-name">{pick(a.name, lang)}</p>
-                  <p class="poi-card-loc">{a.city}, {a.province}</p>
-                  <div class="poi-card-tags">
-                    {a.category.slice(0, 3).map((c) => <span>{c}</span>)}
-                  </div>
-                </div>
-              </a>
-            ))}
+    <div class="container" style="padding: 4rem 1rem; max-width: 800px; text-align: center;">
+      <h2>{m.brand.tagline}</h2>
+      <p style="margin-top: 1rem; line-height: 1.8; color: var(--text-light);">{pick(a.intro, lang)}</p>
+      <div style="margin-top: 3rem;">
+        <a class="poi-card" href={`/${lang}/attraction/${a.slug}`} style="text-align: left; max-width: 400px; margin: 0 auto; display: block;">
+          <img class="poi-card-img" src={`/gallery/${a.slug}-2.jpg`} alt={pick(a.name, lang)} loading="lazy" />
+          <div class="poi-card-body">
+            <p class="poi-card-name">{pick(a.name, lang)}</p>
+            <p class="poi-card-loc">{a.city}, {a.province}</p>
+            <div class="poi-card-tags">
+              {a.category.slice(0, 3).map((c) => <span>{c}</span>)}
+            </div>
           </div>
-        </div>
-      ))}
+        </a>
+      </div>
     </div>
   </main>
-  <Footer poi={attractions[0]} lang={lang} />
+  <Footer poi={a} lang={lang} />
 </BaseLayout>

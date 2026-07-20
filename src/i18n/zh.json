@@ -5,11 +5,11 @@
     "viewOnMap": "在 Google 地图上查看位置",
     "readMore": "了解更多",
     "backToGuide": "返回完整指南",
-    "explore": "探索景点",
+    "explore": "探索清刊步行街",
     "search": "搜索",
-    "searchPlaceholder": "搜索国家、城市或景点…"
+    "searchPlaceholder": "搜索内容…"
   },
-  "brand": { "name": "全球景点知识图谱", "tagline": "POI 数据中心 · 多语言旅行信息系统" },
+  "brand": { "name": "清刊步行街", "tagline": "非盈利景点科普平台 · 深入探索百年木街" },
   "nav": { "home": "首页", "guide": "指南", "map": "地图" },
   "headings": {
     "overview": "景点简介",
@@ -35,7 +35,7 @@
     "category": "类型", "province": "地区", "plusCode": "位置代码", "country": "国家", "city": "城市"
   },
   "hero": { "openLabel": "开放时间", "locatedLabel": "位置", "legendLabel": "一句话", "guideYear": "2026 游览指南" },
-  "home": { "title": "探索全球景点", "subtitle": "标准化 POI 数据 · 多语言 · 自动生成指南", "byCountry": "按国家浏览", "popular": "热门 POI" },
+  "home": { "title": "探索清刊百年木街", "subtitle": "非盈利科普网站 · 呈现真实的历史与文化", "byCountry": "景点浏览", "popular": "热门内容" },
   "sections": { "transport": "交通", "bestTime": "最佳时间", "food": "美食", "routes": "路线", "nearby": "周边", "hours": "开放时间", "photography": "摄影" },
   "map": { "openStreet": "OpenStreetMap 预览", "googleMaps": "Google Maps" },
   "visitor": { "pros": "游客常赞", "cons": "常见不足" },
