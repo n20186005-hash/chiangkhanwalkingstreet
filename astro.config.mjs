@@ -12,11 +12,6 @@ export default defineConfig({
       prefixDefaultLocale: true,
     },
   },
-  redirects: {
-    '/zh': '/zh/attraction/chiang-khan-walking-street',
-    '/en': '/en/attraction/chiang-khan-walking-street',
-    '/th': '/th/attraction/chiang-khan-walking-street',
-  },
   vite: {
     plugins: [tailwindcss()],
   },
