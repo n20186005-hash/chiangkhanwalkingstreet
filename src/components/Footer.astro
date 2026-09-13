@@ -4,7 +4,6 @@ import { pick } from '../data/attractions';
 const { poi } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
-const homeHref = `/${lang}`;
 ---
 <footer class="site-footer" id="contact">
   <div class="container">
@@ -41,9 +40,9 @@ const homeHref = `/${lang}`;
       <div class="footer-col">
         <h4>POI</h4>
         <ul class="footer-links">
-          <li><a href={`/${lang}/attraction/${poi.slug}`}>{m.nav.guide}</a></li>
-          <li><a href={`/${lang}/attraction/${poi.slug}#map`}>{m.nav.map}</a></li>
-          <li><a href={`/${lang}/attraction/${poi.slug}#get-there`}>{m.headings.howToGetThere}</a></li>
+          <li><a href={`/${lang}/attraction/${poi.slug}/`}>{m.nav.guide}</a></li>
+          <li><a href={`/${lang}/attraction/${poi.slug}/#map`}>{m.nav.map}</a></li>
+          <li><a href={`/${lang}/attraction/${poi.slug}/#get-there`}>{m.headings.howToGetThere}</a></li>
         </ul>
       </div>
     </div>
@@ -52,16 +51,18 @@ const homeHref = `/${lang}`;
       <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
         <p style="margin: 0;">© {new Date().getFullYear()} {m.brand.name}. {m.brand.tagline}.</p>
         <div class="footer-legal-links" style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem;">
-          <a href={`/${lang}/privacy`} style="color: var(--text-secondary); text-decoration: none;">{m.footer.privacy}</a>
+          <a href={`/${lang}/privacy/`} style="color: var(--text-secondary); text-decoration: none;">{m.footer.privacy}</a>
           <span style="color: var(--border-color);">|</span>
-          <a href={`/${lang}/terms`} style="color: var(--text-secondary); text-decoration: none;">{m.footer.terms}</a>
+          <a href={`/${lang}/terms/`} style="color: var(--text-secondary); text-decoration: none;">{m.footer.terms}</a>
           <span style="color: var(--border-color);">|</span>
-          <a href={`/${lang}/cookies`} style="color: var(--text-secondary); text-decoration: none;">{m.footer.cookies}</a>
+          <a href={`/${lang}/cookies/`} style="color: var(--text-secondary); text-decoration: none;">{m.footer.cookies}</a>
         </div>
       </div>
       <div class="footer-disclaimer">
         <p style="margin-bottom: 0.5rem; font-weight: 600;">{m.footer.nonprofit}</p>
-        <p style="margin-bottom: 0;">{m.footer.dataSource}</p>
+        <p style="margin-bottom: 0.5rem;">{m.footer.dataSource}</p>
+        <p style="margin-bottom: 0.5rem;">{m.footer.ratingSource}</p>
+        <p class="footer-image-credit" style="margin-bottom: 0;">{m.footer.imageCredit}</p>
       </div>
     </div>
   </div>

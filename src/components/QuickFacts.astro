@@ -26,5 +26,24 @@ const facts = [
         </div>
       ))}
     </div>
+    <p class="fact-note">
+      {m.facts.ratingSource}:
+      <a href={poi.ratingSource.url} target="_blank" rel="noopener noreferrer">{poi.ratingSource.name}</a>
+      · {poi.ratingSource.retrieved}
+    </p>
   </div>
 </section>
+
+<style>
+  .fact-note {
+    margin: 1.25rem 0 0;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+  .fact-note a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .fact-note a:hover { text-decoration: underline; }
+</style>

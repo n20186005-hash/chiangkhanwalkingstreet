@@ -4,20 +4,23 @@ import { pick } from '../data/attractions';
 const { poi } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
+const e = m.entity;
+const altFor = (caption: any) => `${pick(caption, lang)} — ${e.placeFull} in ${e.placeCity}, ${e.placeCountry}`;
 ---
 <section id="gallery" class="section">
   <div class="container">
     <h2 class="section-title">Photo Gallery</h2>
     <div class="gallery-grid">
       {poi.images.map((img, i) => (
-        <button class="gallery-item" type="button" data-full={img.file} style={`grid-row: span ${i % 3 === 0 ? 2 : 1};`} aria-label={pick(img.caption, lang)}>
-          <img src={img.file} alt={pick(img.caption, lang)} loading="lazy" />
+        <button class="gallery-item" type="button" data-full={img.file} style={`grid-row: span ${i % 3 === 0 ? 2 : 1};`} aria-label={altFor(img.caption)}>
+          <img src={img.file} alt={altFor(img.caption)} loading="lazy" />
         </button>
       ))}
     </div>
     <div class="map-links" style="margin-top:1.25rem;">
       <a class="map-link" href={poi.mapsUrl} target="_blank" rel="noopener">{m.common.viewOnMap} ↗</a>
     </div>
+    <p class="gallery-credit">{m.footer.imageCredit}</p>
   </div>
 </section>
 
@@ -57,5 +60,11 @@ const m = getI18n(Astro.url).messages;
   .lightbox-close {
     position: absolute; top: 1.2rem; right: 1.5rem; font-size: 2rem; color: #fff;
     background: none; border: none; cursor: pointer;
+  }
+  .gallery-credit {
+    margin: 1.25rem 0 0;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--text-muted);
   }
 </style>

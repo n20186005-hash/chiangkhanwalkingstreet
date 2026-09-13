@@ -1,20 +1,33 @@
 ---
 import { getLangFromUrl, getI18n } from '../i18n/ui';
 import { pick } from '../data/attractions';
+import { siteConfig } from '../config/site';
 const { poi } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
 const heroImg = `/gallery/chiang-khan-walking-street-6.jpg`;
+// On the Thai page the localized name *is* the endonym, so appending it again
+// would render the same string twice in the H1.
+const name = pick(poi.name, lang);
+const showLocalName = name.trim() !== poi.nameLocal.trim();
 ---
 <section class="hero" style={`background-image: linear-gradient(var(--hero-overlay), var(--hero-overlay)), url(${heroImg})`}>
   <div class="hero-content">
     <p class="hero-eyebrow">{m.hero.guideYear}</p>
-    <h1 class="hero-title">{pick(poi.name, lang)}<span class="th">{poi.nameLocal}</span></h1>
+    <h1 class="hero-title">
+      {name} <span class="hero-city">({siteConfig.city})</span>
+      {showLocalName && <span class="th">{poi.nameLocal}</span>}
+    </h1>
     <div class="hero-meta">
       <span class="hero-chip">★ {poi.rating} <span class="muted">({poi.reviewCount.toLocaleString()})</span></span>
       <span class="hero-chip">{m.hero.openLabel}: {poi.hours.open}–{poi.hours.close}</span>
       <span class="hero-chip">{m.hero.locatedLabel}: {poi.province}, {poi.country}</span>
     </div>
+    <p class="hero-source">
+      {m.facts.ratingSource}:
+      <a href={poi.ratingSource.url} target="_blank" rel="noopener noreferrer">{poi.ratingSource.name}</a>
+      · {poi.ratingSource.retrieved}
+    </p>
     <div class="hero-tags">
       {poi.category.map((c) => <span>{c}</span>)}
     </div>
@@ -29,3 +42,25 @@ const heroImg = `/gallery/chiang-khan-walking-street-6.jpg`;
     <a class="hero-maps-link" href={poi.mapsUrl} target="_blank" rel="noopener">{m.common.viewOnMap} ↗</a>
   </div>
 </section>
+
+<style>
+  .hero-city {
+    display: block;
+    font-size: 0.5em;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-top: 0.35rem;
+    letter-spacing: 0.01em;
+  }
+  .hero-source {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.82);
+    margin: -0.5rem 0 1rem;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  }
+  .hero-source a {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>

@@ -10,6 +10,19 @@
 // (pages, components, hreflang, JSON-LD, language switching) is automatic.
 // ============================================================================
 
+import {
+  extendedContent,
+  type AudiencePlan,
+  type DayPlan,
+  type DeepDiveEntry,
+  type FacilityGroup,
+  type GlossaryEntry,
+  type LegendEntry,
+  type PracticalInfo,
+  type QuarterEntry,
+  type ResponsibilityEntry,
+} from './attraction-content';
+
 export type Lang = 'zh' | 'en' | 'th';
 export type Tr = Record<Lang, string>;
 
@@ -44,6 +57,8 @@ export interface Attraction {
   rating: number;
   reviewCount: number;
   mapsUrl: string;
+  /** Provenance of the aggregate rating / review count shown on the page. */
+  ratingSource: { name: string; url: string; retrieved: string };
 
   // --- media (future: sourced from Wikimedia Commons, user uploads) ---
   images: AttractionImage[];
@@ -72,6 +87,26 @@ export interface Attraction {
   faq: { q: Tr; a: Tr }[];
   visitorSummary: { positives: Tr[]; negatives: Tr[] };
   sources: { name: string; url: string }[];
+
+  // --- extended educational content (see ./attraction-content.ts) ---
+  /** Interpretive essays: geography, architecture, culture, place names. */
+  deepDive: DeepDiveEntry[];
+  /** Local legends and oral tradition, each with an optional source caveat. */
+  legends: LegendEntry[];
+  /** Quarterly planning matrix (weather / water / wildlife / advice). */
+  quarters: QuarterEntry[];
+  /** Route plans built around a specific audience. */
+  audiencePlans: AudiencePlan[];
+  /** Generic half-day and full-day itineraries. */
+  dayPlans: DayPlan[];
+  /** Visitor services, described by category only — never a named business. */
+  facilities: FacilityGroup[];
+  /** Visitor responsibility and behavioural guidance. */
+  responsibility: ResponsibilityEntry[];
+  /** Small bilingual glossary of local terms. */
+  glossary: GlossaryEntry[];
+  /** Direct answers: opening schedule, access and name forms per script. */
+  practical: PracticalInfo;
 }
 
 export const attractions: Attraction[] = [
@@ -95,8 +130,8 @@ export const attractions: Attraction[] = [
     category: ['Night Market', 'Walking Street', 'Cultural Street', 'Local Food Market'],
 
     location: {
-      lat: 17.884,
-      lng: 101.645,
+      lat: 17.8969,
+      lng: 101.6594,
       address: 'Chai Kong, Chiang Khan, Chiang Khan District, Loei 42110',
       plusCode: 'VMW6+R8 Chiang Khan',
     },
@@ -107,8 +142,13 @@ export const attractions: Attraction[] = [
       th: 'เปิดทุกเย็น 17:00–22:00 ในช่วงฝนคนจะบางตาลง',
     } },
     rating: 4.5,
-    reviewCount: 12076,
-    mapsUrl: 'https://maps.app.goo.gl/WDRoraurE8et4atV7',
+    reviewCount: 12158,
+    mapsUrl: 'https://maps.app.goo.gl/TwNr5mSMUff1hf8G7',
+    ratingSource: {
+      name: 'Google Maps',
+      url: 'https://maps.app.goo.gl/TwNr5mSMUff1hf8G7',
+      retrieved: 'September 2026',
+    },
 
     images: Array.from({ length: 15 }, (_, i) => ({
       file: `/gallery/chiang-khan-walking-street-${i + 1}.jpg`,
@@ -230,7 +270,7 @@ export const attractions: Attraction[] = [
 
     food: [
       { name: 'Khao Piak Sen', type: { zh: '米线汤', en: 'Noodle soup', th: 'ก๋วยเตี๋ยว' }, desc: { zh: '老挝风手擀米线鸡汤，清刊最常见早餐与夜市暖身选择。', en: 'Lao-style hand-cut rice noodles in broth — a Chiang Khan staple for warmth.', th: 'เส้นมือตัดสไตล์ลาวในน้ำซุป ของขึ้นชื่อที่เชียงคาน' }, origin: 'Loei / Isan' },
-      { name: 'Miang Kham', type: { zh: '叶包小吃', en: 'Leaf-wrapped bites', th: 'เมี่ยงคำ' }, desc: { zh: '槟榔叶包椰糖、姜、柠檬与花生，一口多重口感。', en: 'Betel leaf wrapping palm sugar, ginger, lime and peanut — one bite, many textures.', th: 'ใบพลูห่อน้ำตาล โ�ตรกิ้ง มะนาวและถั่ว หนึ่งคำหลายรส' }, origin: 'Isan / Lao' },
+      { name: 'Miang Kham', type: { zh: '叶包小吃', en: 'Leaf-wrapped bites', th: 'เมี่ยงคำ' }, desc: { zh: '槟榔叶包椰糖、姜、柠檬与花生，一口多重口感。', en: 'Betel leaf wrapping palm sugar, ginger, lime and peanut — one bite, many textures.', th: 'ใบพลูห่อน้ำตาล ขิง มะนาวและถั่ว หนึ่งคำหลายรส' }, origin: 'Isan / Lao' },
       { name: 'Grilled Mekong Fish', type: { zh: '烤河鱼', en: 'Grilled river fish', th: 'ปลาเผา' }, desc: { zh: '湄公河鲜鱼炭烤，配青木瓜沙拉。', en: 'Charcoal-grilled Mekong fish served with green papaya salad.', th: 'ปลาแม่น้ำโขงย่างไฟถ่าน คู่ส้มตำ' }, origin: 'Mekong' },
       { name: 'Khanom Krok', type: { zh: '椰香小糕', en: 'Coconut pancakes', th: 'ขนมครก' }, desc: { zh: '椰子焦糖小糕，外脆内嫩的街头甜点。', en: 'Coconut custard pancakes, crisp outside and soft inside.', th: 'ขนมมะพร้าวกรอบนอกนุ่มใน' }, origin: 'Thailand' },
     ],
@@ -247,9 +287,16 @@ export const attractions: Attraction[] = [
 
     faq: [
       { q: { zh: '步行街几点开放？', en: 'What time does it open?', th: 'เปิดกี่โมง' }, a: { zh: '每日 17:00–22:00，傍晚后摊贩才陆续就位。', en: 'Every evening 17:00–22:00; stalls set up after sundown.', th: 'ทุกเย็น 17:00–22:00 ร้านค่อยๆ ตั้งหลังพระอาทิตย์ตก' } },
+      { q: { zh: '每周哪几天开市？', en: 'Which days of the week is it open?', th: 'ถนนคนเดินเชียงคานเปิดวันไหน' }, a: { zh: '每天都开，全年无休，包括公共假日与佛日。', en: 'Every day, all year round, including public holidays and Buddhist holy days.', th: 'เปิดทุกวันตลอดทั้งปี รวมวันหยุดนักขัตฤกษ์และวันพระ' } },
+      { q: { zh: '几点收市？', en: 'What time does it close?', th: 'ถนนคนเดินเชียงคานปิดกี่โมง' }, a: { zh: '22:00 收市，部分摊位 21:30 后就开始收摊。', en: 'It closes at 22:00; some stalls start packing up after 21:30.', th: 'ปิดเวลา 22:00 บางร้านเริ่มเก็บของตั้งแต่ 21:30' } },
+      { q: { zh: '“清刊步行街”的英文怎么写？', en: 'What is Chiang Khan Walking Street called in English?', th: 'เชียงคาน ภาษาอังกฤษ เรียกว่าอะไร' }, a: { zh: '英文写作 Chiang Khan Walking Street，也有 Chiangkhan 的拼法，指同一地点。', en: 'In English it is written Chiang Khan Walking Street; the spelling "Chiangkhan" refers to the same place.', th: 'ภาษาอังกฤษเขียนว่า Chiang Khan Walking Street และมีการสะกดแบบ Chiangkhan ซึ่งหมายถึงที่เดียวกัน' } },
       { q: { zh: '需要门票吗？', en: 'Is there an entrance fee?', th: 'มีค่าเข้าไหม' }, a: { zh: '免费开放，消费另计。', en: 'Free to enter; you only pay for what you buy.', th: 'เข้าฟรี จ่ายเฉพาะของที่ซื้อ' } },
       { q: { zh: '工作日和周末有区别吗？', en: 'Weekday vs weekend?', th: 'วันธรรมดากับเสาร์อาทิตย์ต่างกันไหม' }, a: { zh: '周末更热闹，工作日更清净，适合拍照。', en: 'Weekends are livelier; weekdays are calmer and better for photos.', th: 'เสาร์อาทิตย์คึกคัก วันธรรมดาสงบเหมาะถ่ายรูป' } },
       { q: { zh: '怎么从曼谷过去？', en: 'How to get there from Bangkok?', th: 'ไปจาก กทม. อย่างไร' }, a: { zh: '飞黎府机场再转车约 1.5 小时，或过夜大巴直达。', en: 'Fly to Loei then transfer (~1.5h), or take an overnight bus direct.', th: 'บินไปเลยแล้วต่อรถ ~1.5 ชม. หรือนั่งบัสค้างคืนตรง' } },
+      { q: { zh: '清刊步行街在哪里？', en: 'Where is Chiang Khan Walking Street located?', th: 'ถนนคนเดินเชียงคานตั้งอยู่ที่ไหน' }, a: { zh: '位于泰国黎府清刊县 Chai Kong 路，紧邻湄公河，邮政编码 42110。', en: 'It is located on Chai Kong Road in Chiang Khan, Loei Province, Thailand, beside the Mekong River (postal code 42110).', th: 'ตั้งอยู่บนถนนชายโขง อำเภอเชียงคาน จังหวัดเลย ริมแม่น้ำโขง รหัสไปรษณีย์ 42110' } },
+      { q: { zh: '一年中什么时候去最好？', en: 'What is the best time of year to visit?', th: 'ช่วงไหนของปีที่ควรไปที่สุด' }, a: { zh: '11 月至次年 2 月的凉季最舒适，落日与夜市氛围最佳；雨季（6–10 月）人最少。', en: 'The cool season from November to February is the most comfortable, with the best sunsets and market atmosphere; the rainy season (June–October) is the quietest.', th: 'ฤดูหนาวตั้งแต่พฤศจิกายนถึงกุมภาพันธ์สบายที่สุด พระอาทิตย์ตกและบรรยากาศตลาดดีที่สุด ส่วนฤดูฝน (มิถุนายน–ตุลาคม) คนน้อยที่สุด' } },
+      { q: { zh: '有什么必吃的当地美食？', en: 'What local food should I try?', th: 'มีอาหารท้องถิ่นอะไรที่ต้องลอง' }, a: { zh: '推荐老挝风米线汤（Khao Piak Sen）、叶包小吃（Miang Kham）与湄公河烤鱼。', en: 'Try Lao-style rice noodle soup (Khao Piak Sen), leaf-wrapped bites (Miang Kham) and charcoal-grilled Mekong fish.', th: 'แนะนำก๋วยเตี๋ยวเส้นมือ (ข้าวเปียกเส้น) เมี่ยงคำ และปลาแม่น้ำโขงเผา' } },
+      { q: { zh: '游览步行街需要多久？适合家庭吗？', en: 'How long does a visit take? Is it family friendly?', th: 'ใช้เวลาเที่ยวเท่าไร เหมาะกับครอบครัวไหม' }, a: { zh: '慢慢逛完约 1.5–2 小时；街道无车、平坦易行，非常适合家庭与长辈。', en: 'A relaxed visit takes about 1.5–2 hours; the street is car-free and flat, making it very family and senior friendly.', th: 'ใช้เวลาประมาณ 1.5–2 ชั่วโมง ถนนปลอดรถและราบเรียบ เหมาะกับครอบครัวและผู้สูงอายุมาก' } },
     ],
 
     visitorSummary: {
@@ -267,11 +314,15 @@ export const attractions: Attraction[] = [
     },
 
     sources: [
-      { name: 'Tourism Thailand (TAT)', url: 'https://www.tourismthailand.org/' },
-      { name: 'Google Maps', url: 'https://maps.app.goo.gl/WDRoraurE8et4atV7' },
+      { name: 'Tourism Authority of Thailand (TAT)', url: 'https://www.tourismthailand.org/' },
+      { name: 'Google Maps — reviews & rating', url: 'https://maps.app.goo.gl/TwNr5mSMUff1hf8G7' },
+      { name: 'Loei Province — official provincial portal', url: 'https://www.loei.go.th/' },
       { name: 'OpenStreetMap', url: 'https://www.openstreetmap.org/' },
       { name: 'Wikidata', url: 'https://www.wikidata.org/' },
+      { name: 'Open-Meteo', url: 'https://open-meteo.com/' },
     ],
+
+    ...extendedContent,
   },
 ];
 
@@ -285,24 +336,193 @@ export function pick(tr: Tr | undefined, lang: Lang): string {
   return tr[lang] ?? tr.en ?? '';
 }
 
-/** Section definitions that drive the auto-generated SEO page matrix. */
+/**
+ * Section definitions that drive the auto-generated SEO page matrix.
+ *
+ * `seoTitle` / `seoDesc` are written against the Search Console queries these
+ * pages are meant to win, not against the section heading. Each description
+ * answers the query in its first clause, because the snippets that earn clicks
+ * are the ones that give the answer away instead of teasing it.
+ */
 export interface SectionDef {
   slug: string;
-  focus: 'transport' | 'bestTime' | 'food' | 'routes' | 'nearby' | 'hours' | 'photography';
+  focus:
+    | 'transport'
+    | 'bestTime'
+    | 'food'
+    | 'routes'
+    | 'nearby'
+    | 'hours'
+    | 'photography'
+    | 'weather'
+    | 'seasons'
+    | 'services'
+    | 'plans'
+    | 'science';
   title: Tr;
+  seoTitle: Tr;
+  seoDesc: Tr;
   transportFrom?: string; // for transport sections, filter by this `from` (en key)
 }
 
 export const sectionDefs: SectionDef[] = [
-  { slug: 'from-bangkok', focus: 'transport', transportFrom: 'From Bangkok', title: { zh: '从曼谷前往清刊步行街', en: 'Getting to Chiang Khan Walking Street from Bangkok', th: 'เดินทางจากกรุงเทพฯ ไปถนนคนเดินเชียงคาน' } },
-  { slug: 'from-chiang-mai', focus: 'transport', transportFrom: 'From Chiang Mai', title: { zh: '从清迈前往清刊步行街', en: 'Getting to Chiang Khan Walking Street from Chiang Mai', th: 'เดินทางจากเชียงใหม่ ไปถนนคนเดินเชียงคาน' } },
-  { slug: 'from-loei-airport', focus: 'transport', transportFrom: 'From Loei Airport', title: { zh: '从黎府机场前往清刊步行街', en: 'Getting to Chiang Khan Walking Street from Loei Airport', th: 'เดินทางจากสนามบินเลย ไปถนนคนเดินเชียงคาน' } },
-  { slug: 'best-time-to-visit', focus: 'bestTime', title: { zh: '清刊步行街最佳游览时间', en: 'Best Time to Visit Chiang Khan Walking Street', th: 'เวลาเยี่ยมชมที่ดีที่สุด' } },
-  { slug: 'food-guide', focus: 'food', title: { zh: '清刊步行街美食指南', en: 'Chiang Khan Walking Street Food Guide', th: 'คู่มืออาหารถนนคนเดินเชียงคาน' } },
-  { slug: 'walking-route', focus: 'routes', title: { zh: '清刊步行街游玩路线', en: 'Chiang Khan Walking Street Routes', th: 'เส้นทางถนนคนเดินเชียงคาน' } },
-  { slug: 'nearby-attractions', focus: 'nearby', title: { zh: '清刊步行街周边探索', en: 'Near Chiang Khan Walking Street', th: 'สถานที่ใกล้เคียง' } },
-  { slug: 'night-market-hours', focus: 'hours', title: { zh: '清刊步行街开放时间', en: 'Chiang Khan Walking Street Hours', th: 'เวลาเปิด-ปิด' } },
-  { slug: 'photo-spots', focus: 'photography', title: { zh: '清刊步行街摄影机位', en: 'Chiang Khan Walking Street Photo Spots', th: 'จุดถ่ายภาพ' } },
+  {
+    slug: 'from-bangkok',
+    focus: 'transport',
+    transportFrom: 'From Bangkok',
+    title: { zh: '从曼谷前往清刊步行街', en: 'Getting to Chiang Khan Walking Street from Bangkok', th: 'เดินทางจากกรุงเทพฯ ไปถนนคนเดินเชียงคาน' },
+    seoTitle: { zh: '从曼谷到清刊步行街：飞机＋大巴交通攻略与耗时', en: 'Bangkok to Chiang Khan Walking Street: Flight & Bus Guide', th: 'จากกรุงเทพฯ ไปถนนคนเดินเชียงคาน กี่ชั่วโมง วิธีเดินทาง' },
+    seoDesc: {
+      zh: '从曼谷去清刊步行街怎么走：飞黎府机场再转车约 1.5 小时，或乘过夜大巴直达约 10–11 小时，含换乘节点与时间安排。',
+      en: 'How to get from Bangkok to Chiang Khan Walking Street in Loei: fly to Loei Airport then transfer about 1.5 hours, or take a direct overnight bus in 10–11 hours.',
+      th: 'วิธีเดินทางจากกรุงเทพฯ ไปถนนคนเดินเชียงคาน บินลงสนามบินเลยแล้วต่อรถราว 1.5 ชั่วโมง หรือนั่งรถบัสค้างคืนตรงราว 10–11 ชั่วโมง',
+    },
+  },
+  {
+    slug: 'from-chiang-mai',
+    focus: 'transport',
+    transportFrom: 'From Chiang Mai',
+    title: { zh: '从清迈前往清刊步行街', en: 'Getting to Chiang Khan Walking Street from Chiang Mai', th: 'เดินทางจากเชียงใหม่ ไปถนนคนเดินเชียงคาน' },
+    seoTitle: { zh: '从清迈到清刊步行街：自驾与巴士路线、耗时', en: 'Chiang Mai to Chiang Khan Walking Street: Route & Drive Time', th: 'จากเชียงใหม่ ไปถนนคนเดินเชียงคาน เส้นทางและเวลาเดินทาง' },
+    seoDesc: {
+      zh: '从清迈开车或坐巴士去清刊步行街约 5–6 小时：沿 1 号公路南下经彭世洛转黎府，再向东北进入清刊，含路线与休息点。',
+      en: 'Driving or taking the bus from Chiang Mai to Chiang Khan Walking Street takes about 5–6 hours: south on Route 1 via Phitsanulok to Loei, then northeast to Chiang Khan.',
+      th: 'ขับรถหรือนั่งรถบัสจากเชียงใหม่ไปถนนคนเดินเชียงคานราว 5–6 ชั่วโมง ใช้ทางหลวงหมายเลข 1 ผ่านพิษณุโลกไปเลย แล้วต่อไปทางตะวันออกเฉียงเหนือ',
+    },
+  },
+  {
+    slug: 'from-loei-airport',
+    focus: 'transport',
+    transportFrom: 'From Loei Airport',
+    title: { zh: '从黎府机场前往清刊步行街', en: 'Getting to Chiang Khan Walking Street from Loei Airport', th: 'เดินทางจากสนามบินเลย ไปถนนคนเดินเชียงคาน' },
+    seoTitle: { zh: '黎府机场到清刊步行街：出租车、拼车与双条车', en: 'Loei Airport to Chiang Khan Walking Street: Taxi & Songthaew', th: 'จากสนามบินเลย ไปถนนคนเดินเชียงคาน แท็กซี่และรถสองแถว' },
+    seoDesc: {
+      zh: '从黎府机场（LOE）到清刊步行街约 1.5 小时，走 211 号公路。含出租车、拼车与双条车的上车点、大致车资与夜间到达提示。',
+      en: 'From Loei Airport (LOE) to Chiang Khan Walking Street is about 1.5 hours on Route 211. Taxi, shared ride and songthaew pick-up points, plus late-arrival notes.',
+      th: 'จากสนามบินเลย (LOE) ไปถนนคนเดินเชียงคานราว 1.5 ชั่วโมง ใช้ทางหลวง 211 พร้อมจุดขึ้นแท็กซี่ รถร่วม และรถสองแถว',
+    },
+  },
+  {
+    slug: 'best-time-to-visit',
+    focus: 'bestTime',
+    title: { zh: '清刊步行街最佳游览时间', en: 'Best Time to Visit Chiang Khan Walking Street', th: 'เวลาเยี่ยมชมที่ดีที่สุด' },
+    seoTitle: { zh: '清刊步行街最佳游览时间：11 月至次年 2 月最舒适', en: 'Best Time to Visit Chiang Khan Walking Street (Month by Month)', th: 'ช่วงเวลาที่ดีที่สุดในการเที่ยวถนนคนเดินเชียงคาน' },
+    seoDesc: {
+      zh: '按月对比清刊步行街的天气、湄公河水位、人流与摄影条件：11 月至次年 2 月凉季最舒适、落日与夜市氛围最佳；6–10 月雨季人最少。',
+      en: 'Chiang Khan Walking Street month by month: the cool season (November–February) offers the best weather, sunsets and market mood, while the rainy season is the quietest.',
+      th: 'เที่ยวถนนคนเดินเชียงคานเดือนไหนดี ฤดูหนาว (พ.ย.–ก.พ.) อากาศดีที่สุด พระอาทิตย์ตกและบรรยากาศตลาดดีที่สุด ส่วนฤดูฝนคนน้อยที่สุด',
+    },
+  },
+  {
+    slug: 'food-guide',
+    focus: 'food',
+    title: { zh: '清刊步行街美食指南', en: 'Chiang Khan Walking Street Food Guide', th: 'คู่มืออาหารถนนคนเดินเชียงคาน' },
+    seoTitle: { zh: '清刊步行街美食指南：米线汤、叶包小吃与湄公河烤鱼', en: 'Chiang Khan Walking Street Food Guide: What to Eat', th: 'อาหารถนนคนเดินเชียงคาน กินอะไรดี ของต้องลอง' },
+    seoDesc: {
+      zh: '清刊步行街必吃当地美食：老挝风米线汤（Khao Piak Sen）、叶包小吃（Miang Kham）、炭烤湄公河鱼与椰香小糕，附口味与吃法说明。',
+      en: 'What to eat on Chiang Khan Walking Street: Lao-style rice noodle soup, leaf-wrapped miang kham, charcoal-grilled Mekong fish and coconut pancakes, with tasting notes.',
+      th: 'อาหารต้องลองที่ถนนคนเดินเชียงคาน ข้าวเปียกเส้น เมี่ยงคำ ปลาแม่น้ำโขงเผา และขนมครก พร้อมคำอธิบายรสชาติและวิธีทาน',
+    },
+  },
+  {
+    slug: 'walking-route',
+    focus: 'routes',
+    title: { zh: '清刊步行街游玩路线', en: 'Chiang Khan Walking Street Routes', th: 'เส้นทางถนนคนเดินเชียงคาน' },
+    seoTitle: { zh: '清刊步行街游玩路线：30 分钟、2 小时与半日', en: 'Chiang Khan Walking Street Routes: 30 Min, 2 Hour & Half Day', th: 'เส้นทางเดินเที่ยวถนนคนเดินเชียงคาน 30 นาที ถึงครึ่งวัน' },
+    seoDesc: {
+      zh: '清刊步行街的三种走法：30 分钟精华、2 小时深度、半日联游湄公河步道与老城区，含路段顺序、耗时与沿途看点。',
+      en: 'Three ways to walk Chiang Khan Walking Street: a 30-minute highlights pass, a two-hour route and a half-day loop with the Mekong promenade and old town.',
+      th: 'สามเส้นทางสำหรับเดินถนนคนเดินเชียงคาน 30 นาที 2 ชั่วโมง และครึ่งวันที่ต่อกับทางเดินริมโขงกับเมืองเก่า',
+    },
+  },
+  {
+    slug: 'nearby-attractions',
+    focus: 'nearby',
+    title: { zh: '清刊步行街周边探索', en: 'Near Chiang Khan Walking Street', th: 'สถานที่ใกล้เคียง' },
+    seoTitle: { zh: '清刊步行街周边景点：老城区、湄公河畔与寺庙', en: 'Near Chiang Khan Walking Street: Old Town, Riverside & Temples', th: 'สถานที่เที่ยวใกล้ถนนคนเดินเชียงคาน' },
+    seoDesc: {
+      zh: '清刊步行街周边可以步行抵达的景点：老城区木屋与咖啡馆、湄公河畔步道、当地寺庙与镇上市场，含方位与推荐串联方式。',
+      en: "What to see around Chiang Khan Walking Street: the old town's wooden houses and cafés, the Mekong riverside path, local temples and the town market.",
+      th: 'สถานที่เที่ยวใกล้ถนนคนเดินเชียงคาน เมืองเก่าเชียงคาน ทางเดินริมโขง วัดท้องถิ่นและตลาดในเมือง พร้อมวิธีต่อเส้นทาง',
+    },
+  },
+  {
+    slug: 'night-market-hours',
+    focus: 'hours',
+    title: { zh: '清刊步行街开放时间', en: 'Chiang Khan Walking Street Hours', th: 'เวลาเปิด-ปิด' },
+    seoTitle: { zh: '清刊步行街开放时间：每天 17:00–22:00', en: 'Chiang Khan Walking Street Opening Hours: Daily 17:00–22:00', th: 'ถนนคนเดินเชียงคาน เปิดวันไหน เปิดกี่โมง ปิดกี่โมง' },
+    seoDesc: {
+      zh: '清刊步行街几点开、几点关、哪天开：每天 17:00–22:00 营业，一周七天都有；含摊贩就位时间、最热闹时段与雨天方案。',
+      en: 'What time Chiang Khan Walking Street opens and closes: every day 17:00–22:00, including which days it runs, when stalls finish setting up and the busiest window.',
+      th: 'ถนนคนเดินเชียงคานเปิดทุกวัน 17:00–22:00 เปิดวันไหน เปิดกี่โมง ปิดกี่โมง ร้านเริ่มตั้งกี่โมง และช่วงที่คนเยอะที่สุด',
+    },
+  },
+  {
+    slug: 'photo-spots',
+    focus: 'photography',
+    title: { zh: '清刊步行街摄影机位', en: 'Chiang Khan Walking Street Photo Spots', th: 'จุดถ่ายภาพ' },
+    seoTitle: { zh: '清刊步行街摄影机位：蓝调时刻与湄公河落日', en: 'Chiang Khan Walking Street Photo Spots & Best Light', th: 'จุดถ่ายภาพถนนคนเดินเชียงคาน ช่วงแสงสวยที่สุด' },
+    seoDesc: {
+      zh: '清刊步行街的三个出片机位：蓝调时刻的木屋暖灯、无车街道的纵深透视、湄公河对岸老挝山脊的落日，含最合适的拍摄时间。',
+      en: 'The three best photo spots on Chiang Khan Walking Street: warm-lit timber houses at blue hour, the car-free lane in deep perspective and the Lao ridge at sunset.',
+      th: 'สามจุดถ่ายภาพเด่นของถนนคนเดินเชียงคาน บ้านไม้ช่วง blue hour ซอยปลอดรถในมุมลึก และพระอาทิตย์ตกแนวสันเขาลาว',
+    },
+  },
+  {
+    slug: 'weather-and-forecast',
+    focus: 'weather',
+    title: { zh: '清刊步行街天气与多日预报', en: 'Chiang Khan Walking Street Weather & Forecast', th: 'สภาพอากาศและการพยากรณ์' },
+    seoTitle: { zh: '清刊步行街天气与 7 日预报：穿什么、怎么安排', en: 'Chiang Khan Walking Street Weather & 7-Day Forecast', th: 'สภาพอากาศถนนคนเดินเชียงคาน พยากรณ์ 7 วัน' },
+    seoDesc: {
+      zh: '清刊步行街实时天气与未来 7 日预报，并直接给出建议：降雨概率、紫外线与风力如何影响傍晚行程，该穿什么、带什么。',
+      en: 'Live weather for Chiang Khan Walking Street with a 7-day outlook and plain-language advice: how rain, UV and wind affect your evening visit, and what to wear and carry.',
+      th: 'สภาพอากาศปัจจุบันของถนนคนเดินเชียงคาน พร้อมพยากรณ์ 7 วันและคำแนะนำที่ใช้ได้จริง โอกาสฝน ค่า UV และลมส่งผลต่อการเที่ยวช่วงเย็นอย่างไร',
+    },
+  },
+  {
+    slug: 'seasonal-guide',
+    focus: 'seasons',
+    title: { zh: '清刊步行街四季游览策略', en: 'Seasonal Guide to Chiang Khan Walking Street', th: 'คู่มือเที่ยวตามฤดูกาล' },
+    seoTitle: { zh: '清刊步行街四季游览策略：气象、水位与野生动物', en: 'Seasonal Guide to Chiang Khan Walking Street', th: 'คู่มือเที่ยวถนนคนเดินเชียงคานตามฤดูกาล' },
+    seoDesc: {
+      zh: '按凉季、热季、雨季对照清刊步行街的气象、湄公河水位与野生动物活动，并给出每一季的穿搭、行程安排与摄影建议。',
+      en: 'Chiang Khan Walking Street season by season: weather, Mekong river levels and wildlife for the cool, hot and rainy seasons, with packing, planning and photo advice.',
+      th: 'เที่ยวถนนคนเดินเชียงคานในแต่ละฤดู เปรียบเทียบอากาศ ระดับน้ำโขง และสัตว์ป่า พร้อมคำแนะนำการแต่งตัว แผนเที่ยวและถ่ายภาพ',
+    },
+  },
+  {
+    slug: 'travel-plans',
+    focus: 'plans',
+    title: { zh: '清刊步行街游览路线方案', en: 'Chiang Khan Walking Street Route Plans', th: 'แผนการเที่ยวถนนคนเดินเชียงคาน' },
+    seoTitle: { zh: '清刊步行街游览路线：亲子、摄影与低体力方案', en: 'Chiang Khan Walking Street Route Plans by Visitor Type', th: 'แผนเที่ยวถนนคนเดินเชียงคาน ตามกลุ่มผู้เดินทาง' },
+    seoDesc: {
+      zh: '按出行构成选清刊步行街路线：亲子家庭、摄影与自然爱好者、需要限制步行距离的访客，另附半日与全日两种时间安排。',
+      en: 'Pick a Chiang Khan Walking Street plan by who is travelling: families, photographers and naturalists, or visitors who need to limit walking. Half-day and full-day options.',
+      th: 'เลือกแผนเที่ยวถนนคนเดินเชียงคานตามกลุ่มผู้เดินทาง ครอบครัวที่มีเด็ก นักถ่ายภาพและผู้สนใจธรรมชาติ และผู้ที่ต้องจำกัดระยะเดิน',
+    },
+  },
+  {
+    slug: 'visitor-facilities',
+    focus: 'services',
+    title: { zh: '清刊步行街访客服务与周边设施', en: 'Visitor Services Around Chiang Khan Walking Street', th: 'บริการนักท่องเที่ยวและสิ่งอำนวยความสะดวก' },
+    seoTitle: { zh: '清刊步行街访客设施：停车、卫生间与便利店', en: 'Visitor Facilities Around Chiang Khan Walking Street', th: 'บริการและสิ่งอำนวยความสะดวก ถนนคนเดินเชียงคาน' },
+    seoDesc: {
+      zh: '清刊步行街周边的设施类型说明：停车与接送点、卫生间、便利店、医疗服务与无障碍通行，仅按类别说明，不推荐具体商户。',
+      en: 'Facilities around Chiang Khan Walking Street described by category: parking and drop-off, toilets, convenience stores, medical help and step-free access. No businesses named.',
+      th: 'สิ่งอำนวยความสะดวกโดยรอบถนนคนเดินเชียงคาน อธิบายตามประเภท ที่จอดรถ จุดส่ง-รับ ห้องน้ำ ร้านสะดวกซื้อ และการเข้าถึงสำหรับผู้ใช้รถเข็น',
+    },
+  },
+  {
+    slug: 'nature-and-heritage',
+    focus: 'science',
+    title: { zh: '清刊步行街自然与人文科普', en: 'Nature & Heritage of Chiang Khan Walking Street', th: 'ธรรมชาติและมรดกของถนนคนเดินเชียงคาน' },
+    seoTitle: { zh: '清刊步行街自然与人文：地理、建筑、传说与地名', en: 'Nature & Heritage of Chiang Khan Walking Street', th: 'ธรรมชาติและมรดกของถนนคนเดินเชียงคาน' },
+    seoDesc: {
+      zh: '理解清刊步行街的背景知识：湄公河地理与水文、老挝—法国殖民地风格木构建筑、那伽水神信仰与口述传统，以及地名由来与读音。',
+      en: 'Background on Chiang Khan Walking Street: Mekong geography and hydrology, Lao-colonial timber architecture, Naga river beliefs and oral tradition, and where the names come from.',
+      th: 'ความรู้เบื้องหลังถนนคนเดินเชียงคาน ภูมิศาสตร์และอุทกวิทยาแม่น้ำโขง สถาปัตยกรรมไม้สไตล์ลาว-โคโลเนียล ความเชื่อพญานาค และที่มาของชื่อสถานที่',
+    },
+  },
 ];
 
 export function getSection(slug: string): SectionDef | undefined {

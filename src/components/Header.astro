@@ -1,13 +1,13 @@
 ---
-import { getLangFromUrl, getI18n, languages, languagesList, buildAlternates } from '../i18n/ui';
+import { getLangFromUrl, getI18n, languages, languageNames, languagesList, buildAlternates } from '../i18n/ui';
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
 const { nav = [] } = Astro.props;
 const seg = Astro.url.pathname.split('/').filter(Boolean);
 const rest = seg.slice(1).join('/');
 const alt = buildAlternates(rest);
-const langs = languagesList.map((l) => ({ lang: l, label: languages[l] }));
-const homeHref = `/${lang}`;
+const langs = languagesList.map((l) => ({ lang: l, label: languages[l], name: languageNames[l] }));
+const homeHref = `/${lang}/`;
 ---
 <header class="site-header">
   <div class="container site-header-inner">
@@ -29,7 +29,13 @@ const homeHref = `/${lang}`;
     <div class="header-tools">
       <div class="lang-switch" role="group" aria-label={m.common.changeLanguage}>
         {langs.map((l) => (
-          <a href={alt[l.lang]} class={`lang-btn ${l.lang === lang ? 'active' : ''}`} hreflang={l.lang === 'zh' ? 'zh-CN' : l.lang}>
+          <a
+            href={alt[l.lang]}
+            class={`lang-btn ${l.lang === lang ? 'active' : ''}`}
+            hreflang={l.lang === 'zh' ? 'zh-CN' : l.lang}
+            title={l.name}
+            aria-label={l.name}
+          >
             {l.label}
           </a>
         ))}

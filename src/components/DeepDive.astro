@@ -1,0 +1,28 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="deep-dive" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.deepDive}</h2>
+    <p class="section-sub">{m.science.subtitle}</p>
+
+    <div class="dd-list">
+      {poi.deepDive.map((entry) => (
+        <article class="dd-item">
+          <h3 class="dd-title">
+            <span class="dd-icon" aria-hidden="true">{entry.icon}</span>
+            <span>{pick(entry.title, lang)}</span>
+          </h3>
+          <div class="prose">
+            {entry.body.map((paragraph) => <p>{pick(paragraph, lang)}</p>)}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

@@ -87,7 +87,7 @@ const content = {
 
 const c = content[lang as keyof typeof content];
 ---
-<BaseLayout title={`${c.title} - ${m.brand.name}`} description={c.title} path="terms">
+<BaseLayout title={`${c.title} - ${m.brand.name}`} description={c.intro} path="terms">
   <Header lang={lang} nav={[]} />
   <main class="container" style="max-width: 800px; padding-top: 4rem; padding-bottom: 6rem; min-height: 70vh;">
     <h1 class="section-title" style="text-align: left; margin-bottom: 0.5rem;">{c.title}</h1>

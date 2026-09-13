@@ -1,0 +1,37 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="itineraries" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.dayPlans}</h2>
+    <p class="section-sub">{m.plans.daySubtitle}</p>
+
+    <div class="dp-grid">
+      {poi.dayPlans.map((plan) => (
+        <article class="dp-card">
+          <header class="dp-head">
+            <h3 class="dp-title">
+              <span class="dp-icon" aria-hidden="true">{plan.icon}</span>
+              <span>{pick(plan.title, lang)}</span>
+            </h3>
+            <p class="dp-duration">{pick(plan.duration, lang)}</p>
+          </header>
+
+          <ol class="timeline">
+            {plan.timeline.map((entry) => (
+              <li>
+                <span class="step-time">{entry.time}</span>
+                {pick(entry.text, lang)}
+              </li>
+            ))}
+          </ol>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

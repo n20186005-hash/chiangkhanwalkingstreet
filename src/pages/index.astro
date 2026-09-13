@@ -1,3 +1,6 @@
 ---
-return Astro.redirect(`/th/attraction/chiang-khan-walking-street`);
+// The site has one canonical entry point, so the bare root hands over to the
+// default locale permanently. The same rule lives in `public/_redirects` for
+// the Cloudflare edge; this page is the fallback for any static host.
+return Astro.redirect('/th/', 301);
 ---

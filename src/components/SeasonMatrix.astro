@@ -1,0 +1,47 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const blocks = [
+  { key: 'weather' as const, label: m.quarters.weather },
+  { key: 'water' as const, label: m.quarters.water },
+  { key: 'wildlife' as const, label: m.quarters.wildlife },
+  { key: 'advice' as const, label: m.quarters.advice },
+];
+---
+<section id="seasons" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.quarters}</h2>
+    <p class="section-sub">{m.quarters.subtitle}</p>
+
+    <div class="qs-grid">
+      {poi.quarters.map((quarter) => (
+        <article class="qs-card">
+          <header class="qs-head">
+            <div class="qs-head-text">
+              <h3 class="qs-season">{pick(quarter.season, lang)}</h3>
+              <p class="qs-months">{m.quarters.months} · {quarter.months}</p>
+            </div>
+            <div class="qs-score">
+              <span class="bars" role="img" aria-label={`${m.quarters.score} ${quarter.score}/5`}>
+                {[1, 2, 3, 4, 5].map((i) => <span class={`bar ${i <= quarter.score ? 'on' : ''}`}></span>)}
+              </span>
+            </div>
+          </header>
+
+          <dl class="qs-body">
+            {blocks.map((block) => (
+              <div class="qs-row">
+                <dt>{block.label}</dt>
+                <dd>{pick(quarter[block.key], lang)}</dd>
+              </div>
+            ))}
+          </dl>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

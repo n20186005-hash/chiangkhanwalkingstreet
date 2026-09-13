@@ -1,0 +1,33 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="legends" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.legends}</h2>
+
+    <div class="legend-grid">
+      {poi.legends.map((legend) => (
+        <article class="legend-card">
+          <h3 class="legend-title">
+            <span class="legend-icon" aria-hidden="true">{legend.icon}</span>
+            <span>{pick(legend.title, lang)}</span>
+          </h3>
+          <div class="prose">
+            {legend.body.map((paragraph) => <p>{pick(paragraph, lang)}</p>)}
+          </div>
+          {legend.caveat && (
+            <p class="legend-caveat">
+              <span aria-hidden="true">ⓘ</span>
+              {pick(legend.caveat, lang)}
+            </p>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

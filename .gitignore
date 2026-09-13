@@ -12,3 +12,4 @@ coverage/
 build/
 .next/
 .nuxt/
+.wrangler/

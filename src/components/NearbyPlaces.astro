@@ -1,13 +1,29 @@
 ---
-import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { getLangFromUrl, getI18n, format } from '../i18n/ui';
 import { pick } from '../data/attractions';
 const { poi } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
+const e = m.entity;
+
+const vars = {
+  name: pick(poi.name, lang),
+  full: e.placeFull,
+  short: e.placeShort,
+  city: e.placeCity,
+  state: e.placeState,
+  country: e.placeCountry,
+  l1: e.landmark1,
+  l2: e.landmark2,
+};
+
+const landmarksHeading = format(e.landmarksHeading, vars);
+const cluster = format(e.nearbyCluster, vars);
 ---
 <section id="nearby" class="section">
   <div class="container">
-    <h2 class="section-title">{m.headings.nearbyAreas}</h2>
+    <h2 class="section-title">{landmarksHeading}</h2>
+    <p class="section-subtitle">{cluster}</p>
     <div class="card-grid">
       {poi.nearby.map((n) => (
         <div class="nearby-card">

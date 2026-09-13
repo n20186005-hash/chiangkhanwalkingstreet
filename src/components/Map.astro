@@ -1,65 +1,82 @@
 ---
-import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { getLangFromUrl, getI18n, format } from '../i18n/ui';
+import { pick } from '../data/attractions';
+import { siteConfig } from '../config/site';
 const { poi } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
+const e = m.entity;
 const { lat, lng } = poi.location;
+
+const vars = {
+  name: pick(poi.name, lang),
+  full: e.placeFull,
+  short: e.placeShort,
+  city: e.placeCity,
+  state: e.placeState,
+  country: e.placeCountry,
+};
+const locationHeading = format(e.locationHeading, vars);
 ---
 <section id="map" class="section section-alt">
   <div class="container">
-    <h2 class="section-title">{m.headings.map}</h2>
-    <p class="section-sub">{m.map.openStreet}</p>
-    <a class="map-embed map-preview" href={poi.mapsUrl} target="_blank" rel="noopener" title={m.map.googleMaps}>
-      <span class="map-pin">{poi.name}</span>
-      <span class="map-cta">{m.map.googleMaps} ↗</span>
-      <span class="muted map-addr">{poi.location.plusCode} · {poi.location.address}</span>
-    </a>
+    <h2 class="section-title">{locationHeading}</h2>
+    <p class="section-sub">{m.map.embedNote}</p>
+
+    <iframe
+      class="map-embed map-iframe"
+      src={siteConfig.mapsEmbedSrc}
+      width="100%"
+      height="450"
+      style="border:0;"
+      title={format(e.mapTitle, vars)}
+      allowfullscreen=""
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"></iframe>
+
     <div class="map-links">
       <a class="map-link" href={poi.mapsUrl} target="_blank" rel="noopener">{m.map.googleMaps} ↗</a>
       <span class="muted" style="font-size:0.85rem;">{poi.location.plusCode} · {poi.location.address}</span>
     </div>
+
+    <p class="map-gov">
+      {e.officialPrefix}{' '}
+      <a href={siteConfig.govtTourismUrl} target="_blank" rel="noopener noreferrer">
+        {format(e.officialLabel, vars)}
+      </a>.
+    </p>
+    <p class="map-source muted">
+      {m.facts.ratingSource}: <a href={poi.ratingSource.url} target="_blank" rel="noopener noreferrer">{poi.ratingSource.name}</a> · {poi.ratingSource.retrieved} · lat {lat}, lng {lng}
+    </p>
   </div>
 </section>
 
 <style>
-  .map-preview {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 0.4rem;
-    min-height: 220px;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
+  .map-iframe {
+    display: block;
     border-radius: 14px;
-    background:
-      radial-gradient(circle at 1px 1px, var(--border-color) 1px, transparent 0) 0 0 / 22px 22px,
-      linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
-    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    margin-bottom: 1.25rem;
+    background: var(--bg-secondary);
+  }
+  .map-gov {
+    margin: 1.25rem 0 0.35rem;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+  .map-gov a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .map-source {
+    font-size: 0.82rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .map-source a {
+    color: var(--accent);
     text-decoration: none;
-    transition: border-color 0.15s, transform 0.15s;
-  }
-  .map-preview:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-  .map-pin {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.15rem;
-  }
-  .map-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.45rem 0.9rem;
-    background: var(--accent);
-    color: #fff;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 0.9rem;
-  }
-  .map-addr {
-    font-size: 0.85rem;
   }
 </style>

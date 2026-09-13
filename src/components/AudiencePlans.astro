@@ -1,0 +1,49 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="plans" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.audiencePlans}</h2>
+    <p class="section-sub">{m.plans.audienceSubtitle}</p>
+
+    <div class="ap-list">
+      {poi.audiencePlans.map((plan) => (
+        <article class="ap-card">
+          <header class="ap-head">
+            <h3 class="ap-title">
+              <span class="ap-icon" aria-hidden="true">{plan.icon}</span>
+              <span>{pick(plan.title, lang)}</span>
+            </h3>
+            <p class="ap-meta">
+              <span class="ap-meta-label">{m.plans.forWhom}</span>
+              {pick(plan.audience, lang)}
+            </p>
+            <p class="ap-meta">
+              <span class="ap-meta-label">{m.plans.duration}</span>
+              {pick(plan.duration, lang)}
+            </p>
+          </header>
+
+          <div class="ap-body">
+            <div class="ap-steps">
+              <h4 class="ap-subtitle">{m.plans.steps}</h4>
+              <ol class="ap-step-list">
+                {plan.steps.map((step) => <li>{pick(step, lang)}</li>)}
+              </ol>
+            </div>
+
+            <aside class="ap-tips">
+              <h4 class="ap-subtitle">{m.plans.tips}</h4>
+              <p>{pick(plan.tips, lang)}</p>
+            </aside>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

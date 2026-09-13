@@ -1,16 +1,66 @@
 ---
-import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { getLangFromUrl, getI18n, format } from '../i18n/ui';
+import { pick } from '../data/attractions';
+import { siteConfig } from '../config/site';
 const { poi } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
+const e = m.entity;
+
+const vars = {
+  name: pick(poi.name, lang),
+  full: e.placeFull,
+  short: e.placeShort,
+  city: e.placeCity,
+  state: e.placeState,
+  country: e.placeCountry,
+};
 ---
 <section id="sources" class="section">
   <div class="container">
     <h2 class="section-title">{m.headings.sources}</h2>
     <ul class="sources-list">
       {poi.sources.map((s) => (
-        <li><a href={s.url} target="_blank" rel="noopener">{s.name} ↗</a></li>
+        <li><a href={s.url} target="_blank" rel="noopener noreferrer">{s.name} ↗</a></li>
       ))}
     </ul>
+
+    <div class="sources-meta">
+      <p>
+        <strong>{m.facts.ratingSource}:</strong>{' '}
+        <a href={poi.ratingSource.url} target="_blank" rel="noopener noreferrer">{poi.ratingSource.name}</a>
+        — ★ {poi.rating} ({poi.reviewCount.toLocaleString()}). {m.sourcesMeta.ratingNote}
+      </p>
+      <p>
+        {e.officialPrefix}{' '}
+        <a href={siteConfig.govtTourismUrl} target="_blank" rel="noopener noreferrer">
+          {format(e.officialLabel, vars)}
+        </a>.
+      </p>
+      <p>
+        {m.sourcesMeta.lastUpdated}: <time datetime="2026-09">{poi.ratingSource.retrieved}</time>. {m.sourcesMeta.externalNote}
+      </p>
+    </div>
   </div>
 </section>
+
+<style>
+  .sources-meta {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-color);
+    display: grid;
+    gap: 0.6rem;
+  }
+  .sources-meta p {
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+  .sources-meta a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .sources-meta a:hover { text-decoration: underline; }
+</style>

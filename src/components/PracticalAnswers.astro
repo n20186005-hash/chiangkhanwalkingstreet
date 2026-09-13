@@ -1,0 +1,91 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+
+const { schedule, access, nameForms, localAddress } = poi.practical;
+
+// Rows are real tabular data, so they are marked up as tables — that is the
+// structure search engines lift into featured snippets, and it also renders
+// sensibly for screen readers as a row/column relationship.
+const scriptLang: Record<string, string | undefined> = { TH: 'th', EN: 'en', ZH: 'zh' };
+---
+<section id="practical" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.practical}</h2>
+    <p class="section-sub">{m.practical.subtitle}</p>
+
+    <div class="pa-block">
+      <h3 class="pa-subtitle">{m.practical.scheduleTitle}</h3>
+      <div class="pa-table-wrap">
+        <table class="pa-table">
+          <thead>
+            <tr>
+              <th scope="col">{m.practical.item}</th>
+              <th scope="col">{m.practical.answer}</th>
+              <th scope="col">{m.practical.note}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {schedule.map((row) => (
+              <tr>
+                <th scope="row">{pick(row.label, lang)}</th>
+                <td class="pa-value">{pick(row.value, lang)}</td>
+                <td class="pa-note">{row.note ? pick(row.note, lang) : ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="pa-block">
+      <h3 class="pa-subtitle">{m.practical.accessTitle}</h3>
+      <dl class="pa-access">
+        {access.map((row) => (
+          <div class="pa-access-item">
+            <dt>{pick(row.label, lang)}</dt>
+            <dd>
+              <span class="pa-value">{pick(row.value, lang)}</span>
+              {row.note && <span class="pa-note">{pick(row.note, lang)}</span>}
+            </dd>
+          </div>
+        ))}
+      </dl>
+      <p class="pa-driver">
+        <span class="pa-driver-label">{m.practical.driverHint}</span>
+        <span class="pa-driver-line" lang="th">{localAddress}</span>
+      </p>
+    </div>
+
+    <div class="pa-block">
+      <h3 class="pa-subtitle">{m.practical.namesTitle}</h3>
+      <div class="pa-table-wrap">
+        <table class="pa-table">
+          <thead>
+            <tr>
+              <th scope="col">{m.practical.script}</th>
+              <th scope="col">{m.practical.writing}</th>
+              <th scope="col">{m.practical.whenToUse}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {nameForms.map((form) => (
+              <tr>
+                <th scope="row">
+                  <span class="pa-script">{form.script}</span>
+                  <span class="pa-form-label">{pick(form.label, lang)}</span>
+                </th>
+                <td class="pa-value" lang={scriptLang[form.script]}>{form.value}</td>
+                <td class="pa-note">{pick(form.usage, lang)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

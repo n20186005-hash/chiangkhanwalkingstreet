@@ -1,1 +1,5 @@
-/ /th/ 302
+# The bare root goes to the default locale, permanently.
+# Every other missing trailing slash is handled at the edge by
+# `assets.html_handling = "force-trailing-slash"` in wrangler.jsonc, so the
+# indexable form `/xx/yy/` stays the only one Google can reach.
+/ /th/ 301

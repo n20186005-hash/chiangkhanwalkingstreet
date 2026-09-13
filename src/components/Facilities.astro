@@ -1,0 +1,38 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="facilities" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.facilities}</h2>
+    <p class="section-sub">{m.facilities.subtitle}</p>
+    <p class="fx-neutral">
+      <span aria-hidden="true">⚖️</span>
+      {m.facilities.neutral}
+    </p>
+
+    <div class="fx-grid">
+      {poi.facilities.map((group) => (
+        <article class="fx-card">
+          <h3 class="fx-title">
+            <span class="fx-icon" aria-hidden="true">{group.icon}</span>
+            <span>{pick(group.category, lang)}</span>
+          </h3>
+          <ul class="check-list">
+            {group.items.map((item) => <li>{pick(item, lang)}</li>)}
+          </ul>
+          {group.note && (
+            <p class="fx-note">
+              <span class="fx-note-label">{m.facilities.note}</span>
+              {pick(group.note, lang)}
+            </p>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

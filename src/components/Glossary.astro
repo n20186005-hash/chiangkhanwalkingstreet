@@ -1,0 +1,23 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="glossary" class="section section-alt">
+  <div class="container">
+    <h2 class="section-title">{m.headings.glossary}</h2>
+    <p class="section-sub">{m.glossary.subtitle}</p>
+
+    <dl class="gl-grid">
+      {poi.glossary.map((entry) => (
+        <div class="gl-item">
+          <dt class="gl-term">{entry.term}</dt>
+          <dd class="gl-meaning">{pick(entry.meaning, lang)}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

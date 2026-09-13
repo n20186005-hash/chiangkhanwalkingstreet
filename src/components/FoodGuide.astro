@@ -8,7 +8,6 @@ const m = getI18n(Astro.url).messages;
 <section id="food" class="section section-alt">
   <div class="container">
     <h2 class="section-title">{m.headings.localFood}</h2>
-    <p class="section-sub">{m.headings.localFood}</p>
     <div class="food-grid">
       {poi.food.map((f) => (
         <div class="food-card">

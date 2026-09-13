@@ -1,0 +1,250 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { siteConfig } from '../config/site';
+import { getWeather } from '../lib/weather';
+import { adviceContextFrom, buildWeatherView } from '../lib/weather-view';
+
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+
+const raw = await getWeather(siteConfig.latitude, siteConfig.longitude);
+const view = raw ? buildWeatherView(lang, raw, adviceContextFrom(siteConfig)) : null;
+
+/** The three advisory columns, each with the label and glyph shown above it. */
+const columns = view
+  ? [
+      { key: 'outfit' as const, icon: '✅', label: m.weather.groupOutfit, items: view.advice.outfit },
+      { key: 'plan' as const, icon: '🧭', label: m.weather.groupPlan, items: view.advice.plan },
+      { key: 'items' as const, icon: '🎒', label: m.weather.groupItems, items: view.advice.items },
+    ]
+  : [];
+
+const endpoint = `/api/weather?lang=${lang}`;
+---
+
+<section id="weather" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.weather}</h2>
+    <p class="section-sub">{m.weather.subtitle}</p>
+
+    {view ? (
+      <div class="wx" data-wx data-endpoint={endpoint}>
+        {/* ---------------- current conditions ---------------- */}
+        <div class="wx-now">
+          <div class="wx-now-lead">
+            <span class="wx-icon" data-wx-field="icon" aria-hidden="true">{view.current.icon}</span>
+            <div>
+              <p class="wx-temp">
+                <span data-wx-field="temp">{view.current.temp}</span>{view.units.temp}
+              </p>
+              <p class="wx-cond" data-wx-field="condition">{view.current.condition}</p>
+              <p class="wx-feels muted">
+                {m.weather.feelsLike}
+                <span data-wx-field="feelsLike">{view.current.feelsLike}</span>{view.units.temp}
+              </p>
+            </div>
+          </div>
+
+          <dl class="wx-metrics">
+            <div class="wx-metric">
+              <dt>{m.weather.humidity}</dt>
+              <dd><span data-wx-field="humidity">{view.current.humidity}</span>%</dd>
+            </div>
+            <div class="wx-metric">
+              <dt>{m.weather.wind}</dt>
+              <dd><span data-wx-field="wind">{view.current.wind}</span> {view.units.wind}</dd>
+            </div>
+            <div class="wx-metric">
+              <dt>{m.weather.gust}</dt>
+              <dd><span data-wx-field="gust">{view.current.gust}</span> {view.units.wind}</dd>
+            </div>
+            <div class="wx-metric">
+              <dt>{m.weather.uv}</dt>
+              <dd data-wx-field="uv">{view.metrics.uv}</dd>
+            </div>
+            <div class="wx-metric wx-metric-wide">
+              <dt>{m.weather.eveningProb}</dt>
+              <dd><span data-wx-field="eveningProb">{view.metrics.eveningProb}</span>%</dd>
+            </div>
+            <div class="wx-metric">
+              <dt>{m.weather.sunset}</dt>
+              <dd data-wx-field="sunset">{view.metrics.sunset}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <p class="wx-note muted">{m.weather.marketNote}</p>
+
+        {/* ---------------- advice ---------------- */}
+        <div class="wx-advice">
+          <h3 class="wx-advice-title">{m.weather.adviceTitle}</h3>
+
+          <div class="wx-alerts" data-wx="alerts" aria-live="polite">
+            {view.advice.alert.length > 0 ? (
+              view.advice.alert.map((item) => (
+                <p class={`wx-alert level-${item.level}`}>
+                  <span class="wx-item-icon" aria-hidden="true">{item.icon}</span>
+                  <span>{item.text}</span>
+                </p>
+              ))
+            ) : (
+              <p class="wx-alert level-ok">
+                <span class="wx-item-icon" aria-hidden="true">🟢</span>
+                <span>{view.strings.noAlert}</span>
+              </p>
+            )}
+          </div>
+
+          <div class="wx-cols">
+            {columns.map((col) => (
+              <div class="wx-col" data-group={col.key}>
+                <h4 class="wx-col-title">
+                  <span aria-hidden="true">{col.icon}</span>
+                  {col.label}
+                </h4>
+                <ul class="wx-list" data-wx-list={col.key}>
+                  {col.items.map((item) => (
+                    <li class={`wx-item level-${item.level}`}>
+                      <span class="wx-item-icon" aria-hidden="true">{item.icon}</span>
+                      <span>{item.text}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ---------------- 7-day strip ---------------- */}
+        <h3 class="wx-week-title">{m.weather.forecast7}</h3>
+        <div class="wx-week">
+          {view.days.map((day, index) => (
+            <div class="wx-day" data-day-index={index}>
+              <p class="wx-day-label">{day.label}</p>
+              <p class="wx-day-date muted">{day.dateLabel}</p>
+              <p class="wx-day-icon" data-wx-field="icon" aria-hidden="true">{day.icon}</p>
+              <p class="wx-day-temp">
+                <b data-wx-field="tMax">{day.tMax}°</b>
+                <span class="muted" data-wx-field="tMin">{day.tMin}°</span>
+              </p>
+              <p class="wx-day-cond muted" data-wx-field="condition">{day.condition}</p>
+              <p class="wx-day-rain">
+                💧<span data-wx-field="precipProb">{day.precipProb}</span>%
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <p class="wx-updated muted">
+          {m.weather.updated}
+          <span data-wx-field="updated">{view.updatedAt}</span>
+        </p>
+      </div>
+    ) : (
+      <p class="wx-empty muted">{m.weather.unavailable}</p>
+    )}
+  </div>
+</section>
+
+<script define:vars={{ endpoint }}>
+  // Refresh the module once shortly after paint so the numbers and the advice
+  // match the current hour even when the surrounding page came from the cache.
+  (() => {
+    const card = document.querySelector('[data-wx]');
+    if (!card) return;
+
+    const listKeys = ['outfit', 'plan', 'items'];
+    let lastRun = 0;
+
+    const setField = (scope, key, value) => {
+      const el = scope.querySelector(`[data-wx-field="${key}"]`);
+      if (el && value !== undefined && value !== null && value !== '') {
+        el.textContent = String(value);
+      }
+    };
+
+    const renderList = (key, items) => {
+      const list = card.querySelector(`[data-wx-list="${key}"]`);
+      if (!list) return;
+      const nodes = items.map((item) => {
+        const li = document.createElement('li');
+        li.className = `wx-item level-${item.level}`;
+        const icon = document.createElement('span');
+        icon.className = 'wx-item-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = item.icon;
+        const text = document.createElement('span');
+        text.textContent = item.text;
+        li.append(icon, text);
+        return li;
+      });
+      list.replaceChildren(...nodes);
+    };
+
+    const renderAlerts = (items, fallback) => {
+      const box = card.querySelector('[data-wx="alerts"]');
+      if (!box) return;
+      const source = items.length
+        ? items.map((item) => ({ level: item.level, icon: item.icon, text: item.text }))
+        : [{ level: 'ok', icon: '🟢', text: fallback }];
+      const nodes = source.map((item) => {
+        const p = document.createElement('p');
+        p.className = `wx-alert level-${item.level}`;
+        const icon = document.createElement('span');
+        icon.className = 'wx-item-icon';
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = item.icon;
+        const text = document.createElement('span');
+        text.textContent = item.text;
+        p.append(icon, text);
+        return p;
+      });
+      box.replaceChildren(...nodes);
+    };
+
+    const patch = (data) => {
+      setField(card, 'temp', data.current.temp);
+      setField(card, 'feelsLike', data.current.feelsLike);
+      setField(card, 'condition', data.current.condition);
+      setField(card, 'icon', data.current.icon);
+      setField(card.querySelector('.wx-now') || card, 'humidity', data.current.humidity);
+      setField(card.querySelector('.wx-now') || card, 'wind', data.current.wind);
+      setField(card.querySelector('.wx-now') || card, 'gust', data.current.gust);
+      setField(card.querySelector('.wx-now') || card, 'uv', data.metrics.uv);
+      setField(card.querySelector('.wx-now') || card, 'eveningProb', data.metrics.eveningProb);
+      setField(card.querySelector('.wx-now') || card, 'sunset', data.metrics.sunset);
+
+      card.querySelectorAll('[data-day-index]').forEach((row) => {
+        const day = data.days[Number(row.dataset.dayIndex)];
+        if (!day) return;
+        setField(row, 'icon', day.icon);
+        setField(row, 'tMax', `${day.tMax}°`);
+        setField(row, 'tMin', `${day.tMin}°`);
+        setField(row, 'condition', day.condition);
+        setField(row, 'precipProb', day.precipProb);
+      });
+
+      renderAlerts(data.advice.alert || [], data.strings.noAlert || '');
+      listKeys.forEach((key) => renderList(key, data.advice[key] || []));
+      setField(card, 'updated', data.updatedAt);
+    };
+
+    const load = async () => {
+      lastRun = Date.now();
+      try {
+        const res = await fetch(endpoint, { headers: { accept: 'application/json' } });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data && data.ok) patch(data);
+      } catch {
+        /* Keep the rendered values; the module stays readable offline. */
+      }
+    };
+
+    window.setTimeout(load, 1500);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && Date.now() - lastRun > 600000) load();
+    });
+  })();
+</script>

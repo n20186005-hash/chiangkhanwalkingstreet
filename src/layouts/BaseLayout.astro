@@ -1,51 +1,181 @@
 ---
 import '../styles/global.css';
-import { getLangFromUrl, getI18n, languages, languagesList, htmlLangAttr } from '../i18n/ui';
+import { getLangFromUrl, getI18n, languages, languageNames, languagesList, buildAlternates, htmlLangAttr } from '../i18n/ui';
 import { pick } from '../data/attractions';
-import { siteConfig } from '../config/site';
+import { siteConfig, SITE_URL } from '../config/site';
 
-const { title, description, path = '', poi } = Astro.props;
+// `faq` / `rating` are opt-in: Google requires review and FAQ markup to
+// describe content that is actually visible on the page, so only the pages
+// rendering <FAQ /> and the rating widgets pass them.
+const { title, description, path = '', poi, breadcrumb = [], faq = false, rating = false } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
-const SITE = import.meta.env.CURRENT_SITE_DOMAIN ? `https://${import.meta.env.CURRENT_SITE_DOMAIN}` : siteConfig.baseUrl;
-const canonical = `${SITE}/${lang}${path ? '/' + path : ''}`;
-const langs = languagesList.map((l) => ({ lang: l, label: languages[l] }));
 
-const jsonLd = poi
+// Trailing slashes are stripped so `${SITE}${alternates[lang]}` can never
+// produce a double slash, whatever CURRENT_SITE_DOMAIN is set to.
+const SITE = (import.meta.env.CURRENT_SITE_DOMAIN ? `https://${import.meta.env.CURRENT_SITE_DOMAIN}` : SITE_URL).replace(/\/+$/, '');
+
+// One source of truth for every URL on the page: the sitemap, the canonical
+// tag, the hreflang set and the breadcrumb list all read from this.
+const alternates = buildAlternates(path);
+const canonical = `${SITE}${alternates[lang] ?? alternates.th}`;
+const langs = languagesList.map((l) => ({ lang: l, label: languages[l], name: languageNames[l] }));
+
+// ---- Entity variables (single-attraction SEO binding) ----
+const FULL = siteConfig.attractionFullName;
+const SHORT = siteConfig.attractionShortName;
+const CITY = siteConfig.city;
+const STATE = siteConfig.province;
+const heroImagePath = poi ? (poi.images?.[0]?.file ?? `/gallery/${poi.slug}-1.jpg`) : '/gallery/chiang-khan-walking-street-1.jpg';
+const heroImage = `${SITE}${heroImagePath}`;
+
+const ogLocale: Record<string, string> = { zh: 'zh_CN', en: 'en_US', th: 'th_TH' };
+const poiName = poi ? pick(poi.name, lang) : SHORT;
+const ogTitle = title;
+const ogDescription = description;
+
+/* ------------------------------------------------------------------ */
+/* Structured data                                                     */
+/*                                                                     */
+/* Emitted as a single @graph so the nodes can reference each other by */
+/* @id instead of repeating the same values in three separate scripts. */
+/* ------------------------------------------------------------------ */
+const ORG_ID = `${SITE}/#organization`;
+const WEBSITE_ID = `${SITE}/#website`;
+const PAGE_ID = `${canonical}#webpage`;
+const ENTITY_ID = `${canonical}#attraction`;
+const FAQ_ID = `${canonical}#faq`;
+const CRUMB_ID = `${canonical}#breadcrumb`;
+
+const organization = {
+  '@type': 'Organization',
+  '@id': ORG_ID,
+  name: m.brand.name,
+  url: `${SITE}/`,
+  description: m.footer.nonprofit,
+  knowsAbout: [FULL, `${CITY} ${STATE}`, 'Mekong River', 'Isan culture'],
+};
+
+const website = {
+  '@type': 'WebSite',
+  '@id': WEBSITE_ID,
+  url: `${SITE}/`,
+  name: m.brand.name,
+  description: m.brand.tagline,
+  inLanguage: htmlLangAttr(lang),
+  publisher: { '@id': ORG_ID },
+};
+
+const webPage = {
+  '@type': 'WebPage',
+  '@id': PAGE_ID,
+  url: canonical,
+  name: title,
+  description,
+  isPartOf: { '@id': WEBSITE_ID },
+  inLanguage: htmlLangAttr(lang),
+  primaryImageOfPage: { '@type': 'ImageObject', url: heroImage },
+  ...(poi ? { about: { '@id': ENTITY_ID }, mainEntity: { '@id': ENTITY_ID } } : {}),
+  ...(breadcrumb.length ? { breadcrumb: { '@id': CRUMB_ID } } : {}),
+};
+
+const attraction = poi
   ? {
-      '@context': 'https://schema.org',
       '@type': 'TouristAttraction',
-      name: pick(poi.name, lang),
-      alternateName: poi.nameLocal,
+      '@id': ENTITY_ID,
+      name: poiName,
+      // The name forms visitors actually search with: the endonym on the signs,
+      // the English brand term, the Chinese form behind the "清刊" query, the
+      // unspaced misspelling, and the "night market" phrasing from GSC.
+      alternateName: Array.from(
+        new Set([poi.nameLocal, SHORT, '清刊步行街', 'Chiangkhan', `${SHORT} Night Market`])
+      ),
       description,
       url: canonical,
-      image: `/gallery/${poi.slug}-1.jpg`,
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: poi.rating,
-        reviewCount: poi.reviewCount,
-      },
+      mainEntityOfPage: { '@id': PAGE_ID },
+      image: poi.images.slice(0, 5).map((img) => `${SITE}${img.file}`),
+      isAccessibleForFree: true,
+      publicAccess: true,
+      touristType: poi.category,
       address: {
         '@type': 'PostalAddress',
+        streetAddress: siteConfig.streetAddress,
         addressLocality: poi.city,
         addressRegion: poi.province,
-        addressCountry: poi.country,
-        streetAddress: poi.location.address,
+        postalCode: siteConfig.postalCode,
+        addressCountry: siteConfig.countryCode,
       },
       geo: {
         '@type': 'GeoCoordinates',
         latitude: poi.location.lat,
         longitude: poi.location.lng,
       },
+      hasMap: siteConfig.mapsShareUrl,
       openingHoursSpecification: {
         '@type': 'OpeningHoursSpecification',
         dayOfWeek: 'https://schema.org/Everyday',
         opens: poi.hours.open,
         closes: poi.hours.close,
       },
-      sameAs: poi.sources.map((s) => s.url),
+      ...(rating
+        ? {
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: poi.rating,
+              reviewCount: poi.reviewCount,
+              bestRating: 5,
+              worstRating: 1,
+            },
+          }
+        : {}),
+      // `sameAs` means "another URL for this same entity", so it holds the map
+      // listing only. Reference works are credited in the on-page sources list
+      // instead — pointing sameAs at an encyclopedia homepage would be wrong.
+      sameAs: [siteConfig.mapsShareUrl, siteConfig.mapsEmbedSrc],
     }
   : null;
+
+const faqPage =
+  faq && poi && poi.faq && poi.faq.length > 0
+    ? {
+        '@type': 'FAQPage',
+        '@id': FAQ_ID,
+        isPartOf: { '@id': PAGE_ID },
+        mainEntity: poi.faq.map((f) => ({
+          '@type': 'Question',
+          name: pick(f.q, lang),
+          acceptedAnswer: { '@type': 'Answer', text: pick(f.a, lang) },
+        })),
+      }
+    : null;
+
+const homeUrl = `${SITE}${buildAlternates('')[lang] ?? buildAlternates('').th}`;
+
+const breadcrumbLd = breadcrumb.length
+  ? {
+      '@type': 'BreadcrumbList',
+      '@id': CRUMB_ID,
+      // Each crumb resolves its own path, so the first entry is the locale home
+      // rather than a copy of the page being viewed.
+      itemListElement: [
+        { name: m.nav.home, url: homeUrl },
+        ...breadcrumb.map((b: { name: string; path: string }) => ({
+          name: b.name,
+          url: `${SITE}${buildAlternates(b.path)[lang] ?? buildAlternates(b.path).th}`,
+        })),
+      ].map((it, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: it.name,
+        item: it.url,
+      })),
+    }
+  : null;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [organization, website, webPage, attraction, faqPage, breadcrumbLd].filter(Boolean),
+};
 ---
 <!doctype html>
 <html lang={htmlLangAttr(lang)}>
@@ -54,12 +184,37 @@ const jsonLd = poi
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href={canonical} />
     {langs.map((l) => (
-      <link rel="alternate" hreflang={l.lang === 'zh' ? 'zh-CN' : l.lang} href={`${SITE}/${l.lang}${path ? '/' + path : ''}`} />
+      <link rel="alternate" hreflang={htmlLangAttr(l.lang)} href={`${SITE}${alternates[l.lang]}`} />
     ))}
-    <link rel="alternate" hreflang="x-default" href={`${SITE}/th${path ? '/' + path : ''}`} />
+    <link rel="alternate" hreflang="x-default" href={`${SITE}${alternates.xDefault}`} />
+
+    <!-- Open Graph / social -->
+    <meta property="og:site_name" content={m.brand.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={heroImage} />
+    <meta property="og:image:alt" content={`${poiName} in ${CITY}`} />
+    <meta property="og:locale" content={ogLocale[lang] ?? 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={heroImage} />
+
+    <!-- Icons / PWA -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0f766e" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content={m.brand.name} />
+    <meta name="application-name" content={m.brand.name} />
+
     <script is:inline>
       (function () {
         try {
@@ -71,16 +226,21 @@ const jsonLd = poi
       })();
     </script>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.ga4MeasurementId}`}></script>
+    <script is:inline set:html={`window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-HXM22WWPKP');
-    </script>
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+      gtag('config', '${siteConfig.ga4MeasurementId}');`} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <slot />
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js').catch(function () {});
+        });
+      }
+    </script>
   </body>
 </html>

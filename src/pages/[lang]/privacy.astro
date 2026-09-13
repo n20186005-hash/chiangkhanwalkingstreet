@@ -16,6 +16,7 @@ const poi = attractions[0];
 const content = {
   zh: {
     title: "隐私政策",
+    desc: "本隐私政策说明本站收集哪些数据、为何收集，以及你对自己信息拥有哪些控制权。",
     lastUpdated: "最后更新时间：2026年7月",
     sections: [
       {
@@ -41,6 +42,7 @@ const content = {
   },
   en: {
     title: "Privacy Policy",
+    desc: "How this site collects and uses data, and what control you have over your own information.",
     lastUpdated: "Last Updated: July 2026",
     sections: [
       {
@@ -66,6 +68,7 @@ const content = {
   },
   th: {
     title: "นโยบายความเป็นส่วนตัว",
+    desc: "นโยบายนี้อธิบายว่าเว็บไซต์เก็บข้อมูลใดบ้าง เก็บไปเพื่ออะไร และคุณควบคุมข้อมูลของตัวเองได้อย่างไร",
     lastUpdated: "อัปเดตล่าสุด: กรกฎาคม 2026",
     sections: [
       {
@@ -93,7 +96,7 @@ const content = {
 
 const c = content[lang as keyof typeof content];
 ---
-<BaseLayout title={`${c.title} - ${m.brand.name}`} description={c.title} path="privacy">
+<BaseLayout title={`${c.title} - ${m.brand.name}`} description={c.desc} path="privacy">
   <Header lang={lang} nav={[]} />
   <main class="container" style="max-width: 800px; padding-top: 4rem; padding-bottom: 6rem; min-height: 70vh;">
     <h1 class="section-title" style="text-align: left; margin-bottom: 0.5rem;">{c.title}</h1>

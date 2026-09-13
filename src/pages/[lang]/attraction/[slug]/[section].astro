@@ -11,6 +11,16 @@ import WalkingRoutes from '../../../../components/WalkingRoutes.astro';
 import NearbyPlaces from '../../../../components/NearbyPlaces.astro';
 import Photography from '../../../../components/Photography.astro';
 import Map from '../../../../components/Map.astro';
+import Weather from '../../../../components/Weather.astro';
+import PracticalAnswers from '../../../../components/PracticalAnswers.astro';
+import SeasonMatrix from '../../../../components/SeasonMatrix.astro';
+import DayPlans from '../../../../components/DayPlans.astro';
+import AudiencePlans from '../../../../components/AudiencePlans.astro';
+import Facilities from '../../../../components/Facilities.astro';
+import DeepDive from '../../../../components/DeepDive.astro';
+import Legends from '../../../../components/Legends.astro';
+import Responsibility from '../../../../components/Responsibility.astro';
+import Glossary from '../../../../components/Glossary.astro';
 
 export function getStaticPaths() {
   return languagesList.flatMap((lang) =>
@@ -25,18 +35,24 @@ export function getStaticPaths() {
 
 const { lang, poi, sec } = Astro.props;
 const m = getI18n(Astro.url).messages;
-const title = `${pick(sec.title, lang)}`;
-const description = `${pick(sec.title, lang)} — ${pick(poi.name, lang)}`;
+// Sub-pages carry their own query-targeted TDK rather than echoing the H1 as
+// the description, which is what the section pages did before.
+const title = pick(sec.seoTitle, lang);
+const description = pick(sec.seoDesc, lang);
 const path = `attraction/${poi.slug}/${sec.slug}`;
-const guideHref = `/${lang}/attraction/${poi.slug}`;
+const guideHref = `/${lang}/attraction/${poi.slug}/`;
+const breadcrumb = [
+  { name: pick(poi.name, lang), path: `attraction/${poi.slug}` },
+  { name: pick(sec.title, lang), path },
+];
 ---
-<BaseLayout title={title} description={description} path={path} poi={poi}>
+<BaseLayout title={title} description={description} path={path} poi={poi} breadcrumb={breadcrumb}>
   <Header lang={lang} nav={[{ href: guideHref, label: m.nav.guide }]} />
   <main>
     <section class="section">
       <div class="container">
         <p class="breadcrumb">
-          <a href={`/${lang}`}>{m.nav.home}</a> ›
+          <a href={`/${lang}/`}>{m.nav.home}</a> ›
           <a href={guideHref}>{pick(poi.name, lang)}</a> ›
           <span>{pick(sec.title, lang)}</span>
         </p>
@@ -48,16 +64,24 @@ const guideHref = `/${lang}/attraction/${poi.slug}`;
         {sec.focus === 'routes' && <WalkingRoutes poi={poi} />}
         {sec.focus === 'nearby' && <NearbyPlaces poi={poi} />}
         {sec.focus === 'photography' && <Photography poi={poi} />}
-        {sec.focus === 'hours' && (
-          <div class="transport-card">
-            <h3 class="route-heading">{m.headings.quickFacts}</h3>
-            <div class="transport-meta">
-              <span><b>{m.facts.hours}:</b> {poi.hours.open}–{poi.hours.close}</span>
-              <span><b>{m.facts.plusCode}:</b> {poi.location.plusCode}</span>
-            </div>
-            <div class="prose"><p>{pick(poi.hours.note, lang)}</p></div>
-          </div>
+        {sec.focus === 'weather' && <Weather poi={poi} />}
+        {sec.focus === 'seasons' && <SeasonMatrix poi={poi} />}
+        {sec.focus === 'plans' && (
+          <>
+            <DayPlans poi={poi} />
+            <AudiencePlans poi={poi} />
+          </>
         )}
+        {sec.focus === 'services' && <Facilities poi={poi} />}
+        {sec.focus === 'science' && (
+          <>
+            <DeepDive poi={poi} />
+            <Legends poi={poi} />
+            <Responsibility poi={poi} />
+            <Glossary poi={poi} />
+          </>
+        )}
+        {sec.focus === 'hours' && <PracticalAnswers poi={poi} />}
       </div>
     </section>
 

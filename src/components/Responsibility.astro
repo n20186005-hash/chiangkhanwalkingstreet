@@ -1,0 +1,26 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+import { pick } from '../data/attractions';
+
+const { poi } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+---
+<section id="responsibility" class="section">
+  <div class="container">
+    <h2 class="section-title">{m.headings.responsibility}</h2>
+    <p class="section-sub">{m.responsibility.subtitle}</p>
+
+    <div class="rs-grid">
+      {poi.responsibility.map((entry) => (
+        <article class="rs-card">
+          <h3 class="rs-title">
+            <span class="rs-icon" aria-hidden="true">{entry.icon}</span>
+            <span>{pick(entry.title, lang)}</span>
+          </h3>
+          <p class="rs-body">{pick(entry.body, lang)}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
