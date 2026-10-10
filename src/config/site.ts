@@ -76,7 +76,7 @@ export const siteConfig = {
 
   // --- rating / review provenance ---
   ratingSourceName: 'Google Maps',
-  ratingRetrieved: 'September 2026',
+  ratingRetrieved: 'October 2026',
 } as const;
 
 /** Absolute site origin, resolved at build time (respects CURRENT_SITE_DOMAIN). */

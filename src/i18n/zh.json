@@ -22,6 +22,7 @@
     "folklore": "传说与信仰",
     "preservation": "社区保育",
     "localVoices": "在地声音",
+    "localVoicesNote": "以下为体现当地生活风貌的示例性综合表述，并非针对具体个人的逐字引语。",
     "whyVisit": "为什么值得去",
     "thingsToDo": "游玩方式",
     "walkingRoutes": "推荐路线",
@@ -39,7 +40,7 @@
     "visitorSummary": "访客体验总结",
     "deepDive": "深度科普解读",
     "legends": "传说与口述传统",
-    "weather": "实时天气与 7 日预报",
+    "weather": "天气与 7 日预报",
     "quarters": "季度游览策略",
     "audiencePlans": "按人群定制的游览方案",
     "dayPlans": "推荐游览路线（半日 / 全日）",
@@ -64,7 +65,7 @@
     "terms": "服务条款",
     "cookies": "Cookie 设置",
     "imageCredit": "图片产权：本网站所展示的所有图片产权及版权均归原摄影者所有。",
-    "ratingSource": "评分与评价数来源：Google Maps，采集于 2026 年 9 月。"
+    "ratingSource": "评分与评价数来源：Google Maps，采集于 2026 年 10 月。"
   },
   "visitor": { "pros": "游客常赞", "cons": "常见不足" },
   "transport": { "from": "出发地", "mode": "方式", "duration": "耗时" },
@@ -98,7 +99,7 @@
     "metaDescription": "探索{country}{state}{city}的地标{full}：查看位置地图、开放时间、周边{l1}与实用旅游贴士。"
   },
   "sourcesMeta": {
-    "ratingNote": "评分与评价数取自 Google Maps，采集时间：2026 年 9 月。",
+    "ratingNote": "评分与评价数取自 Google Maps，采集时间：2026 年 10 月。",
     "lastUpdated": "最后更新",
     "externalNote": "本站为独立的非营利游客信息项目，所有引用的公开资料均已注明来源。"
   },

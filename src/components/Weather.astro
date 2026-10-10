@@ -8,7 +8,10 @@ const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
 
 const raw = await getWeather(siteConfig.latitude, siteConfig.longitude);
-const view = raw ? buildWeatherView(lang, raw, adviceContextFrom(siteConfig)) : null;
+// `false` → absolute weekday labels at build time, so a cached page never shows
+// a false "Today". The browser swaps in "Today/Tomorrow" only after fetching a
+// genuinely current forecast via the on-demand endpoint.
+const view = raw ? buildWeatherView(lang, raw, adviceContextFrom(siteConfig), false) : null;
 
 /** The three advisory columns, each with the label and glyph shown above it. */
 const columns = view
@@ -120,8 +123,8 @@ const endpoint = `/api/weather?lang=${lang}`;
         <div class="wx-week">
           {view.days.map((day, index) => (
             <div class="wx-day" data-day-index={index}>
-              <p class="wx-day-label">{day.label}</p>
-              <p class="wx-day-date muted">{day.dateLabel}</p>
+              <p class="wx-day-label" data-wx-field="label">{day.label}</p>
+              <p class="wx-day-date muted" data-wx-field="dateLabel">{day.dateLabel}</p>
               <p class="wx-day-icon" data-wx-field="icon" aria-hidden="true">{day.icon}</p>
               <p class="wx-day-temp">
                 <b data-wx-field="tMax">{day.tMax}°</b>
@@ -218,6 +221,8 @@ const endpoint = `/api/weather?lang=${lang}`;
         const day = data.days[Number(row.dataset.dayIndex)];
         if (!day) return;
         setField(row, 'icon', day.icon);
+        setField(row, 'label', day.label);
+        setField(row, 'dateLabel', day.dateLabel);
         setField(row, 'tMax', `${day.tMax}°`);
         setField(row, 'tMin', `${day.tMin}°`);
         setField(row, 'condition', day.condition);

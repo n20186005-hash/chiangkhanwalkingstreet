@@ -100,6 +100,14 @@ export function buildWeatherView(
   langInput: string | null | undefined,
   w: WeatherData,
   ctx: AdviceContext,
+  /**
+   * When `true` (the live on-demand endpoint), the first two days are labelled
+   * "Today" / "Tomorrow". When `false` (the build-time static render), they use
+   * the absolute weekday instead, so a cached page built days ago never shows a
+   * false "Today" — the browser only swaps in the relative labels after it has
+   * fetched a genuinely current forecast.
+   */
+  relativeLabels = true,
 ): WeatherView {
   const lang = normaliseLang(langInput);
   const text = (key: string): string => lookup(lang, key);
@@ -123,9 +131,9 @@ export function buildWeatherView(
   const days: WeatherViewDay[] = w.days.map((day, index) => ({
     date: day.date,
     label:
-      index === 0
+      relativeLabels && index === 0
         ? text('weather.today') || 'Today'
-        : index === 1
+        : relativeLabels && index === 1
           ? text('weather.tomorrow') || 'Tomorrow'
           : weekdayLabel(day.date, lang),
     dateLabel: shortDate(day.date),

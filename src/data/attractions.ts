@@ -137,17 +137,17 @@ export const attractions: Attraction[] = [
     },
 
     hours: { open: '17:00', close: '22:00', note: {
-      zh: '每日傍晚 17:00 至 22:00 开放，雨季客流较少。',
-      en: 'Open every evening 17:00–22:00; quieter during the rainy season.',
-      th: 'เปิดทุกเย็น 17:00–22:00 ในช่วงฝนคนจะบางตาลง',
+      zh: '每日傍晚 17:00–22:00 为夜市营业时段；主街白天即无车可漫步，小吃摊位与多数店铺约 17:00 陆续就位、21:30 后收摊，建议 17:30–18:30 来觅食、18:30 以后看湄公河落日。雨季客流较少。',
+      en: 'The evening market runs 17:00–22:00 every day. The lane is car-free and walkable earlier in the day; food stalls and most shops set up from around 17:00 and start packing up after 21:30, so arrive 17:30–18:30 for food and 18:30+ for the Mekong sunset. Quieter in the rainy season.',
+      th: 'ตลาดเย็นเปิดทุกวัน 17:00–22:00 ถนนปลอดรถเดินได้ตั้งแต่กลางวัน ส่วนแผงอาหารและร้านค้าส่วนใหญ่เริ่มตั้งร้านราว 17:00 และเริ่มเก็บของหลัง 21:30 ควรมาช่วง 17:30–18:30 เพื่อกินและ 18:30 เป็นต้นไปเพื่อชมพระอาทิตย์ตกโขง ช่วงฝนคนจะบางตาลง',
     } },
     rating: 4.5,
-    reviewCount: 12158,
+    reviewCount: 12189,
     mapsUrl: 'https://maps.app.goo.gl/TwNr5mSMUff1hf8G7',
     ratingSource: {
       name: 'Google Maps',
       url: 'https://maps.app.goo.gl/TwNr5mSMUff1hf8G7',
-      retrieved: 'September 2026',
+      retrieved: 'October 2026',
     },
 
     images: Array.from({ length: 15 }, (_, i) => ({
@@ -202,7 +202,7 @@ export const attractions: Attraction[] = [
     },
 
     whyVisit: [
-      { zh: '百年木建筑：保存完好的殖民时期与老挝风格木屋，适合漫步与摄影。', en: 'Historic atmosphere: well-preserved wooden shophouses in Lao-colonial style, perfect for a stroll and photography.', th: 'บรรยากาศ historic: บ้านไม้สมัยโบราณสไตล์ลาว-โคโลเนียลที่อนุรักษ์ไว้ดีเยี่ยม' },
+      { zh: '百年木建筑：保存完好的殖民时期与老挝风格木屋，适合漫步与摄影。', en: 'Historic atmosphere: well-preserved wooden shophouses in Lao-colonial style, perfect for a stroll and photography.', th: 'บรรยากาศ: บ้านไม้สมัยโบราณสไตล์ลาว-โคโลเนียลที่อนุรักษ์ไว้ดีเยี่ยม' },
       { zh: '当地生活方式：感受依善与老挝边境小镇的慢节奏日常。', en: 'Local lifestyle: feel the slow daily rhythm of an Isan–Lao border town.', th: 'วิถีชีวิตท้องถิ่น: สัมผัสจังหวะชีวิตช้าๆ ของเมืองชายแดนอีสาน-ลาว' },
       { zh: '美食体验：从米线汤到叶包小吃，沿街即是流动餐桌。', en: 'Food experience: from noodle soups to leaf-wrapped snacks, the street is a moving table.', th: 'ประสบการณ์อาหาร: จากก๋วยเตี๋ยวถึงขนมห่อใบ ถนนคือโต๊ะอาหารเคลื่อนที่' },
       { zh: '摄影与夕阳：湄公河对岸的老挝山丘是绝佳落日背景。', en: 'Photography & sunset: Lao hills across the Mekong make a perfect sunset backdrop.', th: 'ถ่ายภาพและพระอาทิตย์ตก: ทิวเขาลาวฝั่งโค้งแม่น้ำโขงเป็นฉากพระอาทิตย์ตกที่สวยที่สุด' },
@@ -239,7 +239,7 @@ export const attractions: Attraction[] = [
       },
       halfDay: {
         title: { zh: '半日联游路线', en: 'Half-day combo', th: 'ครึ่งวัน' },
-        text: { zh: '步行街 + 湄公河步道 + 老城区 + 周边当地寺庙，串联成半日慢游。', en: 'Pair the walking street with the Mekong promenade, the old town and nearby local temples for a relaxed half-day loop.', th: 'จับคู่ถนนคนเดินกับทางเดินริมโขง เมืองเก่าและวัดท้องถิ่นใกล้เคียงเป็นloop ครึ่งวัน' },
+        text: { zh: '步行街 + 湄公河步道 + 老城区 + 周边当地寺庙，串联成半日慢游。', en: 'Pair the walking street with the Mekong promenade, the old town and nearby local temples for a relaxed half-day loop.', th: 'จับคู่ถนนคนเดินกับทางเดินริมโขง เมืองเก่าและวัดท้องถิ่นใกล้เคียงเป็นวงครึ่งวัน' },
       },
     },
 
@@ -282,11 +282,11 @@ export const attractions: Attraction[] = [
     ],
 
     culture: { zh: '清刊深受老挝依善文化影响：木屋、法语—老挝混合的店招、慢生活节奏，以及河畔佛教日常，构成独特的边境小镇气质。', en: 'Chiang Khan is shaped by Lao–Isan culture: timber houses, Franco-Lao shop signs, a slow pace of life and riverside Buddhist routines give the border town its distinct character.', th: 'เชียงคานได้รับอิทธิพลวัฒนธรรมลาว-อีสาน บ้านไม้ ป้ายร้านสไตล์ลาว-ฝรั่งเศส จังหวะชีวิตที่ช้าและวิถีพุทธริมน้ำ' },
-    photography: { zh: '傍晚蓝调时刻的木屋暖灯、无车街道的纵深透视、以及湄公河对岸老挝山脊的落日，是最出片的三个机位。', en: 'Three top shots: warm-lit timber houses at blue hour, the car-free lane in deep perspective, and the Lao ridge sunset across the Mekong.', th: 'จุดถ่ายภาพเด่น: บ้านไม้สว่างไส้ช่วง blue hour ซอยปลอดรถในมุมลึก และพระอาทิตย์ตกทิวเขาลาว' },
+    photography: { zh: '傍晚蓝调时刻的木屋暖灯、无车街道的纵深透视、以及湄公河对岸老挝山脊的落日，是最出片的三个机位。', en: 'Three top shots: warm-lit timber houses at blue hour, the car-free lane in deep perspective, and the Lao ridge sunset across the Mekong.', th: 'จุดถ่ายภาพเด่น: บ้านไม้สว่างไส้ช่วงแสงสลัว ซอยปลอดรถในมุมลึก และพระอาทิตย์ตกทิวเขาลาว' },
     accessibility: { zh: '步行街为无车步道，平缓易行；部分老屋台阶较多。建议穿舒适鞋，雨季注意湿滑。', en: 'The street is a flat, car-free walkway; some old houses have steps. Wear comfortable shoes and mind wet surfaces in the rainy season.', th: 'ถนนเป็นทางเดินราบปลอดรถ บางบ้านไม้มีบันได สวมรองเท้าสบายและระวังลื่นหน้าฝน' },
 
     faq: [
-      { q: { zh: '步行街几点开放？', en: 'What time does it open?', th: 'เปิดกี่โมง' }, a: { zh: '每日 17:00–22:00，傍晚后摊贩才陆续就位。', en: 'Every evening 17:00–22:00; stalls set up after sundown.', th: 'ทุกเย็น 17:00–22:00 ร้านค่อยๆ ตั้งหลังพระอาทิตย์ตก' } },
+      { q: { zh: '步行街几点开放？', en: 'What time does it open?', th: 'เปิดกี่โมง' }, a: { zh: '夜市每日 17:00–22:00。主街白天即无车可漫步；小吃摊位与多数店铺约 17:00 开始就位、21:30 后陆续收摊，建议 17:30–18:30 来觅食、18:30 以后看落日。', en: 'The evening market runs every day 17:00–22:00. The lane is car-free and walkable earlier in the day; food stalls and most shops set up from around 17:00 and wind down after 21:30, so arrive 17:30–18:30 for eating and 18:30+ for the sunset.', th: 'ตลาดเย็นเปิดทุกวัน 17:00–22:00 ถนนปลอดรถเดินได้ตั้งแต่กลางวัน ส่วนแผงอาหารและร้านค้าส่วนใหญ่เริ่มตั้งร้านราว 17:00 และเริ่มเก็บของหลัง 21:30 ควรมาช่วง 17:30–18:30 เพื่อกินและ 18:30 เป็นต้นไปเพื่อชมพระอาทิตย์ตก' } },
       { q: { zh: '每周哪几天开市？', en: 'Which days of the week is it open?', th: 'ถนนคนเดินเชียงคานเปิดวันไหน' }, a: { zh: '每天都开，全年无休，包括公共假日与佛日。', en: 'Every day, all year round, including public holidays and Buddhist holy days.', th: 'เปิดทุกวันตลอดทั้งปี รวมวันหยุดนักขัตฤกษ์และวันพระ' } },
       { q: { zh: '几点收市？', en: 'What time does it close?', th: 'ถนนคนเดินเชียงคานปิดกี่โมง' }, a: { zh: '22:00 收市，部分摊位 21:30 后就开始收摊。', en: 'It closes at 22:00; some stalls start packing up after 21:30.', th: 'ปิดเวลา 22:00 บางร้านเริ่มเก็บของตั้งแต่ 21:30' } },
       { q: { zh: '“清刊步行街”的英文怎么写？', en: 'What is Chiang Khan Walking Street called in English?', th: 'เชียงคาน ภาษาอังกฤษ เรียกว่าอะไร' }, a: { zh: '英文写作 Chiang Khan Walking Street，也有 Chiangkhan 的拼法，指同一地点。', en: 'In English it is written Chiang Khan Walking Street; the spelling "Chiangkhan" refers to the same place.', th: 'ภาษาอังกฤษเขียนว่า Chiang Khan Walking Street และมีการสะกดแบบ Chiangkhan ซึ่งหมายถึงที่เดียวกัน' } },

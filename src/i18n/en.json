@@ -22,6 +22,7 @@
     "folklore": "Folklore & Beliefs",
     "preservation": "Community Preservation",
     "localVoices": "Local Voices",
+    "localVoicesNote": "These short voices are illustrative composite examples of the stories residents share — not verbatim quotes from named individuals.",
     "whyVisit": "Why Visit",
     "thingsToDo": "Things To Do",
     "walkingRoutes": "Walking Routes",
@@ -39,7 +40,7 @@
     "visitorSummary": "Visitor Experience Summary",
     "deepDive": "Interpretive Guide",
     "legends": "Legends & Oral Tradition",
-    "weather": "Live Weather & 7-Day Forecast",
+    "weather": "Weather & 7-Day Forecast",
     "quarters": "Seasonal Planning Matrix",
     "audiencePlans": "Route Plans by Visitor Type",
     "dayPlans": "Suggested Itineraries",
@@ -64,14 +65,14 @@
     "terms": "Terms of Service",
     "cookies": "Cookie Settings",
     "imageCredit": "Image rights: all images displayed on this website remain the property and copyright of their original photographers.",
-    "ratingSource": "Rating & review count source: Google Maps, retrieved September 2026."
+    "ratingSource": "Rating & review count source: Google Maps, retrieved October 2026."
   },
   "visitor": { "pros": "Visitors love", "cons": "Common downsides" },
   "transport": { "from": "From", "mode": "Mode", "duration": "Duration" },
   "seo": {
     "titleSuffix": "Visitor Guide & Location",
-    "attractionTitle": "Chiang Khan Walking Street: Night Market Hours & Food Guide (Loei)",
-    "attractionDescription": "Chiang Khan Walking Street night market, Loei, Thailand. Open daily 17:00–22:00 — opening hours, street food, Mekong sunset spots and how to get there from Bangkok or Loei Airport.",
+    "attractionTitle": "Chiang Khan Walking Street 2026 | Hours, Food & Night Market Guide",
+    "attractionDescription": "Explore Chiang Khan Walking Street in Loei, Thailand. Find night market hours, local street food, Mekong River views, directions and tips for your visit.",
     "sectionTitleSuffix": "Chiang Khan Walking Street",
     "homeTitle": "Chiang Khan Walking Street Overview: History, Culture & Weather",
     "homeDescription": "The hub for Chiang Khan Walking Street in Loei, Thailand: history, community preservation, interpretive background, live weather and a 7-day forecast, seasonal planning and route options."
@@ -98,7 +99,7 @@
     "metaDescription": "Discover {full}, the iconic landmark in {city}, {state}, {country}. View the location map, opening hours, nearby {l1}, and travel tips."
   },
   "sourcesMeta": {
-    "ratingNote": "Rating and review count are sourced from Google Maps, retrieved September 2026.",
+    "ratingNote": "Rating and review count are sourced from Google Maps, retrieved October 2026.",
     "lastUpdated": "Last updated",
     "externalNote": "This is an independent, non-profit visitor information project; all cited public sources are credited accordingly."
   },
