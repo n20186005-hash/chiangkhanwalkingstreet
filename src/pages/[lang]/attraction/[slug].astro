@@ -35,7 +35,6 @@ import DeepDive from '../../../components/DeepDive.astro';
 import Legends from '../../../components/Legends.astro';
 import Responsibility from '../../../components/Responsibility.astro';
 import Glossary from '../../../components/Glossary.astro';
-import SourcesLink from '../../../components/SourcesLink.astro';
 import { seoTopics } from '../../../data/seo-topics';
 import { nearbyGuides } from '../../../data/nearby-guides';
 
@@ -99,7 +98,6 @@ const nav = [
     <Gallery poi={poi} />
     <VisitorSummary poi={poi} />
     <Glossary poi={poi} />
-    <SourcesLink />
     <section class="section" id="nearby-guides"><div class="container">
       <h2 class="section-title">{{ en:'Nearby attractions to visit', th:'สถานที่ท่องเที่ยวใกล้เคียง', zh:'可顺路参观的周边景点' }[lang]}</h2>
       <div class="card-grid">{nearbyGuides.map(place => <a class="nearby-card" href={`/${lang}/nearby/${place.slug}/`}>

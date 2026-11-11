@@ -21,7 +21,6 @@ import DeepDive from '../../../../components/DeepDive.astro';
 import Legends from '../../../../components/Legends.astro';
 import Responsibility from '../../../../components/Responsibility.astro';
 import Glossary from '../../../../components/Glossary.astro';
-import SourcesLink from '../../../../components/SourcesLink.astro';
 
 export function getStaticPaths() {
   return languagesList.flatMap((lang) =>
@@ -87,7 +86,6 @@ const breadcrumb = [
     </section>
 
     <Map poi={poi} />
-    <SourcesLink />
 
     <section class="section section-alt">
       <div class="container">
