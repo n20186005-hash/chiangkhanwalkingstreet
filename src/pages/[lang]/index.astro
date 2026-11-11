@@ -4,6 +4,7 @@ import { attractions, pick } from '../../data/attractions';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import { nearbyGuides } from '../../data/nearby-guides';
 
 export function getStaticPaths() {
   return languagesList.map((lang) => ({ params: { lang } }));
@@ -41,6 +42,16 @@ const a = attractions[0];
         </a>
       </div>
     </div>
+    <section class="section section-alt" id="nearby-exploration"><div class="container">
+      <h2 class="section-title">{{ en:'Explore nearby attractions', th:'เที่ยวสถานที่ใกล้เคียง', zh:'周边景点探索' }[lang]}</h2>
+      <p class="section-subtitle">{{ en:'Extend your visit with Mekong viewpoints and historic local temples.', th:'ต่อเส้นทางไปจุดชมวิวโขงและวัดเก่าแก่ของชุมชน', zh:'从湄公河观景点到老城古寺，顺路探索清刊周边。' }[lang]}</p>
+      <div class="card-grid">
+        {nearbyGuides.map(place => <a class="nearby-card" href={`/${lang}/nearby/${place.slug}/`}>
+          <img src={place.images[0]} alt={place.name[lang]} loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem" />
+          <h3>{place.name[lang]}</h3><p>{place.subtitle[lang]}</p>
+        </a>)}
+      </div>
+    </div></section>
   </main>
   <Footer poi={a} lang={lang} />
 </BaseLayout>

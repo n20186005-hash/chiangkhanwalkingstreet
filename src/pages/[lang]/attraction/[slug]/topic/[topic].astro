@@ -1,0 +1,65 @@
+---
+import { languagesList, getI18n } from '../../../../../i18n/ui';
+import { attractions, pick } from '../../../../../data/attractions';
+import { seoTopics } from '../../../../../data/seo-topics';
+import { topicExtras } from '../../../../../data/topic-extras';
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import Header from '../../../../../components/Header.astro';
+import Footer from '../../../../../components/Footer.astro';
+
+export function getStaticPaths() {
+  return languagesList.flatMap(lang => attractions.flatMap(poi => seoTopics.map(topic => ({
+    params: { lang, slug: poi.slug, topic: topic.slug }, props: { lang, poi, topic }
+  }))));
+}
+const { lang, poi, topic } = Astro.props;
+const m = getI18n(Astro.url).messages;
+const title = `${topic.title[lang]} | ${pick(poi.name, lang)}`;
+const description = topic.intro[lang];
+const root = `/${lang}/attraction/${poi.slug}/`;
+const path = `attraction/${poi.slug}/topic/${topic.slug}`;
+const related = seoTopics.filter(t => t.slug !== topic.slug).slice(0, 6);
+const extra = topicExtras[topic.slug];
+const imageStart = seoTopics.findIndex(item=>item.slug===topic.slug) % poi.images.length;
+const photos = [poi.images[imageStart].file,poi.images[(imageStart+4)%poi.images.length].file,poi.images[(imageStart+8)%poi.images.length].file];
+const label = { en: { about: 'About this place', facts: 'Plan your visit', explore: 'Explore more guides', location: 'Location and directions', back: 'Main attraction guide', history:'Local background', route:'Suggested walking route', photo:'Photography and observation', faq:'Common questions', gallery:'Scenes from Chiang Khan', manage:'About the attraction and stewardship' }, th: { about: 'เกี่ยวกับสถานที่', facts: 'วางแผนการเดินทาง', explore: 'คู่มือเพิ่มเติม', location: 'ตำแหน่งและเส้นทาง', back: 'คู่มือสถานที่หลัก',history:'ความเป็นมา',route:'เส้นทางเดินแนะนำ',photo:'จุดสังเกตและถ่ายภาพ',faq:'คำถามที่พบบ่อย',gallery:'ภาพบรรยากาศเชียงคาน',manage:'เกี่ยวกับสถานที่และการดูแล' }, zh: { about: '关于景点', facts: '游览规划', explore: '更多专题攻略', location: '位置与导航', back: '返回景点主页',history:'当地背景',route:'建议步行路线',photo:'摄影与观察重点',faq:'常见问题',gallery:'清刊实景照片',manage:'关于景点与管理' } }[lang];
+const stewardship = { en:'Chai Khong Road is a living public street with homes and independently operated businesses. Street access, markets and visitor facilities follow local arrangements; consult on-site notices for current rules.',th:'ถนนชายโขงเป็นถนนสาธารณะที่มีบ้านพักและร้านค้าของผู้ประกอบการหลายราย การใช้พื้นที่และกิจกรรมตลาดให้ยึดประกาศท้องถิ่นล่าสุด',zh:'Chai Khong 路是仍有人居住与独立经营店铺的公共街道，街道使用、夜市与游客设施依当地安排，以现场公告为准。' }[lang];
+---
+<BaseLayout title={title} description={description} path={path} poi={poi} breadcrumb={[{ name: pick(poi.name,lang), path: `attraction/${poi.slug}` }, { name: topic.title[lang], path }]}>
+  <Header lang={lang} nav={[{ href: root, label: label.back }]} />
+  <main>
+    <section class="section">
+      <div class="container">
+        <p class="breadcrumb"><a href={`/${lang}/`}>{m.nav.home}</a> › <a href={root}>{pick(poi.name,lang)}</a> › {topic.title[lang]}</p>
+        <h1 class="section-title">{topic.title[lang]}</h1>
+        <p class="section-subtitle">{topic.intro[lang]}</p>
+        <img src={photos[0]} alt={`${pick(poi.name,lang)} — ${topic.title[lang]}`} loading="lazy" style="width:100%;max-height:430px;object-fit:cover;border-radius:1rem;margin-top:1.5rem" />
+      </div>
+    </section>
+    <section class="section section-alt"><div class="container">
+      <h2 class="section-title">{label.about}</h2>
+      <p class="section-subtitle">{pick(poi.name,lang)} — {topic.intro[lang]}</p>
+      <h3>{label.manage}</h3><p>{stewardship}</p>
+      <h2 class="section-title">{label.facts}</h2>
+      <div class="card-grid">
+        {topic.blocks.map(block => <article class="nearby-card"><h3>{block.heading[lang]}</h3><p>{block.body[lang]}</p></article>)}
+      </div>
+    </div></section>
+    <section class="section"><div class="container">
+      <h2 class="section-title">{label.history}</h2><p>{extra.background[lang]}</p>
+      <h2 class="section-title" style="margin-top:2rem">{label.route}</h2><p>{extra.route[lang]}</p>
+      <h2 class="section-title" style="margin-top:2rem">{label.photo}</h2><p>{extra.photo[lang]}</p>
+      <h2 class="section-title" style="margin-top:2rem">{label.gallery}</h2>
+      <div class="card-grid">{photos.map((src,i)=><figure class="nearby-card"><img src={src} alt={`${pick(poi.name,lang)} — ${i+1}`} loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem"/><figcaption>{pick(poi.name,lang)} — {i+1}</figcaption></figure>)}</div>
+      <h2 class="section-title" style="margin-top:2rem">{label.faq}</h2><div class="nearby-card"><h3>{extra.question[lang]}</h3><p>{extra.answer[lang]}</p></div>
+    </div></section>
+    <section class="section"><div class="container">
+      <h2 class="section-title">{label.location}</h2>
+      <p><a class="btn-line" href={poi.mapsUrl} target="_blank" rel="noopener noreferrer">Google Maps — {pick(poi.name,lang)}</a></p>
+      <h2 class="section-title" style="margin-top:2.5rem">{label.explore}</h2>
+      <div class="card-grid">{related.map(item => <a class="nearby-card" href={`${root}topic/${item.slug}/`}><h3>{item.title[lang]}</h3><p>{item.intro[lang]}</p></a>)}</div>
+      <p style="margin-top:2rem"><a href={root} class="btn-line">← {label.back}</a></p>
+    </div></section>
+  </main>
+  <Footer poi={poi} lang={lang} />
+</BaseLayout>

@@ -36,6 +36,8 @@ import Legends from '../../../components/Legends.astro';
 import Responsibility from '../../../components/Responsibility.astro';
 import Glossary from '../../../components/Glossary.astro';
 import Sources from '../../../components/Sources.astro';
+import { seoTopics } from '../../../data/seo-topics';
+import { nearbyGuides } from '../../../data/nearby-guides';
 
 export function getStaticPaths() {
   return languagesList.flatMap((lang) =>
@@ -98,6 +100,26 @@ const nav = [
     <VisitorSummary poi={poi} />
     <Glossary poi={poi} />
     <Sources poi={poi} />
+    <section class="section" id="nearby-guides"><div class="container">
+      <h2 class="section-title">{{ en:'Nearby attractions to visit', th:'สถานที่ท่องเที่ยวใกล้เคียง', zh:'可顺路参观的周边景点' }[lang]}</h2>
+      <div class="card-grid">{nearbyGuides.map(place => <a class="nearby-card" href={`/${lang}/nearby/${place.slug}/`}>
+        <img src={place.images[0]} alt={place.name[lang]} loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem" />
+        <h3>{place.name[lang]}</h3><p>{place.subtitle[lang]}</p>
+      </a>)}</div>
+    </div></section>
+    <section class="section section-alt" id="more-guides">
+      <div class="container">
+        <h2 class="section-title">{{ en: 'More Chiang Khan travel guides', th: 'คู่มือเที่ยวเชียงคานเพิ่มเติม', zh: '更多清刊旅游专题' }[lang]}</h2>
+        <div class="card-grid">
+          {seoTopics.map(topic => (
+            <a class="nearby-card" href={`/${lang}/attraction/${poi.slug}/topic/${topic.slug}/`}>
+              <h3>{topic.title[lang]}</h3>
+              <p>{topic.intro[lang]}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
   </main>
   <Footer poi={poi} lang={lang} />
 </BaseLayout>
