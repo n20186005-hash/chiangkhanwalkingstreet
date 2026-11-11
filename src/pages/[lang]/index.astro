@@ -1,57 +1,102 @@
 ---
-import { getLangFromUrl, getI18n, languagesList } from '../../i18n/ui';
-import { attractions, pick } from '../../data/attractions';
+import { getI18n, languagesList } from '../../i18n/ui';
+import { attractions } from '../../data/attractions';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import AttractionHero from '../../components/AttractionHero.astro';
+import Overview from '../../components/Overview.astro';
+import HistoryTimeline from '../../components/HistoryTimeline.astro';
+import CommunityPreservation from '../../components/CommunityPreservation.astro';
+import LocalVoices from '../../components/LocalVoices.astro';
+import QuickFacts from '../../components/QuickFacts.astro';
+import PracticalAnswers from '../../components/PracticalAnswers.astro';
+import Weather from '../../components/Weather.astro';
+import WhyVisit from '../../components/WhyVisit.astro';
+import ThingsToDo from '../../components/ThingsToDo.astro';
+import WalkingRoutes from '../../components/WalkingRoutes.astro';
+import BestTime from '../../components/BestTime.astro';
+import SeasonMatrix from '../../components/SeasonMatrix.astro';
+import DayPlans from '../../components/DayPlans.astro';
+import AudiencePlans from '../../components/AudiencePlans.astro';
+import RoutePlanner from '../../components/RoutePlanner.astro';
+import NearbyPlaces from '../../components/NearbyPlaces.astro';
+import FoodGuide from '../../components/FoodGuide.astro';
+import Facilities from '../../components/Facilities.astro';
+import Culture from '../../components/Culture.astro';
+import DeepDive from '../../components/DeepDive.astro';
+import Legends from '../../components/Legends.astro';
+import Photography from '../../components/Photography.astro';
+import Accessibility from '../../components/Accessibility.astro';
+import Responsibility from '../../components/Responsibility.astro';
+import FAQ from '../../components/FAQ.astro';
+import Map from '../../components/Map.astro';
+import Gallery from '../../components/Gallery.astro';
+import VisitorSummary from '../../components/VisitorSummary.astro';
+import Glossary from '../../components/Glossary.astro';
+import Sources from '../../components/Sources.astro';
 import { nearbyGuides } from '../../data/nearby-guides';
+import { seoTopics } from '../../data/seo-topics';
 
-export function getStaticPaths() {
-  return languagesList.map((lang) => ({ params: { lang } }));
-}
-
-const lang = getLangFromUrl(Astro.url);
+export function getStaticPaths() { return languagesList.map(lang => ({ params:{ lang } })); }
+const lang = Astro.params.lang;
 const m = getI18n(Astro.url).messages;
-
-const a = attractions[0];
+const poi = attractions[0];
+const nav = [
+  {href:'#overview',label:m.nav.guide},
+  {href:'#why-visit',label:m.headings.whyVisit},
+  {href:'#get-there',label:m.headings.howToGetThere},
+  {href:'#food',label:m.headings.localFood},
+  {href:'#map',label:m.nav.map},
+];
 ---
-<BaseLayout title={m.seo.homeTitle} description={m.seo.homeDescription} path="" >
-  <Header lang={lang} nav={[]} />
+<BaseLayout title={m.seo.attractionTitle} description={m.seo.attractionDescription} path={`attraction/${poi.slug}`} poi={poi} faq rating>
+  <Header lang={lang} nav={nav}/>
   <main>
-    <section class="explore-hero" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(/gallery/${a.slug}-1.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center', color: 'white', padding: '6rem 1rem', textAlign: 'center' }}>
-      <h1 class="explore-title" style="color: white;">{pick(a.name, lang)}</h1>
-      <p class="explore-sub" style="color: rgba(255,255,255,0.9);">{pick(a.tagline, lang)}</p>
-      <div style="margin-top: 2rem;">
-        <a href={`/${lang}/attraction/${a.slug}/`} class="btn-line" style="color: white; border-color: white; text-decoration: none; padding: 0.75rem 1.5rem; display: inline-block;">{m.common.explore}</a>
-      </div>
-    </section>
-
-    <div class="container" style="padding: 4rem 1rem; max-width: 800px; text-align: center;">
-      <h2>{m.brand.tagline}</h2>
-      <p style="margin-top: 1rem; line-height: 1.8; color: var(--text-light);">{pick(a.intro, lang)}</p>
-      <div style="margin-top: 3rem;">
-        <a class="poi-card" href={`/${lang}/attraction/${a.slug}/`} style="text-align: left; max-width: 400px; margin: 0 auto; display: block;">
-          <img class="poi-card-img" src={`/gallery/${a.slug}-2.jpg`} alt={pick(a.name, lang)} loading="lazy" />
-          <div class="poi-card-body">
-            <p class="poi-card-name">{pick(a.name, lang)}</p>
-            <p class="poi-card-loc">{a.city}, {a.province}</p>
-            <div class="poi-card-tags">
-              {a.category.slice(0, 3).map((c) => <span>{c}</span>)}
-            </div>
-          </div>
-        </a>
-      </div>
-    </div>
-    <section class="section section-alt" id="nearby-exploration"><div class="container">
-      <h2 class="section-title">{{ en:'Explore nearby attractions', th:'เที่ยวสถานที่ใกล้เคียง', zh:'周边景点探索' }[lang]}</h2>
-      <p class="section-subtitle">{{ en:'Extend your visit with Mekong viewpoints and historic local temples.', th:'ต่อเส้นทางไปจุดชมวิวโขงและวัดเก่าแก่ของชุมชน', zh:'从湄公河观景点到老城古寺，顺路探索清刊周边。' }[lang]}</p>
-      <div class="card-grid">
-        {nearbyGuides.map(place => <a class="nearby-card" href={`/${lang}/nearby/${place.slug}/`}>
-          <img src={place.images[0]} alt={place.name[lang]} loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem" />
-          <h3>{place.name[lang]}</h3><p>{place.subtitle[lang]}</p>
-        </a>)}
-      </div>
+    <AttractionHero poi={poi}/>
+    <Overview poi={poi}/>
+    <HistoryTimeline poi={poi}/>
+    <CommunityPreservation poi={poi}/>
+    <LocalVoices poi={poi}/>
+    <QuickFacts poi={poi}/>
+    <PracticalAnswers poi={poi}/>
+    <Weather poi={poi}/>
+    <WhyVisit poi={poi}/>
+    <ThingsToDo poi={poi}/>
+    <WalkingRoutes poi={poi}/>
+    <BestTime poi={poi}/>
+    <SeasonMatrix poi={poi}/>
+    <DayPlans poi={poi}/>
+    <AudiencePlans poi={poi}/>
+    <RoutePlanner poi={poi}/>
+    <NearbyPlaces poi={poi}/>
+    <FoodGuide poi={poi}/>
+    <Facilities poi={poi}/>
+    <Culture poi={poi}/>
+    <DeepDive poi={poi}/>
+    <Legends poi={poi}/>
+    <Photography poi={poi}/>
+    <Accessibility poi={poi}/>
+    <Responsibility poi={poi}/>
+    <FAQ poi={poi}/>
+    <Map poi={poi}/>
+    <Gallery poi={poi}/>
+    <VisitorSummary poi={poi}/>
+    <Glossary poi={poi}/>
+    <Sources poi={poi}/>
+    <section class="section" id="nearby-guides"><div class="container">
+      <h2 class="section-title">{{en:'Nearby attractions to visit',th:'สถานที่ท่องเที่ยวใกล้เคียง',zh:'可顺路参观的周边景点'}[lang]}</h2>
+      <div class="card-grid">{nearbyGuides.map(place=><a class="nearby-card" href={`/${lang}/nearby/${place.slug}/`}>
+        <img src={place.images[0]} alt={place.name[lang]} loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem"/>
+        <h3>{place.name[lang]}</h3><p>{place.subtitle[lang]}</p>
+      </a>)}</div>
+    </div></section>
+    <section class="section section-alt" id="more-guides"><div class="container">
+      <h2 class="section-title">{{en:'More Chiang Khan travel guides',th:'คู่มือเที่ยวเชียงคานเพิ่มเติม',zh:'更多清刊旅游专题'}[lang]}</h2>
+      <div class="card-grid">{seoTopics.map(topic=><a class="nearby-card" href={`/${lang}/attraction/${poi.slug}/topic/${topic.slug}/`}>
+        <h3>{topic.title[lang]}</h3><p>{topic.intro[lang]}</p>
+      </a>)}</div>
     </div></section>
   </main>
-  <Footer poi={a} lang={lang} />
+  <Footer poi={poi} lang={lang}/>
 </BaseLayout>

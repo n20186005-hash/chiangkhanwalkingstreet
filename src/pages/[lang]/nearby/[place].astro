@@ -51,6 +51,7 @@ const related = nearbyGuides.filter(item=>item.slug!==place.slug);
     <section id="gallery" class="section"><div class="container">
       <h2 class="section-title">{l.gallery}</h2>
       <div class="card-grid">{place.images.map((src,i)=><figure class="nearby-card"><img src={src} alt={`${place.name[lang]} — ${i+1}`} loading="lazy" style="width:100%;border-radius:.5rem;aspect-ratio:4/3;object-fit:cover"/><figcaption>{place.name[lang]} — {i+1}</figcaption></figure>)}</div>
+      <p class="gallery-credit">{m.footer.imageCredit}</p>
     </div></section>
     <section class="section section-alt"><div class="container">
       <h2 class="section-title">{l.faq}</h2>
@@ -64,5 +65,5 @@ const related = nearbyGuides.filter(item=>item.slug!==place.slug);
       <div class="card-grid">{related.map(item=><a class="nearby-card" href={`/${lang}/nearby/${item.slug}/`}><h3>{item.name[lang]}</h3><p>{item.subtitle[lang]}</p></a>)}</div>
       <p style="margin-top:2rem"><a href={root} class="btn-line">← {l.home}</a></p>
     </div></section>
-  </main><Footer poi={poi} lang={lang} />
+  </main><Footer poi={poi} lang={lang} attractionName={place.name[lang]} />
 </BaseLayout>

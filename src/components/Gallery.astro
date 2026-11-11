@@ -9,7 +9,7 @@ const altFor = (caption: any) => `${pick(caption, lang)} — ${e.placeFull} in $
 ---
 <section id="gallery" class="section">
   <div class="container">
-    <h2 class="section-title">Photo Gallery</h2>
+    <h2 class="section-title">{{ en:'Photo Gallery', th:'แกลเลอรีภาพถ่าย', zh:'景点相册' }[lang]}</h2>
     <div class="gallery-grid">
       {poi.images.map((img, i) => (
         <button class="gallery-item" type="button" data-full={img.file} style={`grid-row: span ${i % 3 === 0 ? 2 : 1};`} aria-label={altFor(img.caption)}>

@@ -51,11 +51,13 @@ const stewardship = { en:'Chai Khong Road is a living public street with homes a
       <h2 class="section-title" style="margin-top:2rem">{label.photo}</h2><p>{extra.photo[lang]}</p>
       <h2 class="section-title" style="margin-top:2rem">{label.gallery}</h2>
       <div class="card-grid">{photos.map((src,i)=><figure class="nearby-card"><img src={src} alt={`${pick(poi.name,lang)} — ${i+1}`} loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem"/><figcaption>{pick(poi.name,lang)} — {i+1}</figcaption></figure>)}</div>
+      <p class="gallery-credit">{m.footer.imageCredit}</p>
       <h2 class="section-title" style="margin-top:2rem">{label.faq}</h2><div class="nearby-card"><h3>{extra.question[lang]}</h3><p>{extra.answer[lang]}</p></div>
     </div></section>
     <section class="section"><div class="container">
       <h2 class="section-title">{label.location}</h2>
       <p><a class="btn-line" href={poi.mapsUrl} target="_blank" rel="noopener noreferrer">Google Maps — {pick(poi.name,lang)}</a></p>
+      <div class="sources-meta" style="margin-top:1.5rem"><p>{m.footer.dataSource}</p><p>{m.footer.ratingSource}</p></div>
       <h2 class="section-title" style="margin-top:2.5rem">{label.explore}</h2>
       <div class="card-grid">{related.map(item => <a class="nearby-card" href={`${root}topic/${item.slug}/`}><h3>{item.title[lang]}</h3><p>{item.intro[lang]}</p></a>)}</div>
       <p style="margin-top:2rem"><a href={root} class="btn-line">← {label.back}</a></p>

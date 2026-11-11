@@ -1,69 +1,35 @@
 ---
 import { getLangFromUrl, getI18n } from '../i18n/ui';
 import { pick } from '../data/attractions';
-const { poi } = Astro.props;
+const { poi, attractionName } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const m = getI18n(Astro.url).messages;
+const displayName = attractionName ?? pick(poi.name, lang);
+const legal = {
+  en: { rights: 'All rights reserved.', independent: 'This website is an independent travel information project. We are not affiliated with any government agency or official organization.' },
+  th: { rights: 'สงวนลิขสิทธิ์', independent: 'เว็บไซต์นี้เป็นโครงการข้อมูลการท่องเที่ยวอิสระ ไม่มีความเกี่ยวข้องกับหน่วยงานรัฐหรือองค์กรทางการใด ๆ' },
+  zh: { rights: '版權所有。', independent: '本网站是一个独立的旅游信息项目。我们与任何政府机构或官方组织均无关联。' },
+}[lang];
 ---
-<footer class="site-footer" id="contact">
+<nav class="site-policy-links" aria-label={m.footer.privacy}>
   <div class="container">
-    <div class="footer-grid">
-      <div class="footer-col footer-brand">
-        <span class="brand-name">{m.brand.name}</span>
-        <p>{m.brand.tagline}</p>
-        <p class="footer-mission">
-          {pick(poi.name, lang)} · {m.hero.locatedLabel}: {poi.province}, {poi.country}
-        </p>
-        <a class="footer-map-link" href={poi.mapsUrl} target="_blank" rel="noopener">{m.map.googleMaps} →</a>
-      </div>
-
-      <div class="footer-col">
-        <h4>{m.headings.sources}</h4>
-        <ul class="footer-links">
-          {poi.sources.map((s) => (
-            <li><a href={s.url} target="_blank" rel="noopener">{s.name}</a></li>
-          ))}
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>{m.headings.officialLinks}</h4>
-        <ul class="footer-links">
-          <li><a href="https://www.tourismthailand.org/" target="_blank" rel="noopener">Tourism Authority of Thailand</a></li>
-          <li><a href="https://www.mots.go.th/" target="_blank" rel="noopener">Ministry of Tourism and Sports</a></li>
-          <li><a href="https://www.thaigov.go.th/" target="_blank" rel="noopener">Royal Thai Government</a></li>
-          <li><a href="https://www.finearts.go.th/" target="_blank" rel="noopener">Fine Arts Department</a></li>
-          <li><a href="https://www.tmd.go.th/en" target="_blank" rel="noopener">Thai Meteorological Dept.</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>POI</h4>
-        <ul class="footer-links">
-          <li><a href={`/${lang}/attraction/${poi.slug}/`}>{m.nav.guide}</a></li>
-          <li><a href={`/${lang}/attraction/${poi.slug}/#map`}>{m.nav.map}</a></li>
-          <li><a href={`/${lang}/attraction/${poi.slug}/#get-there`}>{m.headings.howToGetThere}</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="footer-bottom">
-      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-        <p style="margin: 0;">© {new Date().getFullYear()} {m.brand.name}. {m.brand.tagline}.</p>
-        <div class="footer-legal-links" style="display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.85rem;">
-          <a href={`/${lang}/privacy/`} style="color: var(--text-secondary); text-decoration: none;">{m.footer.privacy}</a>
-          <span style="color: var(--border-color);">|</span>
-          <a href={`/${lang}/terms/`} style="color: var(--text-secondary); text-decoration: none;">{m.footer.terms}</a>
-          <span style="color: var(--border-color);">|</span>
-          <a href={`/${lang}/cookies/`} style="color: var(--text-secondary); text-decoration: none;">{m.footer.cookies}</a>
-        </div>
-      </div>
-      <div class="footer-disclaimer">
-        <p style="margin-bottom: 0.5rem; font-weight: 600;">{m.footer.nonprofit}</p>
-        <p style="margin-bottom: 0.5rem;">{m.footer.dataSource}</p>
-        <p style="margin-bottom: 0.5rem;">{m.footer.ratingSource}</p>
-        <p class="footer-image-credit" style="margin-bottom: 0;">{m.footer.imageCredit}</p>
-      </div>
-    </div>
+    <a href={`/${lang}/privacy/`}>{m.footer.privacy}</a>
+    <a href={`/${lang}/terms/`}>{m.footer.terms}</a>
+    <a href={`/${lang}/cookies/`}>{m.footer.cookies}</a>
+  </div>
+</nav>
+<footer class="site-footer" id="contact">
+  <div class="container footer-bottom" style="text-align:center">
+    <p>© 2026 {displayName} · {legal.rights}</p>
+    <p>{legal.independent}</p>
   </div>
 </footer>
+<style>
+  .site-policy-links { padding:1.1rem 0; background:var(--bg-alt); border-top:1px solid var(--border-color); }
+  .site-policy-links .container { display:flex; gap:1.5rem; justify-content:center; flex-wrap:wrap; }
+  .site-policy-links a { color:var(--text-secondary); font-size:.875rem; text-decoration:none; }
+  .site-policy-links a:hover { color:var(--accent); text-decoration:underline; }
+  .site-footer { padding:1.5rem 0 1.75rem; }
+  .footer-bottom { display:grid; gap:.6rem; }
+  .footer-bottom p { margin:0; }
+</style>
