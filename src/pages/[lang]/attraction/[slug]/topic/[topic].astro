@@ -57,7 +57,7 @@ const stewardship = { en:'Chai Khong Road is a living public street with homes a
     <section class="section"><div class="container">
       <h2 class="section-title">{label.location}</h2>
       <p><a class="btn-line" href={poi.mapsUrl} target="_blank" rel="noopener noreferrer">Google Maps — {pick(poi.name,lang)}</a></p>
-      <div class="sources-meta" style="margin-top:1.5rem"><p>{m.footer.dataSource}</p><p>{m.footer.ratingSource}</p></div>
+      <p style="margin-top:1.5rem"><a href={`/${lang}/sources/`}>{m.headings.sources} →</a></p>
       <h2 class="section-title" style="margin-top:2.5rem">{label.explore}</h2>
       <div class="card-grid">{related.map(item => <a class="nearby-card" href={`${root}topic/${item.slug}/`}><h3>{item.title[lang]}</h3><p>{item.intro[lang]}</p></a>)}</div>
       <p style="margin-top:2rem"><a href={root} class="btn-line">← {label.back}</a></p>

@@ -1,0 +1,30 @@
+---
+import { getI18n, languagesList } from '../../i18n/ui';
+import { attractions, pick } from '../../data/attractions';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Sources from '../../components/Sources.astro';
+
+export function getStaticPaths() { return languagesList.map(lang=>({params:{lang}})); }
+const lang = Astro.params.lang;
+const poi = attractions[0];
+const m = getI18n(Astro.url).messages;
+const title = `${m.headings.sources} | ${pick(poi.name, lang)}`;
+const description = { en:'Public references, Google Maps rating provenance and the latest source update for Chiang Khan Walking Street.',th:'แหล่งข้อมูลสาธารณะ ที่มาคะแนน Google Maps และวันที่ปรับปรุงข้อมูลถนนคนเดินเชียงคาน',zh:'清刊步行街参考资料、Google Maps 评分出处以及信息更新日期。' }[lang];
+---
+<BaseLayout title={title} description={description} path="sources" poi={poi} breadcrumb={[{name:m.headings.sources,path:'sources'}]}>
+  <Header lang={lang} nav={[{href:`/${lang}/`,label:m.nav.home}]}/>
+  <main>
+    <section class="section section-alt"><div class="container">
+      <p class="breadcrumb"><a href={`/${lang}/`}>{m.nav.home}</a> › {m.headings.sources}</p>
+      <h1 class="section-title">{m.headings.sources}</h1>
+      <p class="section-subtitle">{description}</p>
+    </div></section>
+    <Sources poi={poi}/>
+    <section class="section section-alt"><div class="container">
+      <a class="btn-line" href={`/${lang}/`}>← {m.nav.home}</a>
+    </div></section>
+  </main>
+  <Footer poi={poi} lang={lang}/>
+</BaseLayout>

@@ -1,0 +1,16 @@
+---
+import { getLangFromUrl, getI18n } from '../i18n/ui';
+const lang = getLangFromUrl(Astro.url);
+const m = getI18n(Astro.url).messages;
+const intro = {
+  en:'References, rating provenance and update information are collected on a separate page.',
+  th:'รวมแหล่งอ้างอิง ที่มาของคะแนน และข้อมูลการปรับปรุงไว้ในหน้าเดียว',
+  zh:'公开资料链接、评分出处与信息更新时间统一整理在独立页面。',
+}[lang];
+const action = { en:'View sources and updates', th:'ดูแหล่งข้อมูลและการอัปเดต', zh:'查看资料来源与更新记录' }[lang];
+---
+<section class="section" id="sources"><div class="container">
+  <h2 class="section-title">{m.headings.sources}</h2>
+  <p class="section-subtitle">{intro}</p>
+  <p><a class="btn-line" href={`/${lang}/sources/`}>{action} →</a></p>
+</div></section>
