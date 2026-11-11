@@ -2,6 +2,7 @@
 import { languagesList, getI18n } from '../../../i18n/ui';
 import { attractions, pick } from '../../../data/attractions';
 import { nearbyGuides } from '../../../data/nearby-guides';
+import { nearbyExpanded } from '../../../data/nearby-expanded';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
@@ -17,6 +18,7 @@ const maps = `https://www.google.com/maps/search/?api=1&query=${encodeURICompone
 const root = `/${lang}/attraction/${poi.slug}/`;
 const path = `nearby/${place.slug}`;
 const related = nearbyGuides.filter(item=>item.slug!==place.slug);
+const expanded = nearbyExpanded[place.slug];
 ---
 <BaseLayout title={`${place.name[lang]} | ${pick(poi.name, lang)}`} description={place.introduction[lang]} path={path} poi={poi} breadcrumb={[{ name:pick(poi.name, lang),path:`attraction/${poi.slug}` },{ name:place.name[lang],path }]}>
   <Header lang={lang} nav={[{href:'#about',label:l.about},{href:'#route',label:l.route},{href:'#gallery',label:l.gallery},{href:'#location',label:l.transport}]} />
@@ -32,7 +34,10 @@ const related = nearbyGuides.filter(item=>item.slug!==place.slug);
     <section id="about" class="section section-alt"><div class="container">
       <h2 class="section-title">{l.about}</h2>
       <p>{place.introduction[lang]}</p>
-      <h3 style="margin-top:1.5rem">{l.management}</h3><p>{place.management[lang]}</p>
+      <div class="nearby-card" style="margin-top:1.5rem">
+        <h3>{l.management}</h3>
+        <p>{expanded?.stewardship[lang] ?? place.management[lang]}</p>
+      </div>
       <h2 class="section-title" style="margin-top:2rem">{l.basics}</h2>
       <div class="card-grid">
         <div class="nearby-card"><h3>{l.place}</h3><p>{place.name[lang]}</p></div>
@@ -47,6 +52,7 @@ const related = nearbyGuides.filter(item=>item.slug!==place.slug);
     <section id="route" class="section section-alt"><div class="container">
       <h2 class="section-title">{l.route}</h2>
       <div class="card-grid">{place.sections.map((block,i) => <article class="nearby-card"><h3>{i+1}. {block.heading[lang]}</h3><p>{block.text[lang]}</p></article>)}</div>
+      {expanded && <div class="card-grid" style="margin-top:1.5rem">{expanded.details.map((block,i)=><article class="nearby-card"><h3>{place.sections.length+i+1}. {block.title[lang]}</h3><p>{block.body[lang]}</p></article>)}</div>}
     </div></section>
     <section id="gallery" class="section"><div class="container">
       <h2 class="section-title">{l.gallery}</h2>
@@ -56,6 +62,7 @@ const related = nearbyGuides.filter(item=>item.slug!==place.slug);
     <section class="section section-alt"><div class="container">
       <h2 class="section-title">{l.faq}</h2>
       <div class="card-grid">{place.faq.map(item=><article class="nearby-card"><h3>{item.question[lang]}</h3><p>{item.answer[lang]}</p></article>)}</div>
+      {expanded && <div class="card-grid" style="margin-top:1.5rem">{expanded.questions.map(item=><article class="nearby-card"><h3>{item.title[lang]}</h3><p>{item.body[lang]}</p></article>)}</div>}
     </div></section>
     <section id="location" class="section"><div class="container">
       <h2 class="section-title">{l.transport}</h2><p>{place.location}</p>

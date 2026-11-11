@@ -89,6 +89,8 @@ const nav = [
       <div class="card-grid">{nearbyGuides.map(place=><a class="nearby-card" href={`/${lang}/nearby/${place.slug}/`}>
         <img src={place.images[0]} alt={place.name[lang]} loading="lazy" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.5rem"/>
         <h3>{place.name[lang]}</h3><p>{place.subtitle[lang]}</p>
+        <p>{place.introduction[lang]}</p>
+        <p style="color:var(--accent);font-weight:600;margin-top:.75rem">{{en:'Explore the full visitor guide →',th:'อ่านคู่มือเที่ยวฉบับเต็ม →',zh:'查看完整景点攻略 →'}[lang]}</p>
       </a>)}</div>
     </div></section>
     <section class="section section-alt" id="more-guides"><div class="container">
